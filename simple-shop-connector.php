@@ -98,6 +98,13 @@ class SSC{
         return get_post_types($args);
     }
 
+    /**
+     * Test
+     */
+    function test()
+    {
+    }
+
 }
 
 new SSC;
