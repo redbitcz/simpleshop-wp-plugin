@@ -80,6 +80,15 @@ class SSC_Access{
 
                 // The user is member of some group, check if the post has minimum days to access set
                 $membership = new SSC_Membership($user_id);
+
+                // Check if the subscription is valid
+                if (isset($membership->groups[$post_group]['valid_to']) && $membership->groups[$post_group]['valid_to']) {
+                    if ($membership->groups[$post_group]['valid_to'] < date('Y-m-d')) {
+                        // if the the subscription expired, just break the loop here, as the user might have multiple subscriptions
+                        continue;
+                    }
+                }
+
                 if ($days_to_access = $this->get_post_days_to_access()) {
                     $subscription_date = $membership->groups[$post_group]['subscription_date'];
                     // Get the date of subscription to the group
