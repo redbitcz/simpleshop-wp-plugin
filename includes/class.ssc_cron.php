@@ -99,7 +99,10 @@ class SSC_Cron
                         if ($send_email) {
                             // Woohoo, send the email
                             $userdata = get_userdata($user_id);
-                            wp_mail($userdata->user_email, $email_subject, $email_text);
+                            if (!get_user_meta($user_id, SSC_PREFIX . 'notification_email_sent_' . $post->ID, true)) {
+                                wp_mail($userdata->user_email, $email_subject, $email_text);
+                                update_user_meta($user_id, SSC_PREFIX . 'notification_email_sent_' . $post->ID, 1);
+                            }
                         }
                     }
                 }
