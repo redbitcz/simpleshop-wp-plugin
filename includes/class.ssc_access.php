@@ -68,6 +68,27 @@ class SSC_Access{
         foreach($post_groups as $post_group){
             $group = new SSC_Group($post_group);
             if($group->user_is_member_of_group($user_id)){
+                // Ok, the user is member of at least one group that has access to this post
+
+                // Check, if the post has set date, after which it can be accessed
+                if ($date_to_access = $this->get_post_date_to_access()) {
+                    if (date('Y-m-d') < $date_to_access) {
+                        // The post should not be accessed yet, not depending on group, so just return false
+                        return false;
+                    }
+                }
+
+                // The user is member of some group, check if the post has minimum days to access set
+                $membership = new SSC_Membership($user_id);
+                if ($days_to_access = $this->get_post_days_to_access()) {
+                    $subscription_date = $membership->groups[$post_group]['subscription_date'];
+                    // Get the date of subscription to the group
+                    if ($subscription_date > date('Y-m-d', strtotime("now -$days_to_access days"))) {
+                        // if the user does not have access YET, just break the loop here, as the user might have multiple subscriptions
+                        continue;
+                    }
+                }
+
                 return true;
             }
         }
@@ -97,7 +118,13 @@ class SSC_Access{
         if(!$post_id)
             $post_id = $post->ID;
 
-        // First try to get the ID and return permalink
+        // First check, if we should redirect the user to login form
+        if ($redirect_post_id = get_post_meta($post_id, SSC_PREFIX . 'no_access_redirect_to_login_form', true)) {
+            $actual_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            return wp_login_url($actual_url);
+        }
+
+        // Next try to get the ID and return permalink
         if($redirect_post_id = get_post_meta($post_id,'_ssc_no_access_redirect_post_id',true)){
             return get_the_permalink($redirect_post_id);
         }
@@ -130,6 +157,37 @@ class SSC_Access{
 
         return get_post_meta($post_id,'_ssc_groups',true);
     }
+
+    /**
+     * Get the number of days the user has to be subscribed to have access to the post
+     * @param string $post_id
+     * @return mixed
+     */
+    function get_post_days_to_access($post_id = '')
+    {
+        global $post;
+
+        if (!$post_id)
+            $post_id = $post->ID;
+
+        return get_post_meta($post_id, SSC_PREFIX . 'days_to_access', true);
+    }
+
+    /**
+     * Get the number of days the user has to be subscribed to have access to the post
+     * @param string $post_id
+     * @return mixed
+     */
+    function get_post_date_to_access($post_id = '')
+    {
+        global $post;
+
+        if (!$post_id)
+            $post_id = $post->ID;
+
+        return get_post_meta($post_id, SSC_PREFIX . 'date_to_access', true);
+    }
+
 
     /**
      * Hide items in menu

@@ -63,7 +63,6 @@ class SSC_Rest_Order extends \WP_REST_Controller{
             return new \WP_Error('wrong-email-format',__('The email is in wrong format','ssc'),array('status' => 500,'plugin_version' => SSC_PLUGIN_VERSION));
         }
 
-
         // Check if user with this email exists, if not, create a new user
         $_login = $email;
         $_password = '<a href="'.wp_lostpassword_url(get_bloginfo('url')).'">Změnit ho můžete zde</a>';
@@ -96,9 +95,19 @@ class SSC_Rest_Order extends \WP_REST_Controller{
             // Add the user to group
             if($ssc_group->group_exists()){
                 $ssc_group->add_user_to_group($user_id);
+
+                // Set the membership valid_to param
+                $membership = new SSC_Membership($user_id);
+                $valid_to = $request->get_param('valid_to') ? $request->get_param('valid_to') : '';
+                $membership->set_valid_to($group, $valid_to);
+
                 $user_groups[] = $group;
             }
         }
+
+        // If we are on multisite, add the user the site
+        if (is_multisite())
+            add_user_to_blog(get_current_blog_id(), $user_id, 'subscriber');
 
         // Get the posts that have some group assigned
         global $wpdb;

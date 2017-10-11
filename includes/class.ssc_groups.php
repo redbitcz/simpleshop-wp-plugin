@@ -89,6 +89,10 @@ class SSC_Group{
         if(!in_array($this->id,$groups)){
             $groups[] = $this->id;
             update_user_meta($user_id,'_ssc_user_groups',$groups);
+
+            // Set the date of user registration to the group
+            $membership = new SSC_Membership($user_id);
+            $membership->set_subscription_date($this->id);
         }
     }
 

@@ -14,6 +14,7 @@ namespace SSC;
 define('SSC_PLUGIN_DIR',plugin_dir_path(__FILE__));
 define('SSC_PLUGIN_URL',plugin_dir_url(__FILE__));
 define('SSC_PLUGIN_VERSION','1.2.1');
+define('SSC_PREFIX', '_ssc_');
 
 class SSC{
 
@@ -33,7 +34,9 @@ class SSC{
         require_once('includes/class.ssc_settings.php');
         require_once('includes/class.ssc_admin.php');
         require_once('includes/class.ssc_groups.php');
+        require_once('includes/class.ssc_membership.php');
         require_once('includes/class.ssc_rest.php');
+        require_once('includes/class.ssc_cron.php');
         require_once('includes/class.ssc_metaboxes.php');
         require_once('includes/class.ssc_access.php');
         require_once('includes/class.ssc_shortcodes.php');
@@ -98,13 +101,6 @@ class SSC{
         return get_post_types($args);
     }
 
-    /**
-     * Test
-     */
-    function test()
-    {
-    }
-
 }
 
 new SSC;
@@ -127,4 +123,13 @@ function ssc_activation_hook(){
     $ssc = new SSC();
     $key = $ssc->generate_secure_key();
     $ssc->save_secure_key($key);
+}
+
+add_action('template_redirect', '\SSC\test');
+function test()
+{
+    if (get_current_user_id() != 1) {
+        $membership = new SSC_Membership(get_current_user_id());
+        //die(var_dump($membership));
+    }
 }

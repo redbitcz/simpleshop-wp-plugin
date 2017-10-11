@@ -48,7 +48,6 @@ class SSC_Metaboxes{
             $tmp_post_types = $post_types;
             unset($tmp_post_types['attachment']);
 
-            $ssc = new SSC();
             $cmb->add_field(array(
                 'name' => __('ID stránky pro přesměrování','ssc'),
                 'desc' => __('Vyberte stránku, na kterou uživatel bude přesměrován, pokud je přihlášen, ale nemá oprávnění k přístupu. Toto je preferovaný způsob - přsměrování bude fungovat, i pokud se v budoucnu změní adresa stránky','ssc'),
@@ -65,6 +64,43 @@ class SSC_Metaboxes{
                 'desc' => __('Zadejte ručně adresu, na kterou uživatel bude přesměrován, pokud je přihlášen, ale nemá oprávnění k přístupu. Pokud využijete tuto volbu, pole výše musí být prázdné.','ssc'),
                 'id' => $this->prefix.'no_access_redirect',
                 'type' => 'text'
+            ));
+
+            $cmb->add_field(array(
+                'name' => __('Přesměrovat na přihlášení', 'ssc'),
+                'desc' => __('Zaškrtněte, pokud chcete uživatele přesměrovat na přihlašovací formulář. Po přihlášení bude uživatel přesměrován zpět na tuto stránku.', 'ssc'),
+                'id' => $this->prefix . 'no_access_redirect_to_login_form',
+                'type' => 'checkbox'
+            ));
+
+
+            $cmb->add_field(array(
+                'name' => __('Povolit přístup po X dnech od přiřazení do skupiny', 'ssc'),
+                'desc' => __('Zadejte počet dní, které musí uplynout od přihlášení uživatele do skupiny pro získání přístupu k tomuto obsahu. Pokud např. uživatel koupí produkt 1.ledna a nastavíte 5 dní, uživatel bude mít ke stránce přístup 6. ledna.', 'ssc'),
+                'id' => $this->prefix . 'days_to_access',
+                'type' => 'text'
+            ));
+
+            $cmb->add_field(array(
+                'name' => __('Povolit přístup od data', 'ssc'),
+                'desc' => __('Zadejte datum, od kterého bude stránka přístupná (platí pro všechny skupiny)', 'ssc'),
+                'id' => $this->prefix . 'date_to_access',
+                'type' => 'text_date',
+                'date_format' => 'Y-m-d',
+            ));
+
+            $cmb->add_field(array(
+                'name' => __('Předmět emailu při zpřístupnění obsahu', 'ssc'),
+                'desc' => __('Zadejte předmět emailu, který se uživateli automaticky odešlě v okamžiku, kdy získá přístup k tomuto obsahu na základě nastavení dní výše.', 'ssc'),
+                'id' => $this->prefix . 'email_subject_user_can_access',
+                'type' => 'text'
+            ));
+
+            $cmb->add_field(array(
+                'name' => __('Email při zpřístupnění obsahu', 'ssc'),
+                'desc' => __('Zadejte email, který se uživateli automaticky odešlě v okamžiku, kdy získá přístup k tomuto obsahu na základě nastavení dní výše.', 'ssc'),
+                'id' => $this->prefix . 'email_user_can_access',
+                'type' => 'wysiwyg'
             ));
         }
     }
