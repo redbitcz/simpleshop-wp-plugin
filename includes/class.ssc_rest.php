@@ -123,7 +123,19 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         foreach($request->get_param('user_group') as $group){
             // Scrub through posts and check, if some of the posts has that group assigned
             foreach($posts as $post){
+                $access = new SSC_Access();
+
                 if(in_array($group,unserialize($post->meta_value))){
+                    // Check if the post can be accessed already, if not, continue
+                    $specific_date = $access->get_post_date_to_access($post->post_id);
+                    $days_to_access = $access->get_post_days_to_access($post->post_id);
+
+                    if ($specific_date && date('Y-m-d') < $specific_date)
+                        continue;
+
+                    if ($days_to_access && $days_to_access > 0)
+                        continue;
+
                     // If so, get the post details and add it to the links array
                     $post_details = get_post($post->post_id);
                     $links[$i]['title'] = $post_details->post_title;
