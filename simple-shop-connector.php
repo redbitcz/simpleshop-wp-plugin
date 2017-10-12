@@ -124,12 +124,3 @@ function ssc_activation_hook(){
     $key = $ssc->generate_secure_key();
     $ssc->save_secure_key($key);
 }
-
-add_action('template_redirect', '\SSC\test');
-function test()
-{
-    if (get_current_user_id() != 1) {
-        $membership = new SSC_Membership(get_current_user_id());
-        //die(var_dump($membership));
-    }
-}
