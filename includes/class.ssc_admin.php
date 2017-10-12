@@ -14,6 +14,7 @@ class SSC_Admin{
         add_action('admin_head-post.php',array($this,'publishing_actions'));
         add_action('admin_head-post-new.php',array($this,'publishing_actions'));
         add_action('wp_ajax_load_simple_shop_products',array($this,'wp_ajax_load_simple_shop_products'));
+        add_action('admin_enqueue_scripts', array($this,'enqueue_admin_scripts') );
     }
 
     /**
@@ -65,7 +66,28 @@ class SSC_Admin{
                 display:none;
             }
             </style>';
-        }
+        } ?>
+
+        <!-- SSC TinyMCE Shortcode Plugin -->
+        <script type='text/javascript'>
+            var sscContentGroups = [];
+            sscContentGroups.push({
+                text: 'Vyberte skupinu',
+                value: ''
+            });
+            <?php
+            $group = new SSC_Group();
+            $groups = $group->get_groups();
+            foreach ($groups as $key => $group) { ?>
+            sscContentGroups.push({
+                text: '<?php echo $group; ?>',
+                value: '<?php echo $key; ?>'
+            });
+            <?php }  ?>
+        </script>
+
+        <?php
+
     }
 
     /**
@@ -92,7 +114,8 @@ class SSC_Admin{
      */
     function tiny_mce_register_buttons($buttons){
         $newBtns = array(
-            'sscaddformbutton'
+            'sscaddformbutton',
+            'ssccontentbutton'
         );
         $buttons = array_merge($buttons,$newBtns);
         return $buttons;
@@ -169,6 +192,14 @@ class SSC_Admin{
                 echo $post->ID;
                 break;
         }
+    }
+
+    /**
+     * Enqueue admin scripts
+     */
+    function enqueue_admin_scripts() {
+        wp_register_style( 'jquery-ui', 'http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
+        wp_enqueue_style( 'jquery-ui' );
     }
 
 }
