@@ -19,6 +19,7 @@ class SSC_Group{
      * @return array
      */
     function get_groups(){
+
         $args = array(
             'post_type' => 'ssc_group',
             'posts_per_page' => -1,
@@ -27,16 +28,12 @@ class SSC_Group{
 
         $groups = array();
 
-        $the_query = new \WP_Query($args);
+        $posts = get_posts($args);
 
-        if($the_query->have_posts()){
-            while($the_query->have_posts()){
-                $the_query->the_post();
-                global $post;
-                $groups[$post->ID] = $post->post_title;
-            }
-            wp_reset_postdata();
+        foreach ($posts as $item) {
+            $groups[$item->ID] = $item->post_title;
         }
+
         return $groups;
     }
 
