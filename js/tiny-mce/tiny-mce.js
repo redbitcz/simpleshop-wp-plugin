@@ -148,8 +148,12 @@
                             paramsString = ' ' + params.join(' ');
                         }
 
-                        var returnText = '[SimpleShop-content ' + paramsString + ']'+ selectedText +'[/SimpleShop-content]';
+                        var returnText = '[SimpleShop-content ' + paramsString + ']<br/><span id="_cursor" /><br/>'+ selectedText +'[/SimpleShop-content]';
                         ed.execCommand('mceInsertContent', 0, returnText);
+                        ed.selection.select(ed.dom.select('#_cursor')[0]);
+                        ed.selection.collapse(0);
+                        ed.dom.remove('_cursor');
+
                     }
                 });
                 win.$el.addClass('sscContentPopup');
