@@ -30,7 +30,8 @@ class SSC_Access{
             $no_access_url = $this->get_no_access_redirect_url();
 
             $url = $no_access_url ? $no_access_url : site_url();
-            wp_safe_redirect($url);
+            wp_redirect($url);
+            exit();
         }
     }
 
@@ -128,10 +129,10 @@ class SSC_Access{
             $post_id = $post->ID;
 
         // First check, if we should redirect the user to login form
-        if ($redirect_post_id = get_post_meta($post_id, SSC_PREFIX . 'no_access_redirect_to_login_form', true)) {
-            $actual_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-            return wp_login_url($actual_url);
-        }
+//        if ($redirect_post_id = get_post_meta($post_id, SSC_PREFIX . 'no_access_redirect_to_login_form', true)) {
+//            $actual_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+//            return wp_login_url($actual_url);
+//        }
 
         // Next try to get the ID and return permalink
         if($redirect_post_id = get_post_meta($post_id,'_ssc_no_access_redirect_post_id',true)){
