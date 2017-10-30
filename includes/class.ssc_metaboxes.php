@@ -137,10 +137,15 @@ class SSC_Metaboxes{
             $cmb->add_field(array(
                 'name' => '<small style="font-weight:normal;">'.sprintf(__('Datum registrace do skupiny %s.','ssc'),$group).'</small>',
                 'id' => $this->prefix.'group_subscription_date_'.$key,
-                'type' => 'text'
+                'type' => 'text_date',
+                'date_format' => 'Y-m-d',
             ));
-
-
+            $cmb->add_field(array(
+                'name' => '<small style="font-weight:normal;">'.sprintf(__('Datum vypršení platnosti registrace do skupiny %s.','ssc'),$group).'</small>',
+                'id' => $this->prefix.'group_subscription_valid_to_'.$key,
+                'type' => 'text_date',
+                'date_format' => 'Y-m-d',
+            ));
         }
     }
 
