@@ -66,12 +66,12 @@ class SSC_Metaboxes{
                 'type' => 'text'
             ));
 
-            $cmb->add_field(array(
-                'name' => __('Přesměrovat na přihlášení', 'ssc'),
-                'desc' => __('Zaškrtněte, pokud chcete uživatele přesměrovat na přihlašovací formulář. Po přihlášení bude uživatel přesměrován zpět na tuto stránku.', 'ssc'),
-                'id' => $this->prefix . 'no_access_redirect_to_login_form',
-                'type' => 'checkbox'
-            ));
+//            $cmb->add_field(array(
+//                'name' => __('Přesměrovat na přihlášení', 'ssc'),
+//                'desc' => __('Zaškrtněte, pokud chcete uživatele přesměrovat na přihlašovací formulář. Po přihlášení bude uživatel přesměrován zpět na tuto stránku.', 'ssc'),
+//                'id' => $this->prefix . 'no_access_redirect_to_login_form',
+//                'type' => 'checkbox'
+//            ));
 
 
             $cmb->add_field(array(
