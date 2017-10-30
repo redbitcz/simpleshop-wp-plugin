@@ -131,7 +131,7 @@ class SSC_Settings{
         $cmb->add_field(array(
             'name' => 'Nastavení e-mailu, který se posílá novým členům:',
 //            'desc' => 'This is a title description',
-            'show_on_cb' => array($this,'is_valid_api_keys'),
+            'classes_cb' => array($this,'is_valid_api_keys'),
             'type' => 'title',
             'id' => 'ssc_email_title'
         ));
@@ -141,6 +141,7 @@ class SSC_Settings{
             'id' => 'ssc_email_enable',
             'type' => 'select',
             'show_option_none' => false,
+            'classes_cb' => array($this,'is_valid_api_keys'),
             'default' => '1',
             'options' => array(
                 '1' => __('Ano, poslat každému novému členovi e-mail.','cmb2'),
@@ -151,7 +152,7 @@ class SSC_Settings{
             'name' => __('Předmět e-mailu','ssc'),
 //            'desc' => __('Najdete ho ve svém SimpleShop účtu v Nastavení -> WP Plugin','ssc'),
             'id' => 'ssc_email_subject',
-            'show_on_cb' => array($this,'is_valid_api_keys'),
+            'classes_cb' => array($this,'is_valid_api_keys'),
             'type' => 'text',
             'default' => 'Byl Vám udělen přístup do členské sekce',
         ));
@@ -169,7 +170,7 @@ class SSC_Settings{
                     .'','ssc'),
             'id' => 'ssc_email_text',
             'type' => 'wysiwyg',
-            'show_on_cb' => array($this,'is_valid_api_keys'),
+            'classes_cb' => array($this,'is_valid_api_keys'),
             'default' => 'Dobrý den,
 byl udělen přístup do členské sekce.
 
@@ -239,8 +240,19 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
         settings_errors($this->key.'-notices');
     }
 
+    /**
+     * Check, if we already got valid API key, if not, add 'hidden' class to the settings that are not needed in the first step
+     * We switched to this approach, because by just hiding the fields the default values are saved even on the first save,
+     * but previously the fields were removed completely from the form, so the default values were not saved until the API keys were in place
+     * @return array
+     */
     function is_valid_api_keys(){
-        return get_option('ssc_valid_api_keys') == 1;
+        // If the keys are valid, do nothing
+        if (get_option('ssc_valid_api_keys') == 1)
+            return [];
+
+        return ['hidden'];
+
     }
 
     /**
