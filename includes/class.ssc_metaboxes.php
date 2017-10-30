@@ -132,6 +132,16 @@ class SSC_Metaboxes{
             'type' => 'multicheck',
             'options' => $groups,
         ));
+
+        foreach ($groups as $key => $group) {
+            $cmb->add_field(array(
+                'name' => '<small style="font-weight:normal;">'.sprintf(__('Datum registrace do skupiny %s.','ssc'),$group).'</small>',
+                'id' => $this->prefix.'group_subscription_date_'.$key,
+                'type' => 'text'
+            ));
+
+
+        }
     }
 
 }
