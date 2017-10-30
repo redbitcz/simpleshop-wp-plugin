@@ -82,9 +82,17 @@ class SSC_Metaboxes{
             ));
 
             $cmb->add_field(array(
-                'name' => __('Povolit přístup od data', 'ssc'),
+                'name' => __('Povolit přístup OD data', 'ssc'),
                 'desc' => __('Zadejte datum, od kterého bude stránka přístupná (platí pro všechny skupiny)', 'ssc'),
                 'id' => $this->prefix . 'date_to_access',
+                'type' => 'text_date',
+                'date_format' => 'Y-m-d',
+            ));
+
+            $cmb->add_field(array(
+                'name' => __('Povolit přístup DO data', 'ssc'),
+                'desc' => __('Zadejte datum, do kterého bude stránka přístupná (platí pro všechny skupiny)', 'ssc'),
+                'id' => $this->prefix . 'date_until_to_access',
                 'type' => 'text_date',
                 'date_format' => 'Y-m-d',
             ));

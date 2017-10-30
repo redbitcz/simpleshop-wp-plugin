@@ -79,6 +79,14 @@ class SSC_Access{
                     }
                 }
 
+                // Check, if the post has set date, until which it can be accessed
+                if ($date_to_access = $this->get_post_date_until_to_access()) {
+                    if (date('Y-m-d') > $date_to_access) {
+                        // The post should not be accessed yet, not depending on group, so just return false
+                        return false;
+                    }
+                }
+
                 // The user is member of some group, check if the post has minimum days to access set
                 $membership = new SSC_Membership($user_id);
 
@@ -184,7 +192,7 @@ class SSC_Access{
     }
 
     /**
-     * Get the number of days the user has to be subscribed to have access to the post
+     * Get the date to access the post
      * @param string $post_id
      * @return mixed
      */
@@ -196,6 +204,21 @@ class SSC_Access{
             $post_id = $post->ID;
 
         return get_post_meta($post_id, SSC_PREFIX . 'date_to_access', true);
+    }
+
+    /**
+     * Get the date until the access to the post is allowed
+     * @param string $post_id
+     * @return mixed
+     */
+    function get_post_date_until_to_access($post_id = '')
+    {
+        global $post;
+
+        if (!$post_id)
+            $post_id = $post->ID;
+
+        return get_post_meta($post_id, SSC_PREFIX . 'date_until_to_access', true);
     }
 
 
