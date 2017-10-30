@@ -139,7 +139,7 @@
                             params.push('is_member="' + e.data.sscContentIsMember + '"');
                         }
                         if (e.data.sscContentDaysToView.length > 0) {
-                            params.push('is_member="' + e.data.sscContentDaysToView + '"');
+                            params.push('days_to_view="' + e.data.sscContentDaysToView + '"');
                         }
                         if (e.data.sscContentSpecifiDate.length > 0) {
                             params.push('specific_date="' + e.data.sscContentSpecifiDate + '"');
