@@ -109,8 +109,15 @@
                         },
                         {
                             type: 'textbox',
-                            name: 'sscContentSpecifiDate',
+                            name: 'sscContentSpecificDateFrom',
                             label: 'Zobrazit od data',
+                            minWidth: 200,
+                            value: ''
+                        },
+                        {
+                            type: 'textbox',
+                            name: 'sscContentSpecificDateTo',
+                            label: 'Zobrazit do data',
                             minWidth: 200,
                             value: ''
                         }
@@ -141,8 +148,11 @@
                         if (e.data.sscContentDaysToView.length > 0) {
                             params.push('days_to_view="' + e.data.sscContentDaysToView + '"');
                         }
-                        if (e.data.sscContentSpecifiDate.length > 0) {
-                            params.push('specific_date="' + e.data.sscContentSpecifiDate + '"');
+                        if (e.data.sscContentSpecificDateFrom.length > 0) {
+                            params.push('specific_date_from="' + e.data.sscContentSpecificDateFrom + '"');
+                        }
+                        if (e.data.sscContentSpecificDateTo.length > 0) {
+                            params.push('specific_date_to="' + e.data.sscContentSpecificDateTo + '"');
                         }
                         if (params.length > 0) {
                             paramsString = ' ' + params.join(' ');
@@ -157,16 +167,13 @@
                     }
                 });
                 win.$el.addClass('sscContentPopup');
-                jQuery('.sscContentPopup .mce-formitem:last-child input').datepicker({
+                jQuery('.sscContentPopup .mce-formitem:last-child input,.sscContentPopup .mce-formitem:nth-last-child(2) input').datepicker({
                         dateFormat: 'yy-mm-dd'
                 });
                 setTimeout(function() {
                     console.log(jQuery('.sscContentPopup .mce-formitem:last-child input'));
 
                 },500);
-
-
-
             });
         },
         getInfo: function () {

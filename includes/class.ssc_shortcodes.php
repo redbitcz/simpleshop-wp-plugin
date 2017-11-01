@@ -19,23 +19,31 @@ class SSC_Shortcodes{
             'group_id' => '',
             'is_member' => '',
             'days_to_view' => '',
-            'specific_date' => '',
+            'specific_date_from' => '',
+            'specific_date_to' => '',
 
         ), $atts, 'SimpleShop-content' );
 
         $group_id = $atts['group_id'];
         $is_member = $atts['is_member'];
-        $specific_date = $atts['specific_date'];
+        $specific_date_from = $atts['specific_date_from'];
+        $specific_date_to = $atts['specific_date_to'];
         $days_to_view = $atts['days_to_view'];
 
-        if (!empty($specific_date)) {
-            // Check against the date, this has nothing to do with groups or other settings
-            if (date('Y-m-d') < $specific_date)
+        if (!empty($specific_date_from)) {
+            // Check against the from date, this has nothing to do with groups or other settings
+            if (date('Y-m-d') < $specific_date_from)
+                return '';
+        }
+
+        if (!empty($specific_date_to)) {
+            // Check against the to date, this has nothing to do with groups or other settings
+            if (date('Y-m-d') > $specific_date_to)
                 return '';
         }
 
         // Stop if there's no group_id or is_member, and no specific date is set
-        if (empty($group_id) || empty($is_member) && empty($specific_date))
+        if (empty($group_id) || empty($is_member) && empty($specific_date_from) && empty($specific_date_to))
             return '';
 
         $group = new SSC_Group($group_id);
