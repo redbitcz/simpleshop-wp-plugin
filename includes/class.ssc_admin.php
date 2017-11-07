@@ -11,8 +11,8 @@ class SSC_Admin{
         add_action('init',array($this,'register_groups_cpt'));
         add_action('init',array($this,'tiny_mce_new_buttons'));
         add_filter('page_row_actions',array($this,'remove_quick_edit'),10,2);
+        add_action('wp_head',array($this,'publishing_actions'));
         add_action('admin_head',array($this,'publishing_actions'));
-        add_action('admin_head-post-new.php',array($this,'publishing_actions'));
         add_action('wp_ajax_load_simple_shop_products',array($this,'wp_ajax_load_simple_shop_products'));
         add_action('admin_enqueue_scripts', array($this,'enqueue_admin_scripts') );
     }
