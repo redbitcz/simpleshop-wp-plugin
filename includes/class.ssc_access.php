@@ -12,6 +12,14 @@ class SSC_Access{
         add_action('template_redirect',array($this,'check_access'));
         add_filter('wp_setup_nav_menu_item',array($this,'setup_nav_menu_item'));
         add_action('wp_head',array($this,'hide_menu_items'));
+        add_action('init',array($this,'mioweb_remove_login_redirect'));
+    }
+
+    /**
+     * Remove the MioWeb filter that redirects the user to homepage
+     */
+    function mioweb_remove_login_redirect() {
+        ssc_remove_anonymous_object_filter('login_redirect','visualEditorPage','login_redirect');
     }
 
     /**

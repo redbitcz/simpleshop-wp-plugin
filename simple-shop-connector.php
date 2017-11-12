@@ -30,6 +30,7 @@ class SSC{
 
     function require_classes(){
         require_once('vendor/autoload.php');
+        require_once('includes/ssc_helpers.php');
         require_once('lib/vyfakturuj-api/VyfakturujAPI.class.php');
         require_once('includes/class.ssc_settings.php');
         require_once('includes/class.ssc_admin.php');
