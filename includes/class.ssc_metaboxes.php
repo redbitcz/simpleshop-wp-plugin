@@ -133,17 +133,18 @@ class SSC_Metaboxes{
         $ssc_group = new SSC_Group();
         $groups = $ssc_group->get_groups();
 
-        $cmb->add_field(array(
-            'name' => __('SimpleShop - členské sekce<br/><small style="font-weight:normal;">Vyberte, do kterých členských sekcí má mít uživatel přístup.</small>','ssc'),
-//            'desc' => __('Vyberte, do kterých členských sekcí má mít uživatel přístup','ssc'),
-            'id' => $this->prefix.'user_groups',
-            'type' => 'multicheck',
-            'options' => $groups,
-        ));
 
         $access = new SSC_Access();
 
         if ($access->user_is_admin()) {
+            $cmb->add_field(array(
+                'name' => __('SimpleShop - členské sekce<br/><small style="font-weight:normal;">Vyberte, do kterých členských sekcí má mít uživatel přístup.</small>','ssc'),
+//            'desc' => __('Vyberte, do kterých členských sekcí má mít uživatel přístup','ssc'),
+                'id' => $this->prefix.'user_groups',
+                'type' => 'multicheck',
+                'options' => $groups,
+            ));
+
             foreach ($groups as $key => $group) {
                 $cmb->add_field(array(
                     'name' => '<small style="font-weight:normal;">'.sprintf(__('Datum registrace do skupiny %s.','ssc'),$group).'</small>',
