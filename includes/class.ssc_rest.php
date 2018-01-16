@@ -99,15 +99,15 @@ class SSC_Rest_Order extends \WP_REST_Controller{
                 // Set the membership valid_to param
                 $membership = new SSC_Membership($user_id);
                 $valid_to = $request->get_param('valid_to') ? $request->get_param('valid_to') : '';
-                $membership->set_valid_to($group, $valid_to);
+                $membership->set_valid_to($group,$valid_to);
 
                 $user_groups[] = $group;
             }
         }
 
         // If we are on multisite, add the user the site
-        if (is_multisite())
-            add_user_to_blog(get_current_blog_id(), $user_id, 'subscriber');
+        if(is_multisite())
+            add_user_to_blog(get_current_blog_id(),$user_id,'subscriber');
 
         // Get the posts that have some group assigned
         global $wpdb;
@@ -120,7 +120,9 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         $links = array();
         $i = 0;
         // Foreach group from request
-        foreach($request->get_param('user_group') as $group){
+        // foreach($request->get_param('user_group') as $group){
+        // Foreach each group
+        foreach((new SSC_Group())->get_user_groups($user_id) as $group){
             // Scrub through posts and check, if some of the posts has that group assigned
             foreach($posts as $post){
                 $access = new SSC_Access();
@@ -130,16 +132,16 @@ class SSC_Rest_Order extends \WP_REST_Controller{
                     $specific_date = $access->get_post_date_to_access($post->post_id);
                     $days_to_access = $access->get_post_days_to_access($post->post_id);
 
-                    if ($specific_date && date('Y-m-d') < $specific_date)
+                    if($specific_date && date('Y-m-d') < $specific_date)
                         continue;
 
-                    if ($days_to_access && $days_to_access > 0)
+                    if($days_to_access && $days_to_access > 0)
                         continue;
 
                     // If so, get the post details and add it to the links array
                     $post_details = get_post($post->post_id);
-                    $links[$i]['title'] = $post_details->post_title;
-                    $links[$i]['url'] = get_permalink($post->post_id);
+                    $links[$group][$i]['title'] = $post_details->post_title;
+                    $links[$group][$i]['url'] = get_permalink($post->post_id);
                     $i++;
                 }
             }
@@ -151,11 +153,16 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         if(((string) $email_enable) != '2'){ // pokud nemame zakazano posilat mail novym clenum
             $email_body = nl2br(ssc_get_option('ssc_email_text'));
             $email_subject = nl2br(ssc_get_option('ssc_email_subject'));
-            $pages = '<ul>';
-            foreach($links as $link){
-                $pages .= '<li><a href="'.$link['url'].'">'.$link['title'].'</a></li>';
+            $pages = '';
+            foreach($links as $groupid => $linksInGroup){
+                $post_details = get_post($groupid);
+                $pages .= '<div><b>'.$post_details->post_title.'</b></div>'
+                        .'<ul>';
+                foreach($linksInGroup as $link){
+                    $pages .= '<li><a href="'.$link['url'].'">'.$link['title'].'</a></li>';
+                }
+                $pages .= '</ul>';
             }
-            $pages .= '</ul>';
 
             $replaceArray = array(// pole ktera je mozne nahradit
                 '{pages}' => $pages,
