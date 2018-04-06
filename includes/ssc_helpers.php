@@ -66,14 +66,10 @@ function ssc_list_hooks( $hook = '' ) {
  */
 function ssc_remove_anonymous_object_filter( $tag, $class, $method )
 {
-    $filters = $GLOBALS['wp_filter'][ $tag ];
-
-    if ( empty ( $filters ) )
-    {
+    if (!isset($GLOBALS['wp_filter'][ $tag ]) || empty($GLOBALS['wp_filter'][ $tag ]))
         return;
-    }
-
-    foreach ( $filters as $priority => $filter )
+    
+    foreach ( $GLOBALS['wp_filter'][ $tag ] as $priority => $filter )
     {
         foreach ( $filter as $identifier => $function )
         {
