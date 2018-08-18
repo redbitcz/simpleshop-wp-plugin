@@ -64,16 +64,16 @@
         },
         {
             "name": "webdevstudios/cmb2",
-            "version": "dev-trunk",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CMB2/CMB2.git",
-                "reference": "7699bdc96dc8537a673f195f875d337f91547e4f"
+                "reference": "853d48d2f52371ac927ea6302d4e04668f1067b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/7699bdc96dc8537a673f195f875d337f91547e4f",
-                "reference": "7699bdc96dc8537a673f195f875d337f91547e4f",
+                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/853d48d2f52371ac927ea6302d4e04668f1067b3",
+                "reference": "853d48d2f52371ac927ea6302d4e04668f1067b3",
                 "shasum": ""
             },
             "require": {
@@ -88,7 +88,7 @@
             "type": "wordpress-plugin",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0+"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
@@ -117,7 +117,7 @@
                 "plugin",
                 "wordpress"
             ],
-            "time": "2017-04-24 14:50:44"
+            "time": "2018-05-29 14:42:34"
         },
         {
             "name": "webdevstudios/cmb2-post-search-field",
