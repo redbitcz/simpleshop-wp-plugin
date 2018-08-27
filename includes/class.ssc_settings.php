@@ -249,7 +249,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
     function is_valid_api_keys(){
         // If the keys are valid, do nothing
         if (get_option('ssc_valid_api_keys') == 1)
-            return [];
+            return array();
 
         return ['hidden'];
 

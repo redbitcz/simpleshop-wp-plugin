@@ -11,10 +11,10 @@ function ssc_list_hooks( $hook = '' ) {
     if ( isset( $wp_filter[$hook]->callbacks ) ) {
         array_walk( $wp_filter[$hook]->callbacks, function( $callbacks, $priority ) use ( &$hooks ) {
             foreach ( $callbacks as $id => $callback )
-                $hooks[] = array_merge( [ 'id' => $id, 'priority' => $priority ], $callback );
+                $hooks[] = array_merge( array( 'id' => $id, 'priority' => $priority ), $callback );
         });
     } else {
-        return [];
+        return array();
     }
 
     foreach( $hooks as &$item ) {
