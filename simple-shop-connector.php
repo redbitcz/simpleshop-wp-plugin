@@ -13,7 +13,7 @@ namespace SSC;
 
 define('SSC_PLUGIN_DIR',plugin_dir_path(__FILE__));
 define('SSC_PLUGIN_URL',plugin_dir_url(__FILE__));
-define('SSC_PLUGIN_VERSION','1.3');
+define('SSC_PLUGIN_VERSION','1.3.1');
 define('SSC_PREFIX', '_ssc_');
 
 class SSC{
