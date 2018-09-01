@@ -21,6 +21,7 @@
     "webdevstudios/cmb2-post-search-field": "dev-master"
   },
   "config": {
+    "optimize-autoloader": true,
     "preferred-install": "dist",
     "prepend-autoloader": false
   },
