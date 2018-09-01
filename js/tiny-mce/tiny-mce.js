@@ -2,12 +2,12 @@
     tinymce.create('tinymce.plugins.SSCTinyMCePlugin', {
         init: function (ed, url) {
             ed.addButton('sscaddformbutton', {
-                title: 'SimpleShop',
+                title: 'SimpleShop Produkty',
                 cmd: 'sscaddformbuttonCmd',
                 image: url + '/img/ssc-logo.png'
             });
             ed.addButton('ssccontentbutton', {
-                title: 'SimpleShop',
+                title: 'SimpleShop Sekce',
                 cmd: 'ssccontentbuttonCMD',
                 image: url + '/img/ssc-logo.png'
             });
