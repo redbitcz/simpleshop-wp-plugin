@@ -5,7 +5,7 @@
   Plugin URI: https://www.simpleshop.cz
   Description: Plugin pro propojení Wordpress a SimpleShop.cz
   Author:  SimpleShop.cz
-  Version: 1.3
+  Version: dev-master
   Author URI: https://www.simpleshop.cz
  */
 
@@ -13,7 +13,7 @@ namespace SSC;
 
 define('SSC_PLUGIN_DIR',plugin_dir_path(__FILE__));
 define('SSC_PLUGIN_URL',plugin_dir_url(__FILE__));
-define('SSC_PLUGIN_VERSION','1.3.1');
+define('SSC_PLUGIN_VERSION','dev-master');
 define('SSC_PREFIX', '_ssc_');
 
 class SSC{

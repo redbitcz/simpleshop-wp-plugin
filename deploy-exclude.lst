@@ -1,0 +1,9 @@
+*.git*
+*.gitignore*
+*.idea*
+*.idea*
+*nbproject*
+*dist*
+composer.lock
+deploy-exclude.lst
+deploy.php
