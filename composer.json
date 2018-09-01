@@ -1,4 +1,19 @@
 {
+  "name": "redbit/simpleshop-wp-plugin",
+  "description": "SimpleShop WordPress Plugin",
+  "keywords": ["simpleshop", "vyfakturuj", "api", "faktura"],
+  "homepage": "https://www.simpleshop.cz/category/wordpress-plugin/",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Redbit s.r.o.",
+      "homepage": "https://www.redbit.cz/"
+    }
+  ],
+  "support": {
+    "email": "info@simpleshop.cz"
+  },
   "require": {
     "webdevstudios/cmb2": "dev-master",
     "tgmpa/tgm-plugin-activation": "dev-master",
@@ -8,6 +23,9 @@
     "preferred-install": "dist"
   },
   "autoload": {
-    "files": ["vendor/webdevstudios/cmb2/init.php","vendor/webdevstudios/cmb2-post-search-field/cmb2_post_search_field.php"]
+    "files": [
+      "vendor/webdevstudios/cmb2/init.php",
+      "vendor/webdevstudios/cmb2-post-search-field/cmb2_post_search_field.php"
+    ]
   }
 }
