@@ -98,7 +98,7 @@ class SSC_Rest_Order extends \WP_REST_Controller{
 
                 // Set the membership valid_to param
                 $membership = new SSC_Membership($user_id);
-                $valid_to = $request->get_param('valid_to') ? $request->get_param('valid_to') : '';
+                $valid_to = $request->get_param('valid_to') ?: '';
                 $membership->set_valid_to($group,$valid_to);
 
                 $user_groups[] = $group;

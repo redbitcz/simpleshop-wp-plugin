@@ -66,8 +66,9 @@ function ssc_list_hooks( $hook = '' ) {
  */
 function ssc_remove_anonymous_object_filter( $tag, $class, $method )
 {
-    if (!isset($GLOBALS['wp_filter'][ $tag ]) || empty($GLOBALS['wp_filter'][ $tag ]))
-        return;
+    if (!isset($GLOBALS['wp_filter'][ $tag ]) || empty($GLOBALS['wp_filter'][ $tag ])) {
+	    return null;
+    }
     
     foreach ( $GLOBALS['wp_filter'][ $tag ] as $priority => $filter )
     {

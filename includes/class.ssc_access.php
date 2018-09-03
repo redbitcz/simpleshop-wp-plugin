@@ -37,7 +37,7 @@ class SSC_Access{
         if($post_groups && !$this->user_can_view_post() && !is_home() && !is_front_page()){
             $no_access_url = $this->get_no_access_redirect_url();
 
-            $url = $no_access_url ? $no_access_url : site_url();
+            $url = $no_access_url ?: site_url();
             wp_redirect($url);
             exit();
         }

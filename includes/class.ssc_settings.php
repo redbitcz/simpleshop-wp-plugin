@@ -3,6 +3,11 @@
 /**
  * CMB2 Theme Options
  * @version 0.1.0
+ *
+ * @property-read string $key
+ * @property-read string $metabox_id
+ * @property-read string $title
+ * @property-read string $options_page
  */
 class SSC_Settings{
 
@@ -11,7 +16,7 @@ class SSC_Settings{
      *
      * @var Myprefix_Admin
      */
-    protected static $instance = null;
+    protected static $instance;
 
     /**
      * Options Page title
