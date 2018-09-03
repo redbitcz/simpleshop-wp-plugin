@@ -2,8 +2,6 @@
 
 namespace SSC;
 
-use DreamROI\Access;
-
 class SSC_Cron
 {
     function __construct()

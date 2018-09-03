@@ -161,7 +161,7 @@ class SSC_Settings{
         $cmb->add_field(array(
             'name' => __('Text emailu','ssc'),
             'desc' => __('<u>Povolené zástupné znaky:</u><br/>'
-                    .'<div style="text-style:normal;"><b>{login}</b> = login<br/>'
+                    .'<div style="font-style:normal;"><b>{login}</b> = login<br/>'
                     .'<b>{password}</b> = heslo<br/>'
                     .'<b>{login_url}</b> = adresa, na které je možné se přihlásit<br/>'
                     .'<b>{pages}</b> = seznam stránek, do kterých má uživatel zakoupený přístup<br/>'

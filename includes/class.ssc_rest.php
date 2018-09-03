@@ -167,13 +167,11 @@ class SSC_Rest_Order extends \WP_REST_Controller{
             }
 
             $replaceArray = array(// pole ktera je mozne nahradit
-                '{pages}' => $pages,
-                '{mail}' => $email,
+                '{pages}' => $pages,// zpetna kompatibilita s v1.1
+                '{mail}' => $email,// zpetna kompatibilita s v1.1
                 '{login}' => $_login,
                 '{password}' => $_password,
                 '{login_url}' => wp_login_url(),
-                '{pages}' => $pages,// zpetna kompatibilita s v1.1
-                '{mail}' => $email,// zpetna kompatibilita s v1.1
 //                '{login}' => $_login,
 //                '{password}' => $_password,
             );
