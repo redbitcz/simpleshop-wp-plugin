@@ -4,6 +4,7 @@
 *.idea*
 *nbproject*
 *dist*
+composer.json
 composer.lock
 deploy-exclude.lst
 deploy.php

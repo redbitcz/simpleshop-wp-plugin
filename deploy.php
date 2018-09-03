@@ -91,7 +91,7 @@ class DeployScript {
 		$stampedFile = $this->copyStampedFile(
 			__DIR__ . '/' . $this->productName . '.php',
 			array(
-				'Version: dev-master'                            => sprintf( 'Version: %s', $this->version ),
+				'Version: dev-master'                            => sprintf( 'Version: %s', $this->getNakedVersion() ),
 				'define(\'SSC_PLUGIN_VERSION\',\'dev-master\');' => sprintf( 'define(\'SSC_PLUGIN_VERSION\',\'%s\');',
 					$this->version ),
 			),
@@ -99,6 +99,7 @@ class DeployScript {
 		);
 
 		$this->zip( $stampedFile, $packageFile, $this->distDir );
+		unlink( $stampedFile );
 
 		return $packageFile;
 	}
@@ -189,6 +190,23 @@ class DeployScript {
 		}
 	}
 
+	/**
+	 * Strips "v" from versions (v1.2.3 -> 1.2.3)
+	 *
+	 * @return bool|string
+	 */
+	private function getNakedVersion() {
+		return substr( $this->version, 1 );
+	}
+
+	/**
+	 * @param string $fileName Source file to copy$stamp
+	 * @param array $replacements Stamp replacements for `str_replace()`, key = search pattern, value = replacement
+	 * @param string $targetDir Dir path to save stamped file
+	 *
+	 * @return string Filename of copied file
+	 * @throws RuntimeException
+	 */
 	private function copyStampedFile( $fileName, $replacements, $targetDir ) {
 		$content = file_get_contents( $fileName );
 		if ( $content === false ) {
