@@ -14,7 +14,7 @@ class SSC_Settings{
     /**
      * Holds an instance of the object
      *
-     * @var Myprefix_Admin
+     * @var self
      */
     protected static $instance;
 
@@ -54,7 +54,7 @@ class SSC_Settings{
     /**
      * Returns the running object
      *
-     * @return Myprefix_Admin
+     * @return self
      */
     public static function get_instance(){
         if(null === self::$instance){
@@ -260,12 +260,15 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
 
     }
 
-    /**
-     * Public getter method for retrieving protected/private variables
-     * @since  0.1.0
-     * @param  string $field Field to retrieve
-     * @return mixed          Field value or exception is thrown
-     */
+	/**
+	 * Public getter method for retrieving protected/private variables
+	 * @since  0.1.0
+	 *
+	 * @param  string $field Field to retrieve
+	 *
+	 * @return mixed          Field value or exception is thrown
+	 * @throws Exception
+	 */
     public function __get($field){
         // Allowed fields to retrieve
         if(in_array($field,array('key','metabox_id','title','options_page'),true)){
@@ -280,7 +283,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
 /**
  * Helper function to get/return the Myprefix_Admin object
  * @since  0.1.0
- * @return Myprefix_Admin object
+ * @return SSC_Settings object
  */
 function ssc_admin(){
     return SSC_Settings::get_instance();

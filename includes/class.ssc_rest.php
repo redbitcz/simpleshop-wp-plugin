@@ -43,12 +43,13 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         return new \WP_REST_Response($ssc_group->get_groups(),200);
     }
 
-    /**
-     * Create one item from the collection
-     *
-     * @param \WP_REST_Request $request Full data about the request.
-     * @return \WP_Error|\WP_REST_Request
-     */
+	/**
+	 * Create one item from the collection
+	 *
+	 * @param \WP_REST_Request $request Full data about the request.
+	 *
+	 * @return \WP_REST_Response
+	 */
     public function create_item($request){
         // Check if we got all the needed params
         $params_to_validate = array('email');
@@ -198,12 +199,13 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         return $ssc->validate_secure_key($request->get_param('hash'));
     }
 
-    /**
-     * Prepare the item for create or update operation
-     *
-     * @param \WP_REST_Request $request Request object
-     * @return \WP_Error|object $prepared_item
-     */
+	/**
+	 * Prepare the item for create or update operation
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 *
+	 * @return array $prepared_item
+	 */
     protected function prepare_item_for_database($request){
         return array();
     }
