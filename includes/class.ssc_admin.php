@@ -108,10 +108,13 @@ class SSC_Admin{
         return $plugins;
     }
 
-    /**
-     * Register the new TinyMCE Button
-     * @return mixed
-     */
+	/**
+	 * Register the new TinyMCE Button
+	 *
+	 * @param $buttons
+	 *
+	 * @return mixed
+	 */
     function tiny_mce_register_buttons($buttons){
         $newBtns = array(
             'sscaddformbutton',

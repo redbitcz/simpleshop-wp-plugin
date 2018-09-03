@@ -3,15 +3,20 @@
 /**
  * CMB2 Theme Options
  * @version 0.1.0
+ *
+ * @property-read string $key
+ * @property-read string $metabox_id
+ * @property-read string $title
+ * @property-read string $options_page
  */
 class SSC_Settings{
 
     /**
      * Holds an instance of the object
      *
-     * @var Myprefix_Admin
+     * @var self
      */
-    protected static $instance = null;
+    protected static $instance;
 
     /**
      * Options Page title
@@ -49,7 +54,7 @@ class SSC_Settings{
     /**
      * Returns the running object
      *
-     * @return Myprefix_Admin
+     * @return self
      */
     public static function get_instance(){
         if(null === self::$instance){
@@ -161,7 +166,7 @@ class SSC_Settings{
         $cmb->add_field(array(
             'name' => __('Text emailu','ssc'),
             'desc' => __('<u>Povolené zástupné znaky:</u><br/>'
-                    .'<div style="text-style:normal;"><b>{login}</b> = login<br/>'
+                    .'<div style="font-style:normal;"><b>{login}</b> = login<br/>'
                     .'<b>{password}</b> = heslo<br/>'
                     .'<b>{login_url}</b> = adresa, na které je možné se přihlásit<br/>'
                     .'<b>{pages}</b> = seznam stránek, do kterých má uživatel zakoupený přístup<br/>'
@@ -251,16 +256,19 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
         if (get_option('ssc_valid_api_keys') == 1)
             return array();
 
-        return ['hidden'];
+        return array( 'hidden' );
 
     }
 
-    /**
-     * Public getter method for retrieving protected/private variables
-     * @since  0.1.0
-     * @param  string $field Field to retrieve
-     * @return mixed          Field value or exception is thrown
-     */
+	/**
+	 * Public getter method for retrieving protected/private variables
+	 * @since  0.1.0
+	 *
+	 * @param  string $field Field to retrieve
+	 *
+	 * @return mixed          Field value or exception is thrown
+	 * @throws Exception
+	 */
     public function __get($field){
         // Allowed fields to retrieve
         if(in_array($field,array('key','metabox_id','title','options_page'),true)){
@@ -275,7 +283,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
 /**
  * Helper function to get/return the Myprefix_Admin object
  * @since  0.1.0
- * @return Myprefix_Admin object
+ * @return SSC_Settings object
  */
 function ssc_admin(){
     return SSC_Settings::get_instance();

@@ -43,12 +43,13 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         return new \WP_REST_Response($ssc_group->get_groups(),200);
     }
 
-    /**
-     * Create one item from the collection
-     *
-     * @param \WP_REST_Request $request Full data about the request.
-     * @return \WP_Error|\WP_REST_Request
-     */
+	/**
+	 * Create one item from the collection
+	 *
+	 * @param \WP_REST_Request $request Full data about the request.
+	 *
+	 * @return \WP_REST_Response
+	 */
     public function create_item($request){
         // Check if we got all the needed params
         $params_to_validate = array('email');
@@ -98,7 +99,7 @@ class SSC_Rest_Order extends \WP_REST_Controller{
 
                 // Set the membership valid_to param
                 $membership = new SSC_Membership($user_id);
-                $valid_to = $request->get_param('valid_to') ? $request->get_param('valid_to') : '';
+                $valid_to = $request->get_param('valid_to') ?: '';
                 $membership->set_valid_to($group,$valid_to);
 
                 $user_groups[] = $group;
@@ -119,10 +120,12 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         // Get the post details
         $links = array();
         $i = 0;
+
         // Foreach group from request
         // foreach($request->get_param('user_group') as $group){
         // Foreach each group
-        foreach((new SSC_Group())->get_user_groups($user_id) as $group){
+	    $SSC_group = new SSC_Group();
+	    foreach($SSC_group->get_user_groups($user_id) as $group){
             // Scrub through posts and check, if some of the posts has that group assigned
             foreach($posts as $post){
                 $access = new SSC_Access();
@@ -165,13 +168,11 @@ class SSC_Rest_Order extends \WP_REST_Controller{
             }
 
             $replaceArray = array(// pole ktera je mozne nahradit
-                '{pages}' => $pages,
-                '{mail}' => $email,
+                '{pages}' => $pages,// zpetna kompatibilita s v1.1
+                '{mail}' => $email,// zpetna kompatibilita s v1.1
                 '{login}' => $_login,
                 '{password}' => $_password,
                 '{login_url}' => wp_login_url(),
-                '{pages}' => $pages,// zpetna kompatibilita s v1.1
-                '{mail}' => $email,// zpetna kompatibilita s v1.1
 //                '{login}' => $_login,
 //                '{password}' => $_password,
             );
@@ -198,12 +199,13 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         return $ssc->validate_secure_key($request->get_param('hash'));
     }
 
-    /**
-     * Prepare the item for create or update operation
-     *
-     * @param \WP_REST_Request $request Request object
-     * @return \WP_Error|object $prepared_item
-     */
+	/**
+	 * Prepare the item for create or update operation
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 *
+	 * @return array $prepared_item
+	 */
     protected function prepare_item_for_database($request){
         return array();
     }

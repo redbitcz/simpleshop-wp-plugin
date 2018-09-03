@@ -49,7 +49,7 @@ class SSC_Shortcodes{
         }
 
         // Stop if there's no group_id or is_member, and no specific date is set
-        if (empty($group_id) || empty($is_member) && empty($specific_date_from) && empty($specific_date_to))
+        if ( empty($group_id) || ( empty( $is_member ) && empty( $specific_date_from ) && empty( $specific_date_to ) ) )
             return '';
 
         $group = new SSC_Group($group_id);

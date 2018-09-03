@@ -2,8 +2,11 @@
 /**
  * Utiity function to list hooks that are connected to actions / filters
  * Great for debugging the actions and filters
+ *
  * @param string $hook
+ *
  * @return array
+ * @throws ReflectionException
  */
 function ssc_list_hooks( $hook = '' ) {
     global $wp_filter;
@@ -62,12 +65,13 @@ function ssc_list_hooks( $hook = '' ) {
  * @param $tag
  * @param $class
  * @param $method
- * @return array|bool|void
+ * @return array|bool|null
  */
 function ssc_remove_anonymous_object_filter( $tag, $class, $method )
 {
-    if (!isset($GLOBALS['wp_filter'][ $tag ]) || empty($GLOBALS['wp_filter'][ $tag ]))
-        return;
+    if (!isset($GLOBALS['wp_filter'][ $tag ]) || empty($GLOBALS['wp_filter'][ $tag ])) {
+	    return null;
+    }
     
     foreach ( $GLOBALS['wp_filter'][ $tag ] as $priority => $filter )
     {
