@@ -251,7 +251,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
         if (get_option('ssc_valid_api_keys') == 1)
             return array();
 
-        return ['hidden'];
+        return array( 'hidden' );
 
     }
 

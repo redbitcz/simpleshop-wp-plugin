@@ -29,11 +29,11 @@ class SSC_Membership
         $groups = $ssc_groups->get_user_groups($this->user_id);
 
         foreach ($groups as $group) {
-            $this->groups[$group] = [
+            $this->groups[$group] = array(
                 'group_id' => $group,
                 'subscription_date' => $this->get_subscription_date($group),
                 'valid_to' => $this->get_valid_to($group)
-            ];
+            );
         }
     }
 

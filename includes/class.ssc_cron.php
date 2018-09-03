@@ -18,7 +18,7 @@ class SSC_Cron
     function send_user_has_access_to_post_notification()
     {
         // Get posts, that have set either days to view or specific date
-        $args = [
+        $args = array(
             'post_type' => 'any',
             'posts_per_page' => -1,
             'meta_query' => array(
@@ -32,7 +32,7 @@ class SSC_Cron
                     'compare' => 'EXISTS'
                 )
             )
-        ];
+        );
 
         $the_query = new \WP_Query($args);
 
@@ -45,7 +45,7 @@ class SSC_Cron
             $users = get_users();
 
             // Get all groups to array
-            $users_groups = [];
+            $users_groups = array();
             foreach ($users as $user) {
                 $membership = new SSC_Membership($user->ID);
                 $users_groups[$user->ID] = $membership->groups;

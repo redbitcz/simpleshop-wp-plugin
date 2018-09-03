@@ -119,10 +119,12 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         // Get the post details
         $links = array();
         $i = 0;
+
         // Foreach group from request
         // foreach($request->get_param('user_group') as $group){
         // Foreach each group
-        foreach((new SSC_Group())->get_user_groups($user_id) as $group){
+	    $SSC_group = new SSC_Group();
+	    foreach($SSC_group->get_user_groups($user_id) as $group){
             // Scrub through posts and check, if some of the posts has that group assigned
             foreach($posts as $post){
                 $access = new SSC_Access();
