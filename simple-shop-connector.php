@@ -29,18 +29,17 @@ class SSC{
     }
 
     function require_classes(){
-        require_once('vendor/autoload.php');
-        require_once('includes/ssc_helpers.php');
-        require_once('lib/vyfakturuj-api/VyfakturujAPI.class.php');
-        require_once('includes/class.ssc_settings.php');
-        require_once('includes/class.ssc_admin.php');
-        require_once('includes/class.ssc_groups.php');
-        require_once('includes/class.ssc_membership.php');
-        require_once('includes/class.ssc_rest.php');
-        require_once('includes/class.ssc_cron.php');
-        require_once('includes/class.ssc_metaboxes.php');
-        require_once('includes/class.ssc_access.php');
-        require_once('includes/class.ssc_shortcodes.php');
+        require_once __DIR__ . '/vendor/autoload.php';
+        require_once __DIR__. '/includes/ssc_helpers.php';
+        require_once __DIR__. '/includes/class.ssc_settings.php';
+        require_once __DIR__. '/includes/class.ssc_admin.php';
+        require_once __DIR__. '/includes/class.ssc_groups.php';
+        require_once __DIR__. '/includes/class.ssc_membership.php';
+        require_once __DIR__. '/includes/class.ssc_rest.php';
+        require_once __DIR__. '/includes/class.ssc_cron.php';
+        require_once __DIR__. '/includes/class.ssc_metaboxes.php';
+        require_once __DIR__. '/includes/class.ssc_access.php';
+        require_once __DIR__. '/includes/class.ssc_shortcodes.php';
     }
 
     function generate_secure_key(){

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "97388cb720ec6fc86db9210f564e6272",
+    "content-hash": "a6f746f508ae01846e185d6e78b9d7f6",
     "packages": [
         {
             "name": "tgmpa/tgm-plugin-activation",
@@ -60,6 +60,50 @@
                 "wordpress"
             ],
             "time": "2016-05-19T15:46:51+00:00"
+        },
+        {
+            "name": "vyfakturuj/vyfakturuj-api-php",
+            "version": "v2.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vyfakturuj/vyfakturuj-api-php.git",
+                "reference": "7a8ad824c5b3a693c32eee2b1f6ad275e14073d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vyfakturuj/vyfakturuj-api-php/zipball/7a8ad824c5b3a693c32eee2b1f6ad275e14073d8",
+                "reference": "7a8ad824c5b3a693c32eee2b1f6ad275e14073d8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "libs/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Redbit s.r.o.",
+                    "homepage": "https://www.redbit.cz/"
+                }
+            ],
+            "description": "Vyfakturuj API",
+            "homepage": "https://www.vyfakturuj.cz/api/",
+            "keywords": [
+                "api",
+                "faktura",
+                "vyfakturuj"
+            ],
+            "time": "2018-09-01T15:03:44+00:00"
         },
         {
             "name": "webdevstudios/cmb2",

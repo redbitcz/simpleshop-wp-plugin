@@ -25,7 +25,7 @@ class SSC_Admin{
 
         $values = array();
         if($ssc->email && $ssc->secure_key){
-            $vyfakturuj_api = new \VyfakturujAPI($ssc->email,$ssc->secure_key);
+            $vyfakturuj_api = new Vyfakturuj\VyfakturujAPI($ssc->email,$ssc->secure_key);
             $ret = $vyfakturuj_api->getProducts();
 
             if($ret){

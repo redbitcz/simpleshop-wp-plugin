@@ -224,7 +224,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
      */
     public function settings_notices($object_id,$updated){
         $ssc = new \SSC\SSC();
-        $vyfakturuj_api = new \VyfakturujAPI($ssc->email,$ssc->secure_key);
+        $vyfakturuj_api = new \SSC\Vyfakturuj\VyfakturujAPI($ssc->email,$ssc->secure_key);
         $result = $vyfakturuj_api->initWPPlugin(site_url());
         if(isset($result['status']) && $result['status'] == 'success'){
             update_option('ssc_valid_api_keys',1);
