@@ -68,32 +68,31 @@ class SSC_Cron
                 // Get date to access
                 $date_to_access = $access->get_post_date_to_access();
 
-                $send_email = false;
-
+                // TODO: Rewrite this to first find the groups that have access to the post, than find users for these groups. 
+                // That way we won't have to scrub through all the users all the time
                 // Scrub through the groups and check, if the user is member of the group
                 foreach ($groups as $group) {
                     foreach ($users_groups as $user_id => $user_groups) {
-                        if ($send_email == false) {
+                        $send_email = false;
 
-                            // Check, if the user is member of this group
-                            if (array_key_exists($group, $user_groups)) {
-                                // If so, finally check, if we should send the email
+                        // Check, if the user is member of this group
+                        if (array_key_exists($group, $user_groups)) {
+                            // If so, finally check, if we should send the email
 
-                                // First check, if today is the date when the post can be accessed
-                                if ($date_to_access == date('Y-m-d')) {
-                                    // Cool, send email
+                            // First check, if today is the date when the post can be accessed
+                            if ($date_to_access == date('Y-m-d')) {
+                                // Cool, send email
+                                $send_email = true;
+                            } elseif ($days_to_access) {
+                                $subscribed = $user_groups[$group]['subscription_date'];
+                                $date_to_compare = date('Y-m-d', strtotime("$subscribed -$days_to_access days"));
+
+                                if (date('Y-m-d') == $date_to_compare) {
                                     $send_email = true;
-                                } elseif ($days_to_access) {
-                                    $subscribed = $user_groups[$group]['subscription_date'];
-                                    $date_to_compare = date('Y-m-d', strtotime("$subscribed -$days_to_access days"));
-
-                                    if (date('Y-m-d') == $date_to_compare) {
-                                        $send_email = true;
-                                    }
                                 }
                             }
                         }
-
+                       
                         if ($send_email) {
                             // Woohoo, send the email
                             $userdata = get_userdata($user_id);
