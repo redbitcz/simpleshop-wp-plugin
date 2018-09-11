@@ -10,25 +10,24 @@ namespace Redbit\SimpleShop\WpPlugin;
 
 class Shortcodes {
 
-	function __construct() {
+	public function __construct() {
 		add_action( 'init', array( $this, 'initialize' ) );
-
 	}
 
-	function initialize() {
+	public function initialize() {
 		add_shortcode( 'SimpleShop-form', array( $this, 'simple_shop_form' ) );
 		add_shortcode( 'SimpleShop-content', array( $this, 'simple_shop_content' ) );
 	}
 
 
-	function simple_shop_form( $atts ) {
+	public function simple_shop_form( $atts ) {
 		$url = substr( $_SERVER['SERVER_NAME'],
 			- 2 ) === 'lc' ? 'http://form.simpleshop.czlc' : 'https://form.simpleshop.cz';
 
 		return '<script type="text/javascript" src="' . $url . '/iframe/js/?id=' . $atts['id'] . '"></script>';
 	}
 
-	function simple_shop_content( $atts, $content = "" ) {
+	public function simple_shop_content( $atts, $content = '' ) {
 		$atts = shortcode_atts( array(
 			'group_id'           => '',
 			'is_member'          => '',
@@ -104,8 +103,5 @@ class Shortcodes {
 		}
 
 		return $content;
-
 	}
-
-
 }

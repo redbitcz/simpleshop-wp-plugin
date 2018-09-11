@@ -17,7 +17,7 @@ class Helpers {
 	 * @param string $hook
 	 *
 	 * @return array
-	 * @throws ReflectionException
+	 * @throws \ReflectionException
 	 */
 	public static function ssc_list_hooks( $hook = '' ) {
 		global $wp_filter;
@@ -43,7 +43,7 @@ class Helpers {
 				$ref          = strpos( $item['function'], '::' ) ? new \ReflectionClass( strstr( $item['function'],
 					'::', true ) ) : new \ReflectionFunction( $item['function'] );
 				$item['file'] = $ref->getFileName();
-				$item['line'] = get_class( $ref ) == 'ReflectionFunction'
+				$item['line'] = $ref instanceof \ReflectionFunction
 					? $ref->getStartLine()
 					: $ref->getMethod( substr( $item['function'],
 						strpos( $item['function'], '::' ) + 2 ) )->getStartLine();
@@ -94,8 +94,8 @@ class Helpers {
 		foreach ( $GLOBALS['wp_filter'][ $tag ] as $priority => $filter ) {
 			foreach ( $filter as $identifier => $function ) {
 				if ( is_array( $function )
-				     and is_a( $function['function'][0], $class )
-				         and $method === $function['function'][1]
+				     && is_a( $function['function'][0], $class )
+				         && $method === $function['function'][1]
 				) {
 
 					remove_filter(

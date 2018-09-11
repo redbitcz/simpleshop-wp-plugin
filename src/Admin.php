@@ -12,7 +12,14 @@ use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
 
 class Admin {
 
-	function __construct() {
+	/**
+	 * @var Loader
+	 */
+	private $loader;
+
+	public function __construct(Loader $loader) {
+		$this->loader = $loader;
+
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_filter( 'manage_edit-ssc_group_columns', array( $this, 'ssc_group_columns' ) );
 		add_action( 'manage_ssc_group_posts_custom_column', array( $this, 'ssc_group_column_content' ), 10, 2 );
@@ -28,12 +35,10 @@ class Admin {
 	/**
 	 * Get products from simple shop via API
 	 */
-	function wp_ajax_load_simple_shop_products() {
-		$ssc = new Loader();
-
+	public function wp_ajax_load_simple_shop_products() {
 		$values = array();
-		if ( $ssc->email && $ssc->secure_key ) {
-			$vyfakturuj_api = new VyfakturujAPI( $ssc->email, $ssc->secure_key );
+		if ( $this->loader->has_credentials() ) {
+			$vyfakturuj_api = new VyfakturujAPI( $this->loader->get_api_email(), $this->loader->get_api_key() );
 			$ret            = $vyfakturuj_api->getProducts();
 
 			if ( $ret ) {
@@ -54,8 +59,8 @@ class Admin {
 	 *
 	 * @return mixed
 	 */
-	function remove_quick_edit( $actions, $post ) {
-		if ( $post->post_type == "ssc_group" ) {
+	public function remove_quick_edit( $actions, $post ) {
+		if ( $post->post_type == 'ssc_group' ) {
 
 			unset( $actions['inline hide-if-no-js'] );
 		}
@@ -66,7 +71,7 @@ class Admin {
 	/**
 	 * Hide publishing actions in group detail
 	 */
-	function publishing_actions() {
+	public function publishing_actions() {
 		$mg_post_type = 'ssc_group';
 		global $post;
 		if ( $post->post_type == $mg_post_type ) {
@@ -104,7 +109,7 @@ class Admin {
 	/**
 	 * Add a new TinyMCE button
 	 */
-	function tiny_mce_new_buttons() {
+	public function tiny_mce_new_buttons() {
 		add_filter( 'mce_external_plugins', array( $this, 'tiny_mce_add_buttons' ) );
 		add_filter( 'mce_buttons', array( $this, 'tiny_mce_register_buttons' ) );
 	}
@@ -116,8 +121,8 @@ class Admin {
 	 *
 	 * @return mixed
 	 */
-	function tiny_mce_add_buttons( $plugins ) {
-		$plugins['ssctinymceplugin'] = SSC_PLUGIN_URL . 'js/tiny-mce/tiny-mce.js';
+	public function tiny_mce_add_buttons( $plugins ) {
+		$plugins['ssctinymceplugin'] = SIMPLESHOP_PLUGIN_URL . 'js/tiny-mce/tiny-mce.js';
 
 		return $plugins;
 	}
@@ -129,7 +134,7 @@ class Admin {
 	 *
 	 * @return mixed
 	 */
-	function tiny_mce_register_buttons( $buttons ) {
+	public function tiny_mce_register_buttons( $buttons ) {
 		$newBtns = array(
 			'sscaddformbutton',
 			'ssccontentbutton'
@@ -142,7 +147,7 @@ class Admin {
 	/**
 	 * Register a ssc_groups post type.
 	 */
-	function register_groups_cpt() {
+	public function register_groups_cpt() {
 		$labels = array(
 			'name'               => __( 'Členské sekce', 'ssc' ),
 			'singular_name'      => __( 'Skupina', 'ssc' ),
@@ -180,10 +185,10 @@ class Admin {
 	/**
 	 * Register a custom menu page.
 	 */
-	function add_settings_page() {
+	public function add_settings_page() {
 		add_menu_page(
 			__( 'SimpleShop', 'ssc' ), __( 'SimpleShop', 'ssc' ), 'manage_options', 'simple_shop_settings',
-			array( $this, 'render_settings_page' ), SSC_PLUGIN_URL . '/img/white_logo.png', 99
+			array( $this, 'render_settings_page' ), SIMPLESHOP_PLUGIN_URL . '/img/white_logo.png', 99
 		);
 	}
 
@@ -194,7 +199,7 @@ class Admin {
 	 *
 	 * @return mixed
 	 */
-	function ssc_group_columns( $columns ) {
+	public function ssc_group_columns( $columns ) {
 		$columns['ssc_id'] = 'SSC ID';
 
 		return $columns;
@@ -206,7 +211,7 @@ class Admin {
 	 * @param $column
 	 * @param $post_id
 	 */
-	function ssc_group_column_content( $column, $post_id ) {
+	public function ssc_group_column_content( $column, $post_id ) {
 		global $post;
 
 		switch ( $column ) {
@@ -219,10 +224,9 @@ class Admin {
 	/**
 	 * Enqueue admin scripts
 	 */
-	function enqueue_admin_scripts() {
-		wp_enqueue_style( 'ssc', SSC_PLUGIN_URL . 'css/ssc.css' );
+	public function enqueue_admin_scripts() {
+		wp_enqueue_style( 'ssc', SIMPLESHOP_PLUGIN_URL . 'css/ssc.css' );
 		wp_register_style( 'jquery-ui', 'http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
 		wp_enqueue_style( 'jquery-ui' );
 	}
-
 }

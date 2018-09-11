@@ -10,7 +10,14 @@ namespace Redbit\SimpleShop\WpPlugin;
 
 class Rest extends \WP_REST_Controller {
 
-	function __construct() {
+	/**
+	 * @var Loader
+	 */
+	private $loader;
+
+	public function __construct( Loader $loader ) {
+		$this->loader = $loader;
+
 		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
 	}
 
@@ -44,7 +51,7 @@ class Rest extends \WP_REST_Controller {
 //        ));
 	}
 
-	function get_groups() {
+	public function get_groups() {
 		$ssc_group = new Group();
 
 		return new \WP_REST_Response( $ssc_group->get_groups(), 200 );
@@ -64,7 +71,7 @@ class Rest extends \WP_REST_Controller {
 			if ( ! $request->get_param( $param ) ) {
 				return new \WP_Error( 'required-param-missing',
 					sprintf( __( 'Required parameter %s is missing', 'ssc' ), $param ),
-					array( 'status' => 500, 'plugin_version' => SSC_PLUGIN_VERSION ) );
+					array( 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ) );
 			}
 		}
 
@@ -72,7 +79,7 @@ class Rest extends \WP_REST_Controller {
 		$email = sanitize_email( $request->get_param( 'email' ) );
 		if ( ! is_email( $email ) ) {
 			return new \WP_Error( 'wrong-email-format', __( 'The email is in wrong format', 'ssc' ),
-				array( 'status' => 500, 'plugin_version' => SSC_PLUGIN_VERSION ) );
+				array( 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ) );
 		}
 
 		// Check if user with this email exists, if not, create a new user
@@ -93,7 +100,7 @@ class Rest extends \WP_REST_Controller {
 
 			if ( is_wp_error( $user_id ) ) {
 				return new \WP_Error( 'could-not-create-user', __( "The user couldn't be created", 'ssc' ),
-					array( 'status' => 500, 'plugin_version' => SSC_PLUGIN_VERSION ) );
+					array( 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ) );
 			}
 		} else {
 			// Get user_by email
@@ -142,7 +149,7 @@ class Rest extends \WP_REST_Controller {
 		foreach ( $SSC_group->get_user_groups( $user_id ) as $group ) {
 			// Scrub through posts and check, if some of the posts has that group assigned
 			foreach ( $posts as $post ) {
-				$access = new Access();
+				$access = $this->loader->get_access();
 
 				if ( in_array( $group, unserialize( $post->meta_value ) ) ) {
 					// Check if the post can be accessed already, if not, continue
@@ -166,12 +173,12 @@ class Rest extends \WP_REST_Controller {
 			}
 		}
 
-		$email_enable = nl2br( ssc_get_option( 'ssc_email_enable' ) );
+		$email_enable = nl2br( $this->loader->get_settings()->ssc_get_option( 'ssc_email_enable' ) );
 
 		// It doesn't seem to make sense to send email without the links, so check first
 		if ( ( (string) $email_enable ) != '2' ) { // pokud nemame zakazano posilat mail novym clenum
-			$email_body    = nl2br( ssc_get_option( 'ssc_email_text' ) );
-			$email_subject = nl2br( ssc_get_option( 'ssc_email_subject' ) );
+			$email_body    = nl2br( $this->loader->get_settings()->ssc_get_option( 'ssc_email_text' ) );
+			$email_subject = nl2br( $this->loader->get_settings()->ssc_get_option( 'ssc_email_subject' ) );
 			$pages         = '';
 			foreach ( $links as $groupid => $linksInGroup ) {
 				$post_details = get_post( $groupid );
@@ -201,7 +208,8 @@ class Rest extends \WP_REST_Controller {
 			wp_mail( $email, $email_subject, $email_body, $headers );
 		}
 
-		return new \WP_REST_Response( array( 'status' => 'success', 'plugin_version' => SSC_PLUGIN_VERSION ), 200 );
+		return new \WP_REST_Response( array( 'status' => 'success', 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ),
+			200 );
 	}
 
 	/**
@@ -212,9 +220,7 @@ class Rest extends \WP_REST_Controller {
 	 * @return \WP_Error|bool
 	 */
 	public function create_item_permissions_check( $request ) {
-		$ssc = new Loader();
-
-		return $ssc->validate_secure_key( $request->get_param( 'hash' ) );
+		return $this->loader->validate_secure_key( $request->get_param( 'hash' ) );
 	}
 
 	/**

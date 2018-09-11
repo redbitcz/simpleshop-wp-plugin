@@ -9,10 +9,15 @@
 namespace Redbit\SimpleShop\WpPlugin;
 
 class Metaboxes {
-
 	public $prefix = '_ssc_';
 
-	function __construct() {
+	/**
+	 * @var Loader
+	 */
+	private $loader;
+
+	public function __construct(Loader $loader) {
+		$this->loader = $loader;
 		add_action( 'cmb2_admin_init', array( $this, 'page_metaboxes' ) );
 		add_action( 'cmb2_admin_init', array( $this, 'user_metaboxes' ) );
 	}
@@ -21,13 +26,12 @@ class Metaboxes {
 	 * Add metabox to pages and posts
 	 * TODO: find a way to add custom post types
 	 */
-	function page_metaboxes() {
+	public function page_metaboxes() {
 
 		$ssc_group  = new Group();
 		$groups     = $ssc_group->get_groups();
-		$ssc_access = new Access();
-		$ssc        = new Loader();
-		$post_types = $ssc->get_post_types();
+		$ssc_access = $this->loader->get_access();
+		$post_types = $this->loader->get_post_types();
 
 
 		if ( $groups && $ssc_access->user_is_admin() ) {
@@ -130,7 +134,7 @@ class Metaboxes {
 	/**
 	 * Add metabox to user profile
 	 */
-	function user_metaboxes() {
+	public function user_metaboxes() {
 
 		/**
 		 * Initiate the metabox
@@ -148,7 +152,7 @@ class Metaboxes {
 		$groups    = $ssc_group->get_groups();
 
 
-		$access = new Access();
+		$access = $this->loader->get_access();
 
 		if ( $access->user_is_admin() ) {
 			$cmb->add_field( array(
@@ -177,8 +181,5 @@ class Metaboxes {
 				) );
 			}
 		}
-
 	}
-
 }
-

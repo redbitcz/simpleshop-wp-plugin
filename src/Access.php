@@ -13,7 +13,7 @@ namespace Redbit\SimpleShop\WpPlugin;
  */
 class Access {
 
-	function __construct() {
+	public function __construct() {
 		add_action( 'template_redirect', array( $this, 'check_access' ) );
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'setup_nav_menu_item' ) );
 		add_action( 'wp_head', array( $this, 'hide_menu_items' ) );
@@ -23,14 +23,14 @@ class Access {
 	/**
 	 * Remove the MioWeb filter that redirects the user to homepage
 	 */
-	function mioweb_remove_login_redirect() {
+	public function mioweb_remove_login_redirect() {
 		Helpers::ssc_remove_anonymous_object_filter( 'login_redirect', 'visualEditorPage', 'login_redirect' );
 	}
 
 	/**
 	 * Check if the page is protected and the user has access to the page
 	 */
-	function check_access() {
+	public function check_access() {
 		$post_groups = $this->get_post_groups();
 
 		// If the post is protected and user is not logged in, redirect him to login
@@ -56,7 +56,7 @@ class Access {
 	 *
 	 * @return bool|\WP_Error
 	 */
-	function user_can_view_post( $post_id = '', $user_id = '' ) {
+	public function user_can_view_post( $post_id = '', $user_id = '' ) {
 		// Admins can view all posts
 
 		if ( $this->user_is_admin() ) {
@@ -138,7 +138,7 @@ class Access {
 	 * This is filterable,
 	 * @return mixed
 	 */
-	function user_is_admin() {
+	public function user_is_admin() {
 		$is_admin = current_user_can( 'administrator' ) ? true : false;
 
 		return apply_filters( 'ssc_user_is_admin', $is_admin );
@@ -151,7 +151,7 @@ class Access {
 	 *
 	 * @return mixed
 	 */
-	function get_no_access_redirect_url( $post_id = '' ) {
+	public function get_no_access_redirect_url( $post_id = '' ) {
 		global $post;
 
 		if ( ! $post_id ) {
@@ -179,7 +179,7 @@ class Access {
 	 *
 	 * @return mixed
 	 */
-	function setup_nav_menu_item( $item ) {
+	public function setup_nav_menu_item( $item ) {
 
 		if ( ! $this->user_can_view_post( $item->object_id ) ) {
 			$item->classes[] = 'ssc-hide';
@@ -192,7 +192,7 @@ class Access {
 		return $item;
 	}
 
-	function get_post_groups( $post_id = '' ) {
+	public function get_post_groups( $post_id = '' ) {
 		global $post;
 
 		if ( ! $post_id ) {
@@ -209,14 +209,14 @@ class Access {
 	 *
 	 * @return mixed
 	 */
-	function get_post_days_to_access( $post_id = '' ) {
+	public function get_post_days_to_access( $post_id = '' ) {
 		global $post;
 
 		if ( ! $post_id ) {
 			$post_id = $post->ID;
 		}
 
-		return get_post_meta( $post_id, SSC_PREFIX . 'days_to_access', true );
+		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'days_to_access', true );
 	}
 
 	/**
@@ -226,14 +226,14 @@ class Access {
 	 *
 	 * @return mixed
 	 */
-	function get_post_date_to_access( $post_id = '' ) {
+	public function get_post_date_to_access( $post_id = '' ) {
 		global $post;
 
 		if ( ! $post_id ) {
 			$post_id = $post->ID;
 		}
 
-		return get_post_meta( $post_id, SSC_PREFIX . 'date_to_access', true );
+		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
 	}
 
 	/**
@@ -243,21 +243,21 @@ class Access {
 	 *
 	 * @return mixed
 	 */
-	function get_post_date_until_to_access( $post_id = '' ) {
+	public function get_post_date_until_to_access( $post_id = '' ) {
 		global $post;
 
 		if ( ! $post_id ) {
 			$post_id = $post->ID;
 		}
 
-		return get_post_meta( $post_id, SSC_PREFIX . 'date_until_to_access', true );
+		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
 	}
 
 
 	/**
 	 * Hide items in menu
 	 */
-	function hide_menu_items() {
+	public function hide_menu_items() {
 		?>
         <style type="text/css">
             .ssc-hide {
@@ -265,7 +265,5 @@ class Access {
             }
         </style>
 		<?php
-
 	}
-
 }

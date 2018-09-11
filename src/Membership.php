@@ -18,7 +18,7 @@ class Membership {
 	 *
 	 * @param string $user_id
 	 */
-	function __construct( $user_id = '' ) {
+	public function __construct( $user_id = '' ) {
 		if ( $user_id ) {
 			$this->user_id = (int) $user_id;
 			$this->get();
@@ -28,7 +28,7 @@ class Membership {
 	/**
 	 * Get membership data for a specific user
 	 */
-	function get() {
+	public function get() {
 		$ssc_groups = new Group();
 		$groups     = $ssc_groups->get_user_groups( $this->user_id );
 
@@ -49,7 +49,7 @@ class Membership {
 	 *
 	 * @return bool|int
 	 */
-	function set_valid_to( $group_id, $valid_to ) {
+	public function set_valid_to( $group_id, $valid_to ) {
 		if ( ! $this->user_id ) {
 			return false;
 		}
@@ -64,7 +64,7 @@ class Membership {
 	 *
 	 * @return bool|int
 	 */
-	function set_subscription_date( $group_id ) {
+	public function set_subscription_date( $group_id ) {
 		if ( ! $this->user_id ) {
 			return false;
 		}
@@ -79,7 +79,7 @@ class Membership {
 	 *
 	 * @return mixed
 	 */
-	function get_subscription_date( $group_id ) {
+	public function get_subscription_date( $group_id ) {
 		return get_user_meta( $this->user_id, '_ssc_group_subscription_date_' . $group_id, true );
 	}
 
@@ -90,7 +90,7 @@ class Membership {
 	 *
 	 * @return mixed
 	 */
-	function get_valid_to( $group_id ) {
+	public function get_valid_to( $group_id ) {
 		return get_user_meta( $this->user_id, '_ssc_group_subscription_valid_to_' . $group_id, true );
 	}
 }

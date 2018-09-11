@@ -6,7 +6,7 @@
  * @author Redbit s.r.o. <info@redbit.cz>
  */
 
-$deploy          = new DeployScript( 'simple-shop-connector' );
+$deploy          = new DeployScript( 'simpleshop-wp-plugin' );
 $deploy->distDir = __DIR__ . '/dist';
 
 try {
@@ -92,7 +92,7 @@ class DeployScript {
 			__DIR__ . '/' . $this->productName . '.php',
 			array(
 				'Version: dev-master'                            => sprintf( 'Version: %s', $this->getNakedVersion() ),
-				'define(\'SSC_PLUGIN_VERSION\',\'dev-master\');' => sprintf( 'define(\'SSC_PLUGIN_VERSION\',\'%s\');',
+				'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'dev-master\' );' => sprintf( 'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'%s\' );',
 					$this->version ),
 			),
 			$this->distDir

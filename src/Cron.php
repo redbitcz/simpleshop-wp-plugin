@@ -9,7 +9,14 @@
 namespace Redbit\SimpleShop\WpPlugin;
 
 class Cron {
-	function __construct() {
+	/**
+	 * @var Loader
+	 */
+	private $loader;
+
+	public function __construct(Loader $loader) {
+		$this->loader = $loader;
+
 		if ( ! wp_next_scheduled( 'ssc_send_user_has_access_to_post_notification' ) ) {
 			wp_schedule_event( time(), 'daily', 'ssc_send_user_has_access_to_post_notification' );
 		}
@@ -18,19 +25,19 @@ class Cron {
 			array( $this, 'send_user_has_access_to_post_notification' ) );
 	}
 
-	function send_user_has_access_to_post_notification() {
+	public function send_user_has_access_to_post_notification() {
 		// Get posts, that have set either days to view or specific date
 		$args = array(
 			'post_type'      => 'any',
 			'posts_per_page' => - 1,
 			'meta_query'     => array(
-				'relation'                    => 'OR',
-				SSC_PREFIX . 'days_to_access' => array(
-					'key'     => SSC_PREFIX . 'days_to_access',
+				'relation'                           => 'OR',
+				SIMPLESHOP_PREFIX . 'days_to_access' => array(
+					'key'     => SIMPLESHOP_PREFIX . 'days_to_access',
 					'compare' => 'EXISTS'
 				),
-				SSC_PREFIX . 'date_to_access' => array(
-					'key'     => SSC_PREFIX . 'date_to_access',
+				SIMPLESHOP_PREFIX . 'date_to_access' => array(
+					'key'     => SIMPLESHOP_PREFIX . 'date_to_access',
 					'compare' => 'EXISTS'
 				)
 			)
@@ -40,8 +47,6 @@ class Cron {
 
 
 		if ( $the_query->have_posts() ) {
-
-			$group = new Group();
 
 			// Get all users
 			$users = get_users();
@@ -58,14 +63,14 @@ class Cron {
 				global $post;
 
 				// Check if the post has some email set, if not, continue
-				$email_text = get_post_meta( $post->ID, SSC_PREFIX . 'email_user_can_access', true );
+				$email_text = get_post_meta( $post->ID, SIMPLESHOP_PREFIX . 'email_user_can_access', true );
 				if ( ! $email_text ) {
 					continue;
 				}
 
-				$email_subject = get_post_meta( $post->ID, SSC_PREFIX . 'email_subject_user_can_access', true );
+				$email_subject = get_post_meta( $post->ID, SIMPLESHOP_PREFIX . 'email_subject_user_can_access', true );
 
-				$access = new Access();
+				$access = $this->loader->get_access();
 				// Get post groups
 				$groups = $access->get_post_groups();
 				// Get days to access
@@ -101,10 +106,10 @@ class Cron {
 						if ( $send_email ) {
 							// Woohoo, send the email
 							$userdata = get_userdata( $user_id );
-							if ( ! get_user_meta( $user_id, SSC_PREFIX . 'notification_email_sent_' . $post->ID,
+							if ( ! get_user_meta( $user_id, SIMPLESHOP_PREFIX . 'notification_email_sent_' . $post->ID,
 								true ) ) {
 								wp_mail( $userdata->user_email, $email_subject, $email_text );
-								update_user_meta( $user_id, SSC_PREFIX . 'notification_email_sent_' . $post->ID, 1 );
+								update_user_meta( $user_id, SIMPLESHOP_PREFIX . 'notification_email_sent_' . $post->ID, 1 );
 							}
 						}
 					}

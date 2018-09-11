@@ -8,7 +8,6 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
-use Exception;
 use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
 
 /**
@@ -21,13 +20,6 @@ use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
  * @property-read string $options_page
  */
 class Settings {
-
-	/**
-	 * Holds an instance of the object
-	 *
-	 * @var self
-	 */
-	protected static $instance;
 
 	/**
 	 * Options Page title
@@ -52,35 +44,29 @@ class Settings {
 	 * @var string
 	 */
 	private $metabox_id = 'ssc_option_metabox';
+	/**
+	 * @var Loader
+	 */
+	private $loader;
 
 	/**
 	 * Constructor
 	 * @since 0.1.0
+	 *
+	 * @param Loader $loader
 	 */
-	protected function __construct() {
+	public function __construct(Loader $loader) {
 		// Set our title
 		$this->title = __( 'Nastavení', 'ssc' );
-	}
-
-	/**
-	 * Returns the running object
-	 *
-	 * @return self
-	 */
-	public static function get_instance() {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-			self::$instance->hooks();
-		}
-
-		return self::$instance;
+        $this->register_hooks();
+		$this->loader = $loader;
 	}
 
 	/**
 	 * Initiate our hooks
 	 * @since 0.1.0
 	 */
-	public function hooks() {
+	public function register_hooks() {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 		add_action( 'cmb2_admin_init', array( $this, 'add_options_page_metabox' ) );
@@ -100,7 +86,7 @@ class Settings {
 	 */
 	public function add_options_page() {
 
-		$this->options_page = add_submenu_page( 'simple_shop_settings', $this->title, $this->title, 'manage_options',
+		add_submenu_page( 'simple_shop_settings', $this->title, $this->title, 'manage_options',
 			'admin.php?page=' . $this->key, array( $this, 'admin_page_display' ) );
 
 		$this->options_page = add_menu_page( $this->title, $this->title, 'manage_options', $this->key,
@@ -127,7 +113,7 @@ class Settings {
 	 * Add the options metabox to the array of metaboxes
 	 * @since  0.1.0
 	 */
-	function add_options_page_metabox() {
+	public function add_options_page_metabox() {
 
 		// hook in our save notices
 		add_action( "cmb2_save_options-page_fields_{$this->metabox_id}", array( $this, 'settings_notices' ), 10, 2 );
@@ -243,8 +229,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
 	 * @return void
 	 */
 	public function settings_notices( $object_id, $updated ) {
-		$ssc            = new Loader();
-		$vyfakturuj_api = new VyfakturujAPI( $ssc->email, $ssc->secure_key );
+		$vyfakturuj_api = new VyfakturujAPI( $this->loader->get_api_email(), $this->loader->get_api_key() );
 		$result         = $vyfakturuj_api->initWPPlugin( site_url() );
 		if ( isset( $result['status'] ) && $result['status'] == 'success' ) {
 			update_option( 'ssc_valid_api_keys', 1 );
@@ -273,7 +258,6 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
 		}
 
 		return array( 'hidden' );
-
 	}
 
 	/**
@@ -283,7 +267,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
 	 * @param  string $field Field to retrieve
 	 *
 	 * @return mixed          Field value or exception is thrown
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function __get( $field ) {
 		// Allowed fields to retrieve
@@ -291,7 +275,37 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
 			return $this->{$field};
 		}
 
-		throw new Exception( 'Invalid property: ' . $field );
+		throw new \Exception( 'Invalid property: ' . $field );
 	}
+
+	/**
+	 * Wrapper function around cmb2_get_option
+	 * @since  0.1.0
+	 *
+	 * @param  string $key Options array key
+	 * @param  mixed $default Optional default value
+	 *
+	 * @return mixed           Option value
+	 */
+	public function ssc_get_option( $key = '', $default = null ) {
+		if ( function_exists( 'cmb2_get_option' ) ) {
+			// Use cmb2_get_option as it passes through some key filters.
+			return cmb2_get_option( $this->key, $key, $default );
+		}
+
+		// Fallback to get_option if CMB2 is not loaded yet.
+		$opts = get_option( $this->key, $key, $default );
+
+		$val = $default;
+
+		if ( 'all' == $key ) {
+			$val = $opts;
+		} elseif ( is_array( $opts ) && array_key_exists( $key, $opts ) && false !== $opts[ $key ] ) {
+			$val = $opts[ $key ];
+		}
+
+		return $val;
+	}
+
 
 }

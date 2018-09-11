@@ -8,117 +8,119 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
-class Group{
+class Group {
 
-    public $id = '';
-    public $name = '';
+	public $id = '';
+	public $name = '';
 
-    function __construct($id = ''){
-        if($id){
-            $this->id = $id;
-            $this->get_group();
-        }
-    }
+	public function __construct( $id = '' ) {
+		if ( $id ) {
+			$this->id = $id;
+			$this->get_group();
+		}
+	}
 
-    /**
-     * Get all groups (custom post type)
-     * @return array
-     */
-    function get_groups(){
+	/**
+	 * Get all groups (custom post type)
+	 * @return array
+	 */
+	public function get_groups() {
 
-        $args = array(
-            'post_type' => 'ssc_group',
-            'posts_per_page' => -1,
-            'post_status' => 'publish'
-        );
+		$args = array(
+			'post_type'      => 'ssc_group',
+			'posts_per_page' => - 1,
+			'post_status'    => 'publish'
+		);
 
-        $groups = array();
+		$groups = array();
 
-        $posts = get_posts($args);
+		$posts = get_posts( $args );
 
-        foreach ($posts as $item) {
-            $groups[$item->ID] = $item->post_title;
-        }
+		foreach ( $posts as $item ) {
+			$groups[ $item->ID ] = $item->post_title;
+		}
 
-        return $groups;
-    }
+		return $groups;
+	}
 
-    /**
-     * Get a single group
-     * @return bool
-     */
-    function get_group(){
-        $group = get_post($this->id);
-        if($group){
-            // Set the group details
+	/**
+	 * Get a single group
+	 * @return bool
+	 */
+	public function get_group() {
+		$group = get_post( $this->id );
+		if ( $group ) {
+			// Set the group details
 
-            $this->name = $group->post_title;
-            return true;
-        }else{
-            return false;
-        }
-    }
+			$this->name = $group->post_title;
+		}
 
-    /**
-     * Check if group exists
-     * @return array|null|\WP_Post
-     */
-    function group_exists(){
-        return get_post($this->id);
-    }
+		return (bool) $group;
+	}
 
-    /**
-     * Get groups the user belongs to
-     * @param string $user_id
-     * @return mixed
-     */
-    function get_user_groups($user_id = ''){
-        if(!$user_id)
-            $user_id = get_current_user_id();
+	/**
+	 * Check if group exists
+	 * @return array|null|\WP_Post
+	 */
+	public function group_exists() {
+		return get_post( $this->id );
+	}
 
-        return get_user_meta($user_id,'_ssc_user_groups',true);
-    }
+	/**
+	 * Get groups the user belongs to
+	 *
+	 * @param string $user_id
+	 *
+	 * @return mixed
+	 */
+	public function get_user_groups( $user_id = '' ) {
+		if ( ! $user_id ) {
+			$user_id = get_current_user_id();
+		}
 
-    /**
-     * Add user to a group
-     * @param $user_id
-     */
-    function add_user_to_group($user_id){
-        $groups = $this->get_user_groups($user_id);
+		return get_user_meta( $user_id, '_ssc_user_groups', true );
+	}
 
-        if(!$groups)
-            $groups = array();
+	/**
+	 * Add user to a group
+	 *
+	 * @param $user_id
+	 */
+	public function add_user_to_group( $user_id ) {
+		$groups = $this->get_user_groups( $user_id );
 
-        if(!in_array($this->id,$groups)){
-            $groups[] = $this->id;
-            update_user_meta($user_id,'_ssc_user_groups',$groups);
+		if ( ! $groups ) {
+			$groups = array();
+		}
 
-            // Set the date of user registration to the group
-            $membership = new Membership($user_id);
-            $membership->set_subscription_date($this->id);
-        }
-    }
+		if ( ! in_array( $this->id, $groups ) ) {
+			$groups[] = $this->id;
+			update_user_meta( $user_id, '_ssc_user_groups', $groups );
 
-    /**
-     * Check if user is a member of a group
-     * @param $user_id
-     * @return bool
-     */
-    function user_is_member_of_group($user_id){
-        if(!$user_id)
-            $user_id = get_current_user_id();
+			// Set the date of user registration to the group
+			$membership = new Membership( $user_id );
+			$membership->set_subscription_date( $this->id );
+		}
+	}
 
-        $groups = $this->get_user_groups($user_id);
+	/**
+	 * Check if user is a member of a group
+	 *
+	 * @param $user_id
+	 *
+	 * @return bool
+	 */
+	public function user_is_member_of_group( $user_id ) {
+		if ( ! $user_id ) {
+			$user_id = get_current_user_id();
+		}
 
-        if(!is_array($groups)){
-            return false;
-        }
-        if(in_array($this->id,$groups)){
-            return true;
-        }else{
-            return false;
-        }
-    }
+		$groups = $this->get_user_groups( $user_id );
 
+		if ( ! is_array( $groups ) ) {
+			return false;
+		}
+
+		return in_array( $this->id, $groups ) ? true : false;
+	}
 }
-

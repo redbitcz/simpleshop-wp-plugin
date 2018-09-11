@@ -9,24 +9,44 @@
 namespace Redbit\SimpleShop\WpPlugin;
 
 class Loader {
-	public $secure_key = '';
-	public $email = '';
+	/**
+	 * @var string
+	 */
+	private $secure_key;
+	/**
+	 * @var string
+	 */
+	private $email;
 
-	function __construct() {
-		$this->require_classes();
-		$this->secure_key = $this->get_secure_key();
-		$this->email      = $this->get_email();
+	/**
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
+	 * @var Access
+	 */
+	private $access;
+
+	public function __construct() {
+		$this->init();
+
+		$this->secure_key = $this->load_api_key();
+		$this->email      = $this->load_email();
+
 		add_action( 'tgmpa_register', array( $this, 'register_required_plugins' ) );
+		register_activation_hook( __FILE__, array( $this, 'ssc_activation_hook' ) );
 	}
 
-	private function require_classes() {
-		require_once __DIR__ . '/../includes/class.ssc_settings.php';
-		new Admin();
-		new Rest();
-		new Cron();
-		new Metaboxes();
+	private function init() {
+		$this->settings = new Settings( $this );
+		$this->access   = new Access();
+
+		new Admin( $this );
+		new Rest( $this );
+		new Cron( $this );
+		new Metaboxes( $this );
 		new Shortcodes();
-		new Access();
 	}
 
 	public function generate_secure_key() {
@@ -37,16 +57,36 @@ class Loader {
 		update_option( 'ssc_secure_key', $key );
 	}
 
-	protected function get_secure_key() {
-		return ssc_get_option( 'ssc_api_key' );
+	public function has_credentials() {
+		return $this->email && $this->secure_key;
 	}
 
-	protected function get_email() {
-		return ssc_get_option( 'ssc_api_email' );
+	protected function load_email() {
+		return $this->settings->ssc_get_option( 'ssc_api_email' );
+	}
+
+	public function get_api_email() {
+		return $this->email;
+	}
+
+	protected function load_api_key() {
+		return $this->settings->ssc_get_option( 'ssc_api_key' );
+	}
+
+	public function get_api_key() {
+		return $this->secure_key;
 	}
 
 	public function validate_secure_key( $key_to_validate ) {
 		return $key_to_validate == sha1( $this->secure_key );
+	}
+
+	public function get_settings() {
+		return $this->settings;
+	}
+
+	public function get_access() {
+		return $this->access;
 	}
 
 	/**
@@ -86,5 +126,21 @@ class Loader {
 		);
 
 		return get_post_types( $args );
+	}
+
+
+	public function ssc_activation_hook() {
+		if ( ! function_exists( 'curl_init' ) || ! function_exists( 'random_bytes' ) ) {
+			echo '<h3>' . __( 'Aktivace se nezdařila. Kontaktuje prosím poskytovatele Vašeho hostingu a požádejte o instalaci rozšíření PHP - CURL a MCRYPT.',
+					'ssc' ) . '</h3>';
+
+			//Adding @ before will prevent XDebug output
+			@trigger_error( __( 'Aktivace se nezdařila. Kontaktuje prosím poskytovatele Vašeho hostingu a požádejte o instalaci rozšíření PHP - CURL a MCRYPT.',
+				'ssc' ), E_USER_ERROR );
+		}
+
+		// Generate and save the secure key$this = new Loader();
+		$key = $this->generate_secure_key();
+		$this->save_secure_key( $key );
 	}
 }
