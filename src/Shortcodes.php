@@ -1,8 +1,14 @@
 <?php
+/**
+ * @package Redbit\SimpleShop\WpPlugin
+ * @license MIT
+ * @copyright 2016-2018 Redbit s.r.o.
+ * @author Redbit s.r.o. <info@simpleshop.cz>
+ */
 
-namespace SSC;
+namespace Redbit\SimpleShop\WpPlugin;
 
-class SSC_Shortcodes{
+class Shortcodes{
 
     function __construct(){
         add_action('init',array($this,'initialize'));
@@ -52,7 +58,7 @@ class SSC_Shortcodes{
         if ( empty($group_id) || ( empty( $is_member ) && empty( $specific_date_from ) && empty( $specific_date_to ) ) )
             return '';
 
-        $group = new SSC_Group($group_id);
+        $group = new Group($group_id);
 
         if ($is_member == 'yes') {
             // Check, if the user is logged in and is member of the group, if not, bail
@@ -70,7 +76,7 @@ class SSC_Shortcodes{
         // Group check done, check if there are some days set and if is_member is yes
         // it doesn't make sense to check days condition for users who should NOT be members of a group
         if (!empty($days_to_view) && $is_member == 'yes') {
-            $membership = new SSC_Membership(get_current_user_id());
+            $membership = new Membership(get_current_user_id());
             $subscription_date = $membership->groups[$group_id]['subscription_date'];
             // Compare against today's date
             if (date('Y-m-d') < date('Y-m-d',strtotime("$subscription_date + $days_to_view days"))) {
@@ -81,7 +87,7 @@ class SSC_Shortcodes{
         // Support shortcodes inside shortcodes
 
         // Fix for MioWEB
-        $hook = ssc_remove_anonymous_object_filter('the_content','visualEditorPage','create_content');
+        $hook = Helpers::ssc_remove_anonymous_object_filter('the_content','visualEditorPage','create_content');
 
         $content = apply_filters('the_content',$content);
 
@@ -96,7 +102,3 @@ class SSC_Shortcodes{
 
 
 }
-
-new SSC_Shortcodes();
-
-

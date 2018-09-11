@@ -1,8 +1,16 @@
 <?php
+/**
+ * @package Redbit\SimpleShop\WpPlugin
+ * @license MIT
+ * @copyright 2016-2018 Redbit s.r.o.
+ * @author Redbit s.r.o. <info@simpleshop.cz>
+ */
 
-namespace SSC;
+namespace Redbit\SimpleShop\WpPlugin;
 
-class SSC_Admin{
+use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
+
+class Admin{
 
     function __construct(){
         add_action('admin_menu',array($this,'add_settings_page'));
@@ -21,11 +29,11 @@ class SSC_Admin{
      * Get products from simple shop via API
      */
     function wp_ajax_load_simple_shop_products(){
-        $ssc = new SSC();
+        $ssc = new Loader();
 
         $values = array();
         if($ssc->email && $ssc->secure_key){
-            $vyfakturuj_api = new Vyfakturuj\VyfakturujAPI($ssc->email,$ssc->secure_key);
+            $vyfakturuj_api = new VyfakturujAPI($ssc->email,$ssc->secure_key);
             $ret = $vyfakturuj_api->getProducts();
 
             if($ret){
@@ -76,7 +84,7 @@ class SSC_Admin{
                 value: ''
             });
             <?php
-            $group = new SSC_Group();
+            $group = new Group();
             $groups = $group->get_groups();
             foreach ($groups as $key => $group) { ?>
             sscContentGroups.push({
@@ -207,5 +215,3 @@ class SSC_Admin{
     }
 
 }
-
-new SSC_Admin();

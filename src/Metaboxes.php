@@ -1,8 +1,14 @@
 <?php
+/**
+ * @package Redbit\SimpleShop\WpPlugin
+ * @license MIT
+ * @copyright 2016-2018 Redbit s.r.o.
+ * @author Redbit s.r.o. <info@simpleshop.cz>
+ */
 
-namespace SSC;
+namespace Redbit\SimpleShop\WpPlugin;
 
-class SSC_Metaboxes{
+class Metaboxes{
 
     public $prefix = '_ssc_';
 
@@ -17,10 +23,10 @@ class SSC_Metaboxes{
      */
     function page_metaboxes(){
 
-        $ssc_group = new SSC_Group();
+        $ssc_group = new Group();
         $groups = $ssc_group->get_groups();
-        $ssc_access = new SSC_Access();
-        $ssc = new SSC();
+        $ssc_access = new Access();
+        $ssc = new Loader();
         $post_types = $ssc->get_post_types();
 
 
@@ -130,11 +136,11 @@ class SSC_Metaboxes{
             'show_names' => true,
         ));
 
-        $ssc_group = new SSC_Group();
+        $ssc_group = new Group();
         $groups = $ssc_group->get_groups();
 
 
-        $access = new SSC_Access();
+        $access = new Access();
 
         if ($access->user_is_admin()) {
             $cmb->add_field(array(
@@ -165,4 +171,3 @@ class SSC_Metaboxes{
 
 }
 
-new SSC_Metaboxes();

@@ -1,8 +1,14 @@
 <?php
+/**
+ * @package Redbit\SimpleShop\WpPlugin
+ * @license MIT
+ * @copyright 2016-2018 Redbit s.r.o.
+ * @author Redbit s.r.o. <info@simpleshop.cz>
+ */
 
-namespace SSC;
+namespace Redbit\SimpleShop\WpPlugin;
 
-class SSC_Group{
+class Group{
 
     public $id = '';
     public $name = '';
@@ -88,7 +94,7 @@ class SSC_Group{
             update_user_meta($user_id,'_ssc_user_groups',$groups);
 
             // Set the date of user registration to the group
-            $membership = new SSC_Membership($user_id);
+            $membership = new Membership($user_id);
             $membership->set_subscription_date($this->id);
         }
     }
@@ -116,4 +122,3 @@ class SSC_Group{
 
 }
 
-new SSC_Group();

@@ -1,8 +1,14 @@
 <?php
+/**
+ * @package Redbit\SimpleShop\WpPlugin
+ * @license MIT
+ * @copyright 2016-2018 Redbit s.r.o.
+ * @author Redbit s.r.o. <info@simpleshop.cz>
+ */
 
-namespace SSC;
+namespace Redbit\SimpleShop\WpPlugin;
 
-class SSC_Cron
+class Cron
 {
     function __construct()
     {
@@ -37,7 +43,7 @@ class SSC_Cron
 
         if ($the_query->have_posts()) {
 
-            $group = new SSC_Group();
+            $group = new Group();
 
             // Get all users
             $users = get_users();
@@ -45,7 +51,7 @@ class SSC_Cron
             // Get all groups to array
             $users_groups = array();
             foreach ($users as $user) {
-                $membership = new SSC_Membership($user->ID);
+                $membership = new Membership($user->ID);
                 $users_groups[$user->ID] = $membership->groups;
             }
 
@@ -60,7 +66,7 @@ class SSC_Cron
 
                 $email_subject = get_post_meta($post->ID, SSC_PREFIX . 'email_subject_user_can_access', true);
 
-                $access = new SSC_Access();
+                $access = new Access();
                 // Get post groups
                 $groups = $access->get_post_groups();
                 // Get days to access
@@ -108,12 +114,4 @@ class SSC_Cron
 
         wp_reset_postdata();
     }
-}
-
-new SSC_Cron();
-//add_action('init', '\SSC\test2');
-function test2()
-{
-    $cron = new SSC_Cron();
-    $cron->send_user_has_access_to_post_notification();
 }

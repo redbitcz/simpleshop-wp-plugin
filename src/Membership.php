@@ -1,14 +1,20 @@
 <?php
+/**
+ * @package Redbit\SimpleShop\WpPlugin
+ * @license MIT
+ * @copyright 2016-2018 Redbit s.r.o.
+ * @author Redbit s.r.o. <info@simpleshop.cz>
+ */
 
-namespace SSC;
+namespace Redbit\SimpleShop\WpPlugin;
 
-class SSC_Membership
+class Membership
 {
     private $user_id;
     public $groups = array();
 
     /**
-     * SSC_Membership constructor.
+     * Membership constructor.
      * Get user data if requested
      * @param string $user_id
      */
@@ -25,7 +31,7 @@ class SSC_Membership
      */
     function get()
     {
-        $ssc_groups = new SSC_Group();
+        $ssc_groups = new Group();
         $groups = $ssc_groups->get_user_groups($this->user_id);
 
         foreach ($groups as $group) {

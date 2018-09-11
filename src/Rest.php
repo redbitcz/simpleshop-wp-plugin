@@ -1,8 +1,14 @@
 <?php
+/**
+ * @package Redbit\SimpleShop\WpPlugin
+ * @license MIT
+ * @copyright 2016-2018 Redbit s.r.o.
+ * @author Redbit s.r.o. <info@simpleshop.cz>
+ */
 
-namespace SSC;
+namespace Redbit\SimpleShop\WpPlugin;
 
-class SSC_Rest_Order extends \WP_REST_Controller{
+class Rest extends \WP_REST_Controller{
 
     function __construct(){
         add_action('rest_api_init',array($this,'register_routes'));
@@ -39,7 +45,7 @@ class SSC_Rest_Order extends \WP_REST_Controller{
     }
 
     function get_groups(){
-        $ssc_group = new SSC_Group();
+        $ssc_group = new Group();
         return new \WP_REST_Response($ssc_group->get_groups(),200);
     }
 
@@ -91,14 +97,14 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         // Check if group exists
         $user_groups = array();
         foreach($request->get_param('user_group') as $group){
-            $ssc_group = new SSC_Group($group);
+            $ssc_group = new Group($group);
 
             // Add the user to group
             if($ssc_group->group_exists()){
                 $ssc_group->add_user_to_group($user_id);
 
                 // Set the membership valid_to param
-                $membership = new SSC_Membership($user_id);
+                $membership = new Membership($user_id);
                 $valid_to = $request->get_param('valid_to') ?: '';
                 $membership->set_valid_to($group,$valid_to);
 
@@ -124,11 +130,11 @@ class SSC_Rest_Order extends \WP_REST_Controller{
         // Foreach group from request
         // foreach($request->get_param('user_group') as $group){
         // Foreach each group
-	    $SSC_group = new SSC_Group();
+	    $SSC_group = new Group();
 	    foreach($SSC_group->get_user_groups($user_id) as $group){
             // Scrub through posts and check, if some of the posts has that group assigned
             foreach($posts as $post){
-                $access = new SSC_Access();
+                $access = new Access();
 
                 if(in_array($group,unserialize($post->meta_value))){
                     // Check if the post can be accessed already, if not, continue
@@ -195,7 +201,7 @@ class SSC_Rest_Order extends \WP_REST_Controller{
      * @return \WP_Error|bool
      */
     public function create_item_permissions_check($request){
-        $ssc = new SSC();
+        $ssc = new Loader();
         return $ssc->validate_secure_key($request->get_param('hash'));
     }
 
@@ -222,5 +228,3 @@ class SSC_Rest_Order extends \WP_REST_Controller{
     }
 
 }
-
-new SSC_Rest_Order();
