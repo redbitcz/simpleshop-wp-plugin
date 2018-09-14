@@ -10,8 +10,8 @@
   Plugin Name: SimpleShop.cz
   Plugin URI: https://www.simpleshop.cz
   Description: Plugin pro propojení Wordpress a SimpleShop.cz
-  Author:  SimpleShop.cz
-  Author URI: https://www.simpleshop.cz
+  Author:  Redbit s.r.o.
+  Author URI: https://www.redbit.cz
   Version: dev-master
  */
 
