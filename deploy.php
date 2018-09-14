@@ -191,12 +191,12 @@ class DeployScript {
 	}
 
 	/**
-	 * Strips "v" from versions (v1.2.3 -> 1.2.3)
+	 * Strips "v" from versions (v1.2.3-beta -> 1.2.3)
 	 *
 	 * @return bool|string
 	 */
 	private function getNakedVersion() {
-		return substr( $this->version, 1 );
+		return preg_replace('/^v(\d+\.\d+\.\d+)(?:-.*)+$/D', '$1', $this->version);
 	}
 
 	/**
