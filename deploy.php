@@ -6,7 +6,7 @@
  * @author Redbit s.r.o. <info@redbit.cz>
  */
 
-$deploy          = new DeployScript( 'simpleshop-wp-plugin' );
+$deploy          = new DeployScript( 'simpleshop-cz' );
 $deploy->distDir = __DIR__ . '/dist';
 
 try {
