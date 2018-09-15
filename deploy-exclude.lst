@@ -3,6 +3,7 @@
 *.idea*
 *.idea*
 *nbproject*
+*assets*
 *dist*
 composer.json
 composer.lock
