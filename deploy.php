@@ -6,7 +6,7 @@
  * @author Redbit s.r.o. <info@redbit.cz>
  */
 
-$deploy          = new DeployScript( 'simple-shop-connector' );
+$deploy          = new DeployScript( 'simpleshop-cz' );
 $deploy->distDir = __DIR__ . '/dist';
 
 try {
@@ -92,7 +92,7 @@ class DeployScript {
 			__DIR__ . '/' . $this->productName . '.php',
 			array(
 				'Version: dev-master'                            => sprintf( 'Version: %s', $this->getNakedVersion() ),
-				'define(\'SSC_PLUGIN_VERSION\',\'dev-master\');' => sprintf( 'define(\'SSC_PLUGIN_VERSION\',\'%s\');',
+				'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'dev-master\' );' => sprintf( 'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'%s\' );',
 					$this->version ),
 			),
 			$this->distDir
@@ -191,12 +191,12 @@ class DeployScript {
 	}
 
 	/**
-	 * Strips "v" from versions (v1.2.3 -> 1.2.3)
+	 * Strips "v" from versions (v1.2.3-beta -> 1.2.3)
 	 *
 	 * @return bool|string
 	 */
 	private function getNakedVersion() {
-		return substr( $this->version, 1 );
+		return preg_replace('/^v(\d+\.\d+\.\d+)(?:-.*)+$/D', '$1', $this->version);
 	}
 
 	/**
