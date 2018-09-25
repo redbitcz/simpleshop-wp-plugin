@@ -3,7 +3,7 @@
   "description": "SimpleShop WordPress Plugin",
   "keywords": ["simpleshop", "vyfakturuj", "api", "faktura"],
   "homepage": "https://www.simpleshop.cz/category/wordpress-plugin/",
-  "type": "library",
+  "type": "wordpress-plugin",
   "license": "MIT",
   "authors": [
     {
