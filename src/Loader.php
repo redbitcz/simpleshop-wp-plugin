@@ -132,12 +132,12 @@ class Loader {
 
 	public function ssc_activation_hook() {
 		if ( ! function_exists( 'curl_init' ) || ! function_exists( 'random_bytes' ) ) {
-			echo '<h3>' . __( 'Aktivace se nezdařila. Kontaktuje prosím poskytovatele Vašeho hostingu a požádejte o instalaci rozšíření PHP - CURL a MCRYPT.',
-					'ssc' ) . '</h3>';
+			echo '<h3>' . __( 'Plugin activation failed. Please contact your provider and ask to install PHP extensions: cUrl and Mcrypt.',
+					'simpleshop-cz' ) . '</h3>';
 
 			//Adding @ before will prevent XDebug output
-			@trigger_error( __( 'Aktivace se nezdařila. Kontaktuje prosím poskytovatele Vašeho hostingu a požádejte o instalaci rozšíření PHP - CURL a MCRYPT.',
-				'ssc' ), E_USER_ERROR );
+			@trigger_error( __( 'Plugin activation failed. Please contact your provider and ask to install PHP extensions: cUrl and Mcrypt.',
+				'simpleshop-cz' ), E_USER_ERROR );
 		}
 
 		// Generate and save the secure key$this = new Loader();

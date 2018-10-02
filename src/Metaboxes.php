@@ -40,7 +40,7 @@ class Metaboxes {
 			 */
 			$cmb = new_cmb2_box( array(
 				'id'           => 'ssc_page_groups',
-				'title'        => __( 'SimpleShop - členské sekce', 'ssc' ),
+				'title'        => __( 'SimpleShop - Member sections', 'simpleshop-cz' ),
 				'object_types' => $post_types,
 				'context'      => 'normal',
 				'priority'     => 'high',
@@ -48,9 +48,9 @@ class Metaboxes {
 			) );
 
 			$cmb->add_field( array(
-				'name'    => __( 'Členské sekce, které mají přístup na stránku', 'ssc' ),
-				'desc'    => __( 'Pouze uživatelé v zaškrtnutých členskéch sekcích mají přístup na tuto stránku. Pokud nic nezaškrtnete, stránku uvidí všichni uživatelé',
-					'ssc' ),
+				'name'    => __( 'Member section with allowed access to page', 'simpleshop-cz' ),
+				'desc'    => __( 'Access to this page is permit only for users of selected Member Sections. If no one section selected, all users is permit to access this page.',
+					'simpleshop-cz' ),
 				'id'      => $this->prefix . 'groups',
 				'type'    => 'multicheck',
 				'options' => $groups,
@@ -60,9 +60,9 @@ class Metaboxes {
 			unset( $tmp_post_types['attachment'] );
 
 			$cmb->add_field( array(
-				'name'            => __( 'ID stránky pro přesměrování', 'ssc' ),
-				'desc'            => __( 'Vyberte stránku, na kterou uživatel bude přesměrován, pokud je přihlášen, ale nemá oprávnění k přístupu. Toto je preferovaný způsob - přsměrování bude fungovat, i pokud se v budoucnu změní adresa stránky',
-					'ssc' ),
+				'name'            => __( 'Page ID to redirect', 'simpleshop-cz' ),
+				'desc'            => __( 'Select one Page to which user will be redirected when uses is logged in, but have no access to page. This is preffered way. Redirect will works even if target page URL will be changer in future.',
+					'simpleshop-cz' ),
 				'id'              => $this->prefix . 'no_access_redirect_post_id',
 				'type'            => 'post_search_text',
 				'select_type'     => 'radio',
@@ -72,9 +72,9 @@ class Metaboxes {
 
 
 			$cmb->add_field( array(
-				'name' => __( 'Manuální adresa přesměrování', 'ssc' ),
-				'desc' => __( 'Zadejte ručně adresu, na kterou uživatel bude přesměrován, pokud je přihlášen, ale nemá oprávnění k přístupu. Pokud využijete tuto volbu, pole výše musí být prázdné.',
-					'ssc' ),
+				'name' => __( 'Manual URL to redirect', 'simpleshop-cz' ),
+				'desc' => __( 'Put URL to which user will be redirected when uses is logged in, but have no access to page. If you want to use this method, keep previous field empty.',
+					'simpleshop-cz' ),
 				'id'   => $this->prefix . 'no_access_redirect',
 				'type' => 'text'
 			) );
@@ -88,43 +88,43 @@ class Metaboxes {
 
 
 			$cmb->add_field( array(
-				'name' => __( 'Povolit přístup po X dnech od přiřazení do skupiny', 'ssc' ),
-				'desc' => __( 'Zadejte počet dní, které musí uplynout od přihlášení uživatele do skupiny pro získání přístupu k tomuto obsahu. Pokud např. uživatel koupí produkt 1.ledna a nastavíte 5 dní, uživatel bude mít ke stránce přístup 6. ledna.',
-					'ssc' ),
+				'name' => __( 'Delay access to content (days from group assign)', 'simpleshop-cz' ),
+				'desc' => __( 'Put number of days to delay before access to content is allowed after registration. For example: If registration to group is at January 1st and you set delay to 5 days, user get access to content from January 6th.',
+					'simpleshop-cz' ),
 				'id'   => $this->prefix . 'days_to_access',
 				'type' => 'text'
 			) );
 
 			$cmb->add_field( array(
-				'name'        => __( 'Povolit přístup OD data', 'ssc' ),
-				'desc'        => __( 'Zadejte datum, od kterého bude stránka přístupná (platí pro všechny skupiny)',
-					'ssc' ),
+				'name'        => __( 'Allow access from date', 'simpleshop-cz' ),
+				'desc'        => __( 'Put date which will be access to content allowed (applied to all groups)',
+					'simpleshop-cz' ),
 				'id'          => $this->prefix . 'date_to_access',
 				'type'        => 'text_date',
 				'date_format' => 'Y-m-d',
 			) );
 
 			$cmb->add_field( array(
-				'name'        => __( 'Povolit přístup DO data', 'ssc' ),
-				'desc'        => __( 'Zadejte datum, do kterého bude stránka přístupná (platí pro všechny skupiny)',
-					'ssc' ),
+				'name'        => __( 'Allow access to date', 'simpleshop-cz' ),
+				'desc'        => __( 'Put date until will be access to content allowed (applied to all groups)',
+					'simpleshop-cz' ),
 				'id'          => $this->prefix . 'date_until_to_access',
 				'type'        => 'text_date',
 				'date_format' => 'Y-m-d',
 			) );
 
 			$cmb->add_field( array(
-				'name' => __( 'Předmět emailu při zpřístupnění obsahu', 'ssc' ),
-				'desc' => __( 'Zadejte předmět emailu, který se uživateli automaticky odešlě v okamžiku, kdy získá přístup k tomuto obsahu na základě nastavení dní výše.',
-					'ssc' ),
+				'name' => __( 'Subject of email when content access allowed', 'simpleshop-cz' ),
+				'desc' => __( 'Enter the subject of the email that will automatically be sent to the user when gains access to this content based on the days set above.',
+					'simpleshop-cz' ),
 				'id'   => $this->prefix . 'email_subject_user_can_access',
 				'type' => 'text'
 			) );
 
 			$cmb->add_field( array(
-				'name' => __( 'Email při zpřístupnění obsahu', 'ssc' ),
-				'desc' => __( 'Zadejte email, který se uživateli automaticky odešlě v okamžiku, kdy získá přístup k tomuto obsahu na základě nastavení dní výše.',
-					'ssc' ),
+				'name' => __( 'Email message when content access allowed', 'simpleshop-cz' ),
+				'desc' => __( 'Enter an email that will automatically be sent to the user when gains access to this content based on the days set above.',
+					'simpleshop-cz' ),
 				'id'   => $this->prefix . 'email_user_can_access',
 				'type' => 'wysiwyg'
 			) );
@@ -141,7 +141,7 @@ class Metaboxes {
 		 */
 		$cmb = new_cmb2_box( array(
 			'id'           => 'ssc_user_groups',
-			'title'        => __( 'SimpleShop', 'ssc' ),
+			'title'        => __( 'SimpleShop', 'simpleshop-cz' ),
 			'object_types' => array( 'user' ),
 			'context'      => 'normal',
 			'priority'     => 'high',
@@ -156,8 +156,8 @@ class Metaboxes {
 
 		if ( $access->user_is_admin() ) {
 			$cmb->add_field( array(
-				'name'    => __( 'SimpleShop - členské sekce<br/><small style="font-weight:normal;">Vyberte, do kterých členských sekcí má mít uživatel přístup.</small>',
-					'ssc' ),
+				'name'    => __( 'SimpleShop - member sections<br/><small style=\"font-weight:normal;\">Choose which member sections the user should have access to.</small>',
+					'simpleshop-cz' ),
 //            'desc' => __('Vyberte, do kterých členských sekcí má mít uživatel přístup','ssc'),
 				'id'      => $this->prefix . 'user_groups',
 				'type'    => 'multicheck',
@@ -166,15 +166,15 @@ class Metaboxes {
 
 			foreach ( $groups as $key => $group ) {
 				$cmb->add_field( array(
-					'name'        => '<small style="font-weight:normal;">' . sprintf( __( 'Datum registrace do skupiny %s.',
-							'ssc' ), $group ) . '</small>',
+					'name'        => '<small style="font-weight:normal;">' . sprintf( __( 'Registration date to group %s.',
+							'simpleshop-cz' ), $group ) . '</small>',
 					'id'          => $this->prefix . 'group_subscription_date_' . $key,
 					'type'        => 'text_date',
 					'date_format' => 'Y-m-d',
 				) );
 				$cmb->add_field( array(
-					'name'        => '<small style="font-weight:normal;">' . sprintf( __( 'Datum vypršení platnosti registrace do skupiny %s.',
-							'ssc' ), $group ) . '</small>',
+					'name'        => '<small style="font-weight:normal;">' . sprintf( __( 'Expiration date of registration to group %s.',
+							'simpleshop-cz' ), $group ) . '</small>',
 					'id'          => $this->prefix . 'group_subscription_valid_to_' . $key,
 					'type'        => 'text_date',
 					'date_format' => 'Y-m-d',

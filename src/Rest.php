@@ -70,7 +70,7 @@ class Rest extends \WP_REST_Controller {
 		foreach ( $params_to_validate as $param ) {
 			if ( ! $request->get_param( $param ) ) {
 				return new \WP_Error( 'required-param-missing',
-					sprintf( __( 'Required parameter %s is missing', 'ssc' ), $param ),
+					sprintf( __( 'Required parameter %s is missing', 'simpleshop-cz' ), $param ),
 					array( 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ) );
 			}
 		}
@@ -78,7 +78,7 @@ class Rest extends \WP_REST_Controller {
 		// Check if we got valid email
 		$email = sanitize_email( $request->get_param( 'email' ) );
 		if ( ! is_email( $email ) ) {
-			return new \WP_Error( 'wrong-email-format', __( 'The email is in wrong format', 'ssc' ),
+			return new \WP_Error( 'wrong-email-format', __( 'The email is in wrong format', 'simpleshop-cz' ),
 				array( 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ) );
 		}
 
@@ -99,7 +99,7 @@ class Rest extends \WP_REST_Controller {
 //            wp_new_user_notification($user_id,$userdata['user_pass']); // poslani notifikacniho e-mailu
 
 			if ( is_wp_error( $user_id ) ) {
-				return new \WP_Error( 'could-not-create-user', __( "The user couldn't be created", 'ssc' ),
+				return new \WP_Error( 'could-not-create-user', __( "The user couldn't be created", 'simpleshop-cz' ),
 					array( 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ) );
 			}
 		} else {

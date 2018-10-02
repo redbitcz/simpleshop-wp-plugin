@@ -149,20 +149,20 @@ class Admin {
 	 */
 	public function register_groups_cpt() {
 		$labels = array(
-			'name'               => __( 'Členské sekce', 'ssc' ),
-			'singular_name'      => __( 'Skupina', 'ssc' ),
-			'menu_name'          => __( 'Členské sekce', 'ssc' ),
-			'name_admin_bar'     => __( 'Členské sekce', 'ssc' ),
-			'add_new'            => __( 'Přidat skupinu', 'ssc' ),
-			'add_new_item'       => __( 'Přidat novou skupinu', 'ssc' ),
-			'new_item'           => __( 'Nová skupina', 'ssc' ),
-			'edit_item'          => __( 'Upravit skupinu', 'ssc' ),
-			'view_item'          => __( 'Zobrazit skupinu', 'ssc' ),
-			'all_items'          => __( 'Členské sekce', 'ssc' ),
-			'search_items'       => __( 'Hledat skupiny', 'ssc' ),
-			'parent_item_colon'  => __( 'Nadřazená skupina:', 'ssc' ),
-			'not_found'          => __( 'Nebyly nalezeny žádné skupiny.', 'ssc' ),
-			'not_found_in_trash' => __( 'Žádné skupiny v koši', 'ssc' )
+			'name'               => __( 'Member sections', 'simpleshop-cz' ),
+			'singular_name'      => __( 'Group', 'simpleshop-cz' ),
+			'menu_name'          => __( 'Member sections', 'simpleshop-cz' ),
+			'name_admin_bar'     => __( 'Member sections', 'simpleshop-cz' ),
+			'add_new'            => __( 'Add group', 'simpleshop-cz' ),
+			'add_new_item'       => __( 'Add new group', 'simpleshop-cz' ),
+			'new_item'           => __( 'Add new group', 'simpleshop-cz' ),
+			'edit_item'          => __( 'Edit group', 'simpleshop-cz' ),
+			'view_item'          => __( 'Show group', 'simpleshop-cz' ),
+			'all_items'          => __( 'Member sections', 'simpleshop-cz' ),
+			'search_items'       => __( 'Find groups', 'simpleshop-cz' ),
+			'parent_item_colon'  => __( 'Parent group:', 'simpleshop-cz' ),
+			'not_found'          => __( 'No Groups found.', 'simpleshop-cz' ),
+			'not_found_in_trash' => __( 'No Groups is a Trash', 'simpleshop-cz' )
 		);
 
 		$args = array(
@@ -187,8 +187,13 @@ class Admin {
 	 */
 	public function add_settings_page() {
 		add_menu_page(
-			__( 'SimpleShop', 'ssc' ), __( 'SimpleShop', 'ssc' ), 'manage_options', 'simple_shop_settings',
-			array( $this, 'render_settings_page' ), SIMPLESHOP_PLUGIN_URL . '/img/white_logo.png', 99
+			__( 'SimpleShop', 'simpleshop-cz' ),
+            __( 'SimpleShop', 'simpleshop-cz' ),
+            'manage_options',
+            'simple_shop_settings',
+			array( $this, 'render_settings_page' ),
+            SIMPLESHOP_PLUGIN_URL . '/img/white_logo.png',
+            99
 		);
 	}
 
