@@ -91,9 +91,14 @@ class DeployScript {
 		$stampedFile = $this->copyStampedFile(
 			__DIR__ . '/' . $this->productName . '.php',
 			array(
-				'Version: dev-master'                            => sprintf( 'Version: %s', $this->getNakedVersion() ),
-				'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'dev-master\' );' => sprintf( 'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'%s\' );',
-					$this->version ),
+				'Version: dev-master'                                      => sprintf(
+					'Version: %s',
+					$this->getNakedVersion()
+				),
+				'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'dev-master\' );' => sprintf(
+					'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'%s\' );',
+					$this->version
+				),
 			),
 			$this->distDir
 		);
@@ -196,7 +201,7 @@ class DeployScript {
 	 * @return bool|string
 	 */
 	private function getNakedVersion() {
-		return preg_replace('/^v(\d+\.\d+\.\d+)(?:-.*)+$/D', '$1', $this->version);
+		return preg_replace( '/^v(\d+\.\d+\.\d+)(?:-.*)*$/D', '$1', $this->version );
 	}
 
 	/**
