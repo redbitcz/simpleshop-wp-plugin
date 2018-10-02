@@ -7,12 +7,14 @@
  */
 
 /*
-  Plugin Name: SimpleShop.cz
-  Plugin URI: https://www.simpleshop.cz
-  Description: Plugin pro propojení Wordpress a SimpleShop.cz
-  Author:  Redbit s.r.o.
-  Author URI: https://www.redbit.cz
-  Version: dev-master
+ * Plugin Name: SimpleShop.cz
+ * Plugin URI: https://www.simpleshop.cz
+ * Description: Plugin implement SimpleShop.cz into Wordpress
+ * Author:  Redbit s.r.o.
+ * Author URI: https://www.redbit.cz
+ * Version: dev-master
+ * Text Domain: simpleshop-cz
+ * Domain Path: /languages
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
