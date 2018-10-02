@@ -1,12 +1,12 @@
 *.git*
 *.gitignore*
 *.idea*
-*.idea*
 *nbproject*
 *assets*
 *dist*
 *tools*
 *wordpress*
+*.DS_Store
 composer.json
 composer.lock
 deploy-exclude.lst
