@@ -74,7 +74,7 @@ class Admin {
 	public function publishing_actions() {
 		$mg_post_type = 'ssc_group';
 		global $post;
-		if ( $post->post_type == $mg_post_type ) {
+		if ( $post && $post->post_type == $mg_post_type ) {
 			echo '<style type="text/css">
             .misc-pub-section.misc-pub-visibility,
             .misc-pub-section.curtime
