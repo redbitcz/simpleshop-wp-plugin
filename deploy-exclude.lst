@@ -5,6 +5,7 @@
 *nbproject*
 *assets*
 *dist*
+*tools*
 *wordpress*
 composer.json
 composer.lock

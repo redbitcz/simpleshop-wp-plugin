@@ -30,6 +30,7 @@ class Loader {
 
 	public function __construct() {
 		$this->init();
+		$this->init_i18n();
 
 		$this->secure_key = $this->load_api_key();
 		$this->email      = $this->load_email();
@@ -142,5 +143,14 @@ class Loader {
 		// Generate and save the secure key$this = new Loader();
 		$key = $this->generate_secure_key();
 		$this->save_secure_key( $key );
+	}
+
+	public function init_i18n() {
+		add_action( 'plugins_loaded', array($this, 'load_textdomain_i18n') );
+	}
+
+	public function load_textdomain_i18n() {
+		$plugin_rel_path = str_replace(WP_PLUGIN_DIR . '/', '', SIMPLESHOP_PLUGIN_DIR . 'languages/');
+		load_plugin_textdomain( 'simpleshop-cz', FALSE, $plugin_rel_path );
 	}
 }
