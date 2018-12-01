@@ -42,7 +42,8 @@ class Access {
 		if ( $post_groups && ! $this->user_can_view_post() && ! is_home() && ! is_front_page() ) {
 			$no_access_url = $this->get_no_access_redirect_url();
 
-			$url = $no_access_url ?: site_url();
+			$main_redirect_url = is_user_logged_in() ? site_url() : wp_login_url();
+			$url = $no_access_url ?: $main_redirect_url;
 			wp_redirect( $url );
 			exit();
 		}
