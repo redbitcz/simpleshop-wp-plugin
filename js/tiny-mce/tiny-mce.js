@@ -12,7 +12,6 @@
                 image: url + '/img/ssc-logo.png'
             });
             ed.addCommand('sscaddformbuttonCmd', function () {
-
                 jQuery.post(ajaxurl, {action: 'load_simple_shop_products'}, function (response) {
 
                     var sscProducts = [];
@@ -101,6 +100,26 @@
                             value: 'yes'
                         },
                         {
+                            type: 'listbox',
+                            name: 'sscContentIsLoggedIn',
+                            label: 'Je uživatel přihlášený?',
+                            values: [
+                                {
+                                    text: '',
+                                    value: ''
+                                },
+                                {
+                                    text: 'Ano',
+                                    value: 'yes'
+                                },
+                                {
+                                    text: 'Ne',
+                                    value: 'no'
+                                }
+                            ],
+                            value: ''
+                        },
+                        {
                             type: 'textbox',
                             name: 'sscContentDaysToView',
                             label: 'Povolit přístup po X dnech od přiřazení do skupiny',
@@ -144,6 +163,9 @@
                         }
                         if (e.data.sscContentIsMember.length > 0) {
                             params.push('is_member="' + e.data.sscContentIsMember + '"');
+                        }
+                        if (e.data.sscContentIsLoggedIn.length > 0) {
+                            params.push('is_logged_in="' + e.data.sscContentIsLoggedIn + '"');
                         }
                         if (e.data.sscContentDaysToView.length > 0) {
                             params.push('days_to_view="' + e.data.sscContentDaysToView + '"');

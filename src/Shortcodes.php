@@ -39,6 +39,7 @@ class Shortcodes {
 
 		$group_id           = $atts['group_id'];
 		$is_member          = $atts['is_member'];
+		$is_logged_in          = $atts['is_logged_in'];
 		$specific_date_from = $atts['specific_date_from'];
 		$specific_date_to   = $atts['specific_date_to'];
 		$days_to_view       = $atts['days_to_view'];
@@ -76,6 +77,13 @@ class Shortcodes {
 			}
 		} else {
 			// If the is_member isn't 'yes' or 'no', the parameter is wrong, so stop here
+			return '';
+		}
+
+		// Check if we should display content for logged-in or non-logged-in user
+		if ($is_logged_in == 'yes' && !is_user_logged_in()) {
+			return '';
+		} else if ($is_logged_in == 'no' && is_user_logged_in()) {
 			return '';
 		}
 
