@@ -16,7 +16,7 @@
   },
   "require": {
     "php": ">=5.3.2",
-    "webdevstudios/cmb2": "dev-master",
+    "cmb2/cmb2": "dev-master",
     "tgmpa/tgm-plugin-activation": "dev-master",
     "webdevstudios/cmb2-post-search-field": "dev-master",
     "vyfakturuj/vyfakturuj-api-php": "~2.1.8"
@@ -31,7 +31,7 @@
       "src/"
     ],
     "files": [
-      "vendor/webdevstudios/cmb2/init.php",
+      "vendor/cmb2/cmb2/init.php",
       "vendor/webdevstudios/cmb2-post-search-field/cmb2_post_search_field.php"
     ]
   }
