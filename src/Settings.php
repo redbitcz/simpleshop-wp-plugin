@@ -271,13 +271,23 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
 	 * @return void
 	 */
 	public function settings_notices( $object_id, $updated ) {
-		$vyfakturuj_api = new VyfakturujAPI( $this->loader->get_api_email(), $this->loader->get_api_key() );
+	    $api_email = $this->loader->get_api_email();
+	    $api_key = $this->loader->get_api_key();
+
+	    if (!$api_email && isset($_POST['ssc_api_email']))
+	        $api_email = sanitize_email($_POST['ssc_api_email']);
+
+		if (!$api_key && isset($_POST['ssc_api_key']))
+			$api_key = sanitize_text_field($_POST['ssc_api_key']);
+
+		$vyfakturuj_api = new VyfakturujAPI( $api_email, $api_key );
 		$result         = $vyfakturuj_api->initWPPlugin( site_url() );
 		if ( isset( $result['status'] ) && $result['status'] == 'success' ) {
 			update_option( 'ssc_valid_api_keys', 1 );
 		} else {
 			update_option( 'ssc_valid_api_keys', 0 );
 		}
+		
 
 		if ( $object_id !== $this->key || empty( $updated ) ) {
 			return;
