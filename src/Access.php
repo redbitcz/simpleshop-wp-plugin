@@ -18,6 +18,20 @@ class Access {
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'setup_nav_menu_item' ) );
 		add_action( 'wp_head', array( $this, 'hide_menu_items' ) );
 		add_action( 'init', array( $this, 'mioweb_remove_login_redirect' ) );
+		add_filter( 'login_redirect', array( $this, 'login_redirect' ), 10, 3 );
+	}
+
+	/**
+	 * TODO: Setup the correct redirect
+	 *
+	 * @param $redirect
+	 * @param $request
+	 * @param $user
+	 *
+	 * @return mixed
+	 */
+	public function login_redirect( $redirect, $request, $user ) {
+		return $redirect;
 	}
 
 	/**

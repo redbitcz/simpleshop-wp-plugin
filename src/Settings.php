@@ -226,6 +226,21 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
 		) );
 
 		$cmb->add_field( array(
+			'name' => 'Obecná nastavení',
+			'type' => 'title',
+			'id'   => 'ssc_general_settings_title',
+			'classes_cb' => array( $this, 'is_valid_api_keys' ),
+		) );
+
+		$cmb->add_field( array(
+			'name' => 'Přesměrování po přihlášení',
+			'type' => 'text',
+			'id'   => 'ssc_redirect_url',
+			'classes_cb' => array( $this, 'is_valid_api_keys' ),
+		) );
+
+
+		$cmb->add_field( array(
 			'name' => 'Odebrat propojení',
 			'type' => 'title',
 			'id'   => 'ssc_remove_api_title',
