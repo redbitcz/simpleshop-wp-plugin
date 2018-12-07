@@ -70,6 +70,13 @@ class Settings {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 		add_action( 'cmb2_admin_init', array( $this, 'add_options_page_metabox' ) );
+		add_filter( 'cmb2_render_disconnect_button', array( $this, 'field_type_disconnect_button' ), 10, 5 );
+		add_action( 'admin_init', array( $this, 'maybe_disconnect_simpleshop' ) );
+	}
+
+	public function field_type_disconnect_button( $field, $escaped_value, $object_id, $object_type, $field_type_object ) { ?>
+        <a href="<?php echo admin_url('admin.php?page=ssc_options&disconnect_simpleshop=1')?>"><?php _e('Disconnect Simple Shop', 'simpleshop-cz');?></a>
+	<?php
 	}
 
 	/**
@@ -217,7 +224,41 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>'
 			'id'   => 'ssc_api_key',
 			'type' => 'text',
 		) );
+
+		$cmb->add_field( array(
+			'name' => 'Odebrat propojení',
+			'type' => 'title',
+			'id'   => 'ssc_remove_api_title',
+			'classes_cb' => array( $this, 'is_valid_api_keys' ),
+		) );
+
+		$cmb->add_field( array(
+			'name' => __( 'Disconnect Simple Shop', 'simpleshop-cz' ),
+			'desc' => __( 'You found it at SimpleShop in Settings (Nastavení) -> WP Plugin', 'simpleshop-cz' ),
+			'id'   => 'ssc_api_disconnect',
+			'type' => 'disconnect_button',
+			'classes_cb' => array( $this, 'is_valid_api_keys' ),
+		) );
 	}
+
+	/**
+     * Maybe delete the API keys
+     */
+	public function maybe_disconnect_simpleshop() {
+        if (!isset($_GET['disconnect_simpleshop']) || $_GET['disconnect_simpleshop'] !== '1')
+        return;
+
+        // Unset only API keys, leave the other settings saved
+		$options = get_option($this->key);
+		unset($options['ssc_api_email']);
+		unset($options['ssc_api_key']);
+
+		// Set valid API keys to false
+		update_option( 'ssc_valid_api_keys', 0 );
+
+		// Update the SS options
+		update_option($this->key,$options);
+    }
 
 	/**
 	 * Register settings notices for display
