@@ -35,6 +35,8 @@ class Loader {
 		$this->secure_key = $this->load_api_key();
 		$this->email      = $this->load_email();
 
+		SimpleShop::set_loader( $this );
+
 		add_action( 'tgmpa_register', array( $this, 'register_required_plugins' ) );
 		register_activation_hook( __FILE__, array( $this, 'ssc_activation_hook' ) );
 	}
