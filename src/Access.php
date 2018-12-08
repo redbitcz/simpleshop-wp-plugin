@@ -41,7 +41,9 @@ class Access {
 	 */
 	public function login_redirect( $redirect, $request, $user ) {
 
-	    $redirect_url = $this->settings->ssc_get_option( 'ssc_redirect_url' );
+	    if ($redirect_url = $this->settings->ssc_get_option( 'ssc_redirect_url' )) {
+	        $redirect = $redirect_url;
+        }
 
 		return $redirect;
 	}
