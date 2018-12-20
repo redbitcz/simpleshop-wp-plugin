@@ -39,7 +39,7 @@ class Shortcodes {
 
 		$group_id           = $atts['group_id'];
 		$is_member          = $atts['is_member'];
-		$is_logged_in          = $atts['is_logged_in'];
+		$is_logged_in       = $atts['is_logged_in'];
 		$specific_date_from = $atts['specific_date_from'];
 		$specific_date_to   = $atts['specific_date_to'];
 		$days_to_view       = $atts['days_to_view'];

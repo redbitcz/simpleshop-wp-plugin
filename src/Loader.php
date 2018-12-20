@@ -146,11 +146,11 @@ class Loader {
 	}
 
 	public function init_i18n() {
-		add_action( 'plugins_loaded', array($this, 'load_textdomain_i18n') );
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain_i18n' ) );
 	}
 
 	public function load_textdomain_i18n() {
-		$plugin_rel_path = str_replace(WP_PLUGIN_DIR . '/', '', SIMPLESHOP_PLUGIN_DIR . 'languages/');
-		load_plugin_textdomain( 'simpleshop-cz', FALSE, $plugin_rel_path );
+		$plugin_rel_path = str_replace( WP_PLUGIN_DIR . '/', '', SIMPLESHOP_PLUGIN_DIR . 'languages/' );
+		load_plugin_textdomain( 'simpleshop-cz', false, $plugin_rel_path );
 	}
 }
