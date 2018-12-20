@@ -41,7 +41,7 @@ class Loader {
 
 	private function init() {
 		$this->settings = new Settings( $this );
-		$this->access   = new Access();
+		$this->access   = new Access( $this->settings );
 
 		new Admin( $this );
 		new Rest( $this );

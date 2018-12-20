@@ -13,7 +13,16 @@ namespace Redbit\SimpleShop\WpPlugin;
  */
 class Access {
 
-	public function __construct() {
+	/**
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
+	 * @param Settings $settings
+	 */
+	public function __construct( Settings $settings ) {
+		$this->settings = $settings;
 		add_action( 'template_redirect', array( $this, 'check_access' ) );
 		add_filter( 'wp_setup_nav_menu_item', array( $this, 'setup_nav_menu_item' ) );
 		add_action( 'wp_head', array( $this, 'hide_menu_items' ) );
@@ -31,6 +40,11 @@ class Access {
 	 * @return mixed
 	 */
 	public function login_redirect( $redirect, $request, $user ) {
+
+	    if ($redirect_url = $this->settings->ssc_get_option( 'ssc_redirect_url' )) {
+	        $redirect = $redirect_url;
+        }
+
 		return $redirect;
 	}
 
