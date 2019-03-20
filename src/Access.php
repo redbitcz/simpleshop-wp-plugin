@@ -28,6 +28,7 @@ class Access {
 		add_action( 'wp_head', array( $this, 'hide_menu_items' ) );
 		add_action( 'init', array( $this, 'mioweb_remove_login_redirect' ) );
 		add_filter( 'login_redirect', array( $this, 'login_redirect' ), 10, 3 );
+		add_filter( 'pre_get_posts', array( $this, 'hide_protected_from_rss' ) );
 	}
 
 	/**
@@ -297,5 +298,27 @@ class Access {
             }
         </style>
 		<?php
+	}
+
+	/**
+	 * Hide protected posts from RSS if requested
+	 * @param $query
+	 *
+	 * @return mixed
+	 */
+	public function hide_protected_from_rss( $query ) {
+		if ( ! $query->is_admin && $query->is_feed && $this->settings->ssc_get_option( 'ssc_hide_from_rss' ) ) {
+			$meta_query = $query->get( 'meta_query' );
+			if ( ! $meta_query ) {
+				$meta_query = [];
+			}
+			$meta_query[] = [
+				'key'     => '_ssc_groups',
+				'compare' => 'NOT EXISTS',
+			];
+			$query->set( 'meta_query', $meta_query ); // id of page or post
+		}
+
+		return $query;
 	}
 }

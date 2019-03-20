@@ -274,6 +274,14 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'classes_cb' => array( $this, 'is_valid_api_keys' ),
 			)
 		);
+		$cmb->add_field(
+			array(
+				'name'       => 'Odebrat zabezpečené z RSS',
+				'type'       => 'checkbox',
+				'id'         => 'ssc_hide_from_rss',
+				'classes_cb' => array( $this, 'is_valid_api_keys' ),
+			)
+		);
 
 
 		$cmb->add_field(
