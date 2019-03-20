@@ -27,28 +27,31 @@ class Rest extends \WP_REST_Controller {
 	public function register_routes() {
 		$version   = '1';
 		$namespace = 'simpleshop/v' . $version;
-		register_rest_route( $namespace, '/group', array(
+		register_rest_route(
+			$namespace,
+			'/group',
 			array(
-				'methods'             => \WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_groups' ),
-				'permission_callback' => array( $this, 'create_item_permissions_check' ),
-				'args'                => $this->get_endpoint_args_for_item_schema( true ),
-			),
-		) );
+				array(
+					'methods'             => \WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_groups' ),
+					'permission_callback' => array( $this, 'create_item_permissions_check' ),
+					'args'                => $this->get_endpoint_args_for_item_schema( true ),
+				),
+			)
+		);
 
-		register_rest_route( $namespace, '/add-member', array(
+		register_rest_route(
+			$namespace,
+			'/add-member',
 			array(
-				'methods'             => \WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'create_item' ),
-				'permission_callback' => array( $this, 'create_item_permissions_check' ),
-				'args'                => $this->get_endpoint_args_for_item_schema( true ),
-			),
-		) );
-
-//        register_rest_route($namespace,'/'.$.'/schema',array(
-//            'methods' => \WP_REST_Server::READABLE,
-//            'callback' => array($this,'get_public_item_schema'),
-//        ));
+				array(
+					'methods'             => \WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'create_item' ),
+					'permission_callback' => array( $this, 'create_item_permissions_check' ),
+					'args'                => $this->get_endpoint_args_for_item_schema( true ),
+				),
+			)
+		);
 	}
 
 	public function get_groups() {
@@ -135,19 +138,19 @@ class Rest extends \WP_REST_Controller {
 		$args = [
 			'meta_query' => [
 				[
-					'key' => '_ssc_groups',
-					'compare' => 'EXISTS'
-				]
-			]
+					'key'     => '_ssc_groups',
+					'compare' => 'EXISTS',
+				],
+			],
 		];
 
-		$posts = get_posts($args);
+		$posts = get_posts( $args );
 
 		// Get the post details
 		$links = array();
 		$i     = 0;
 
-		// Foreach group from request
+		// For each group from request
 		// foreach($request->get_param('user_group') as $group){
 		// Foreach each group
 		$SSC_group = new Group();
@@ -156,7 +159,7 @@ class Rest extends \WP_REST_Controller {
 			foreach ( $posts as $post ) {
 				/** @var \WP_Post $post */
 				$access = $this->loader->get_access();
-				$groups = $access->get_post_groups($post->ID);
+				$groups = $access->get_post_groups( $post->ID );
 
 				if ( in_array( $group, $groups ) ) {
 					// Check if the post can be accessed already, if not, continue
@@ -196,9 +199,9 @@ class Rest extends \WP_REST_Controller {
 				$pages .= '</ul>';
 			}
 
-			$replaceArray = array(// pole ktera je mozne nahradit
-				'{pages}'     => $pages,// zpetna kompatibilita s v1.1
-				'{mail}'      => $email,// zpetna kompatibilita s v1.1
+			$replaceArray = array( // pole ktera je mozne nahradit
+				'{pages}'     => $pages, // zpetna kompatibilita s v1.1
+				'{mail}'      => $email, // zpetna kompatibilita s v1.1
 				'{login}'     => $_login,
 				'{password}'  => $_password,
 				'{login_url}' => wp_login_url(),
@@ -230,17 +233,6 @@ class Rest extends \WP_REST_Controller {
 	}
 
 	/**
-	 * Prepare the item for create or update operation
-	 *
-	 * @param \WP_REST_Request $request Request object
-	 *
-	 * @return array $prepared_item
-	 */
-	protected function prepare_item_for_database( $request ) {
-		return array();
-	}
-
-	/**
 	 * Prepare the item for the REST response
 	 *
 	 * @param mixed $item WordPress representation of the item.
@@ -249,6 +241,17 @@ class Rest extends \WP_REST_Controller {
 	 * @return mixed
 	 */
 	public function prepare_item_for_response( $item, $request ) {
+		return array();
+	}
+
+	/**
+	 * Prepare the item for create or update operation
+	 *
+	 * @param \WP_REST_Request $request Request object
+	 *
+	 * @return array $prepared_item
+	 */
+	protected function prepare_item_for_database( $request ) {
 		return array();
 	}
 
