@@ -179,7 +179,10 @@ class Access {
 	 * @return mixed
 	 */
 	public function user_is_admin() {
-		$is_admin = current_user_can( 'administrator' ) ? true : false;
+		$is_admin = false;
+		if ( current_user_can( 'administrator' ) || current_user_can( 'editor' ) ) {
+			$is_admin = true;
+		}
 
 		return apply_filters( 'ssc_user_is_admin', $is_admin );
 	}
