@@ -132,11 +132,16 @@ class Rest extends \WP_REST_Controller {
 		}
 
 		// Get the posts that have some group assigned
-		global $wpdb;
-		$posts = $wpdb->get_results( "SELECT post_id, meta_value
-        FROM $wpdb->postmeta
-        WHERE meta_key = '_ssc_groups'
-        " );
+		$args = [
+			'meta_query' => [
+				[
+					'key' => '_ssc_groups',
+					'compare' => 'EXISTS'
+				]
+			]
+		];
+
+		$posts = get_posts($args);
 
 		// Get the post details
 		$links = array();
@@ -149,12 +154,14 @@ class Rest extends \WP_REST_Controller {
 		foreach ( $SSC_group->get_user_groups( $user_id ) as $group ) {
 			// Scrub through posts and check, if some of the posts has that group assigned
 			foreach ( $posts as $post ) {
+				/** @var \WP_Post $post */
 				$access = $this->loader->get_access();
+				$groups = $access->get_post_groups($post->ID);
 
-				if ( in_array( $group, unserialize( $post->meta_value ) ) ) {
+				if ( in_array( $group, $groups ) ) {
 					// Check if the post can be accessed already, if not, continue
-					$specific_date  = $access->get_post_date_to_access( $post->post_id );
-					$days_to_access = $access->get_post_days_to_access( $post->post_id );
+					$specific_date  = $access->get_post_date_to_access( $post->ID );
+					$days_to_access = $access->get_post_days_to_access( $post->ID );
 
 					if ( $specific_date && date( 'Y-m-d' ) < $specific_date ) {
 						continue;
@@ -165,9 +172,8 @@ class Rest extends \WP_REST_Controller {
 					}
 
 					// If so, get the post details and add it to the links array
-					$post_details                   = get_post( $post->post_id );
-					$links[ $group ][ $i ]['title'] = $post_details->post_title;
-					$links[ $group ][ $i ]['url']   = get_permalink( $post->post_id );
+					$links[ $group ][ $i ]['title'] = $post->post_title;
+					$links[ $group ][ $i ]['url']   = get_permalink( $post->ID );
 					$i ++;
 				}
 			}
