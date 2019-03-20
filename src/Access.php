@@ -41,9 +41,9 @@ class Access {
 	 */
 	public function login_redirect( $redirect, $request, $user ) {
 
-	    if ($redirect_url = $this->settings->ssc_get_option( 'ssc_redirect_url' )) {
-	        $redirect = $redirect_url;
-        }
+		if ( $redirect_url = $this->settings->ssc_get_option( 'ssc_redirect_url' ) ) {
+			$redirect = $redirect_url;
+		}
 
 		return $redirect;
 	}
@@ -63,7 +63,8 @@ class Access {
 
 		// If the post is protected and user is not logged in, redirect him to login
 		if ( $post_groups && ! is_user_logged_in() ) {
-			wp_safe_redirect( wp_login_url( $_SERVER['REQUEST_URI'] ) );
+			wp_safe_redirect( wp_login_url( site_url( $_SERVER['REQUEST_URI'] ) ) );
+			exit();
 		}
 
 		// Check if current user has access to the post, if not, redirect him to defined URL or home if the URL is not set
@@ -75,6 +76,16 @@ class Access {
 			wp_redirect( $url );
 			exit();
 		}
+	}
+
+	public function get_post_groups( $post_id = '' ) {
+		global $post;
+
+		if ( ! $post_id ) {
+			$post_id = $post->ID;
+		}
+
+		return get_post_meta( $post_id, '_ssc_groups', true );
 	}
 
 	/**
@@ -174,6 +185,57 @@ class Access {
 	}
 
 	/**
+	 * Get the date to access the post
+	 *
+	 * @param string $post_id
+	 *
+	 * @return mixed
+	 */
+	public function get_post_date_to_access( $post_id = '' ) {
+		global $post;
+
+		if ( ! $post_id ) {
+			$post_id = $post->ID;
+		}
+
+		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
+	}
+
+	/**
+	 * Get the date until the access to the post is allowed
+	 *
+	 * @param string $post_id
+	 *
+	 * @return mixed
+	 */
+	public function get_post_date_until_to_access( $post_id = '' ) {
+		global $post;
+
+		if ( ! $post_id ) {
+			$post_id = $post->ID;
+		}
+
+		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
+	}
+
+	/**
+	 * Get the number of days the user has to be subscribed to have access to the post
+	 *
+	 * @param string $post_id
+	 *
+	 * @return mixed
+	 */
+	public function get_post_days_to_access( $post_id = '' ) {
+		global $post;
+
+		if ( ! $post_id ) {
+			$post_id = $post->ID;
+		}
+
+		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'days_to_access', true );
+	}
+
+	/**
 	 * Get the URL to redirect the user if he has no access
 	 *
 	 * @param string $post_id
@@ -220,68 +282,6 @@ class Access {
 
 		return $item;
 	}
-
-	public function get_post_groups( $post_id = '' ) {
-		global $post;
-
-		if ( ! $post_id ) {
-			$post_id = $post->ID;
-		}
-
-		return get_post_meta( $post_id, '_ssc_groups', true );
-	}
-
-	/**
-	 * Get the number of days the user has to be subscribed to have access to the post
-	 *
-	 * @param string $post_id
-	 *
-	 * @return mixed
-	 */
-	public function get_post_days_to_access( $post_id = '' ) {
-		global $post;
-
-		if ( ! $post_id ) {
-			$post_id = $post->ID;
-		}
-
-		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'days_to_access', true );
-	}
-
-	/**
-	 * Get the date to access the post
-	 *
-	 * @param string $post_id
-	 *
-	 * @return mixed
-	 */
-	public function get_post_date_to_access( $post_id = '' ) {
-		global $post;
-
-		if ( ! $post_id ) {
-			$post_id = $post->ID;
-		}
-
-		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
-	}
-
-	/**
-	 * Get the date until the access to the post is allowed
-	 *
-	 * @param string $post_id
-	 *
-	 * @return mixed
-	 */
-	public function get_post_date_until_to_access( $post_id = '' ) {
-		global $post;
-
-		if ( ! $post_id ) {
-			$post_id = $post->ID;
-		}
-
-		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
-	}
-
 
 	/**
 	 * Hide items in menu
