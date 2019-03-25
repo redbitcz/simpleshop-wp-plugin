@@ -310,12 +310,12 @@ class Access {
 		if ( ! $query->is_admin && $query->is_feed && $this->settings->ssc_get_option( 'ssc_hide_from_rss' ) ) {
 			$meta_query = $query->get( 'meta_query' );
 			if ( ! $meta_query ) {
-				$meta_query = [];
+				$meta_query = array();
 			}
-			$meta_query[] = [
+			$meta_query[] = array(
 				'key'     => '_ssc_groups',
 				'compare' => 'NOT EXISTS',
-			];
+			);
 			$query->set( 'meta_query', $meta_query ); // id of page or post
 		}
 

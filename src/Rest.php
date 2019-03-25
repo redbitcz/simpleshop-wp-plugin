@@ -135,15 +135,15 @@ class Rest extends \WP_REST_Controller {
 		}
 
 		// Get the posts that have some group assigned
-		$args = [
-			'posts_status' => [ 'published', 'draft' ],
-			'meta_query'   => [
-				[
+		$args = array(
+			'posts_status' => array( 'published', 'draft' ),
+			'meta_query'   => array(
+				array(
 					'key'     => '_ssc_groups',
 					'compare' => 'EXISTS',
-				],
-			],
-		];
+				),
+			),
+		);
 
 		$posts = get_posts( $args );
 
