@@ -1,5 +1,5 @@
 === SimpleShop.cz ===
-Contributors: redbitcz, simpleshopcz, jakubboucek
+Contributors: redbitcz, simpleshopcz, jakubboucek, vasikgreif
 Tags: simpleshop, simple eshop, selling form
 Requires at least: 4.0.0
 Tested up to: 4.9.8
