@@ -88,6 +88,7 @@ class DeployScript {
 		$packageFile = $this->getPackageName();
 		$this->zip( __DIR__, $packageFile );
 
+		// Stamp root file
 		$stampedFile = $this->copyStampedFile(
 			__DIR__ . '/' . $this->productName . '.php',
 			array(
@@ -98,6 +99,21 @@ class DeployScript {
 				'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'dev-master\' );' => sprintf(
 					'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'%s\' );',
 					$this->version
+				),
+			),
+			$this->distDir
+		);
+
+		$this->zip( $stampedFile, $packageFile, $this->distDir );
+		unlink( $stampedFile );
+
+		// Stamp readme.txt
+		$stampedFile = $this->copyStampedFile(
+			__DIR__ . '/readme.txt',
+			array(
+				'Stable tag: trunk'                                      => sprintf(
+					'Stable tag: %s',
+					$this->getNakedVersion()
 				),
 			),
 			$this->distDir
