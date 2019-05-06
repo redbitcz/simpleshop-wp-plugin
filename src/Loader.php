@@ -35,8 +35,8 @@ class Loader {
 		$this->secure_key = $this->load_api_key();
 		$this->email      = $this->load_email();
 
-		add_action( 'tgmpa_register', array( $this, 'register_required_plugins' ) );
-		register_activation_hook( __FILE__, array( $this, 'ssc_activation_hook' ) );
+		add_action( 'tgmpa_register', [ $this, 'register_required_plugins' ] );
+		register_activation_hook( __FILE__, [ $this, 'ssc_activation_hook' ] );
 	}
 
 	private function init() {
@@ -96,15 +96,15 @@ class Loader {
 	public function register_required_plugins() {
 		global $wp_version;
 		if ( $wp_version < '4.7' ) {
-			$plugins = array(
-				array(
+			$plugins = [
+				[
 					'name'     => 'Wordpress Rest API',
 					'slug'     => 'rest-api',
 					'required' => true,
-				)
-			);
+				]
+			];
 
-			$config = array(
+			$config = [
 				'id'           => 'ssc',
 				'default_path' => '',
 				'menu'         => 'ssc-install-plugins',
@@ -115,16 +115,16 @@ class Loader {
 				'dismiss_msg'  => '',
 				'is_automatic' => false,
 				'message'      => '',
-			);
+			];
 
 			tgmpa( $plugins, $config );
 		}
 	}
 
 	public function get_post_types() {
-		$args = array(
+		$args = [
 			'public' => true
-		);
+		];
 
 		return get_post_types( $args );
 	}
@@ -146,7 +146,7 @@ class Loader {
 	}
 
 	public function init_i18n() {
-		add_action( 'plugins_loaded', array( $this, 'load_textdomain_i18n' ) );
+		add_action( 'plugins_loaded', [ $this, 'load_textdomain_i18n' ] );
 	}
 
 	public function load_textdomain_i18n() {

@@ -20,23 +20,23 @@ class Admin {
 	public function __construct(Loader $loader) {
 		$this->loader = $loader;
 
-		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
-		add_filter( 'manage_edit-ssc_group_columns', array( $this, 'ssc_group_columns' ) );
-		add_action( 'manage_ssc_group_posts_custom_column', array( $this, 'ssc_group_column_content' ), 10, 2 );
-		add_action( 'init', array( $this, 'register_groups_cpt' ) );
-		add_action( 'init', array( $this, 'tiny_mce_new_buttons' ) );
-		add_filter( 'page_row_actions', array( $this, 'remove_quick_edit' ), 10, 2 );
-		add_action( 'wp_head', array( $this, 'publishing_actions' ) );
-		add_action( 'admin_head', array( $this, 'publishing_actions' ) );
-		add_action( 'wp_ajax_load_simple_shop_products', array( $this, 'wp_ajax_load_simple_shop_products' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		add_action( 'admin_menu', [ $this, 'add_settings_page' ] );
+		add_filter( 'manage_edit-ssc_group_columns', [ $this, 'ssc_group_columns' ] );
+		add_action( 'manage_ssc_group_posts_custom_column', [ $this, 'ssc_group_column_content' ], 10, 2 );
+		add_action( 'init', [ $this, 'register_groups_cpt' ] );
+		add_action( 'init', [ $this, 'tiny_mce_new_buttons' ] );
+		add_filter( 'page_row_actions', [ $this, 'remove_quick_edit' ], 10, 2 );
+		add_action( 'wp_head', [ $this, 'publishing_actions' ] );
+		add_action( 'admin_head', [ $this, 'publishing_actions' ] );
+		add_action( 'wp_ajax_load_simple_shop_products', [ $this, 'wp_ajax_load_simple_shop_products' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_admin_scripts' ] );
 	}
 
 	/**
 	 * Get products from simple shop via API
 	 */
 	public function wp_ajax_load_simple_shop_products() {
-		$values = array();
+		$values = [];
 		if ( $this->loader->has_credentials() ) {
 			$vyfakturuj_api = new VyfakturujAPI( $this->loader->get_api_email(), $this->loader->get_api_key() );
 			$ret            = $vyfakturuj_api->getProducts();
@@ -110,8 +110,8 @@ class Admin {
 	 * Add a new TinyMCE button
 	 */
 	public function tiny_mce_new_buttons() {
-		add_filter( 'mce_external_plugins', array( $this, 'tiny_mce_add_buttons' ) );
-		add_filter( 'mce_buttons', array( $this, 'tiny_mce_register_buttons' ) );
+		add_filter( 'mce_external_plugins', [ $this, 'tiny_mce_add_buttons' ] );
+		add_filter( 'mce_buttons', [ $this, 'tiny_mce_register_buttons' ] );
 	}
 
 	/**
@@ -135,10 +135,10 @@ class Admin {
 	 * @return mixed
 	 */
 	public function tiny_mce_register_buttons( $buttons ) {
-		$newBtns = array(
+		$newBtns = [
 			'sscaddformbutton',
 			'ssccontentbutton'
-		);
+		];
 		$buttons = array_merge( $buttons, $newBtns );
 
 		return $buttons;
@@ -148,7 +148,7 @@ class Admin {
 	 * Register a ssc_groups post type.
 	 */
 	public function register_groups_cpt() {
-		$labels = array(
+		$labels = [
 			'name'               => __( 'Member sections', 'simpleshop-cz' ),
 			'singular_name'      => __( 'Group', 'simpleshop-cz' ),
 			'menu_name'          => __( 'Member sections', 'simpleshop-cz' ),
@@ -163,9 +163,9 @@ class Admin {
 			'parent_item_colon'  => __( 'Parent group:', 'simpleshop-cz' ),
 			'not_found'          => __( 'No Groups found.', 'simpleshop-cz' ),
 			'not_found_in_trash' => __( 'No Groups is a Trash', 'simpleshop-cz' )
-		);
+		];
 
-		$args = array(
+		$args = [
 			'labels'             => $labels,
 			'public'             => false,
 			'publicly_queryable' => false,
@@ -176,8 +176,8 @@ class Admin {
 			'has_archive'        => false,
 			'hierarchical'       => true,
 			'menu_position'      => null,
-			'supports'           => array( 'title' )
-		);
+			'supports'           => [ 'title' ]
+		];
 
 		register_post_type( 'ssc_group', $args );
 	}
@@ -191,7 +191,7 @@ class Admin {
             __( 'SimpleShop', 'simpleshop-cz' ),
             'manage_options',
             'simple_shop_settings',
-			array( $this, 'render_settings_page' ),
+			[ $this, 'render_settings_page' ],
             SIMPLESHOP_PLUGIN_URL . '/img/white_logo.png',
             99
 		);

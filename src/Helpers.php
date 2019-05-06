@@ -25,11 +25,11 @@ class Helpers {
 		if ( isset( $wp_filter[ $hook ]->callbacks ) ) {
 			array_walk( $wp_filter[ $hook ]->callbacks, function ( $callbacks, $priority ) use ( &$hooks ) {
 				foreach ( $callbacks as $id => $callback ) {
-					$hooks[] = array_merge( array( 'id' => $id, 'priority' => $priority ), $callback );
+					$hooks[] = array_merge( [ 'id' => $id, 'priority' => $priority ], $callback );
 				}
 			} );
 		} else {
-			return array();
+			return [];
 		}
 
 		foreach ( $hooks as &$item ) {
@@ -54,10 +54,10 @@ class Helpers {
 				$ref = new \ReflectionClass( $item['function'][0] );
 
 				// $item['function'][0] is a reference to existing object
-				$item['function'] = array(
+				$item['function'] = [
 					is_object( $item['function'][0] ) ? get_class( $item['function'][0] ) : $item['function'][0],
 					$item['function'][1]
-				);
+				];
 				$item['file']     = $ref->getFileName();
 				$item['line']     = strpos( $item['function'][1], '::' )
 					? $ref->getParentClass()->getMethod( substr( $item['function'][1],
@@ -100,11 +100,11 @@ class Helpers {
 
 					remove_filter(
 						$tag,
-						array( $function['function'][0], $method ),
+						[ $function['function'][0], $method ],
 						$priority
 					);
 
-					return array( $tag, array( $function['function'][0], $method ), $priority );
+					return [ $tag, [ $function['function'][0], $method ], $priority ];
 				}
 			}
 		}

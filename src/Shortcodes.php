@@ -11,12 +11,12 @@ namespace Redbit\SimpleShop\WpPlugin;
 class Shortcodes {
 
 	public function __construct() {
-		add_action( 'init', array( $this, 'initialize' ) );
+		add_action( 'init', [ $this, 'initialize' ] );
 	}
 
 	public function initialize() {
-		add_shortcode( 'SimpleShop-form', array( $this, 'simple_shop_form' ) );
-		add_shortcode( 'SimpleShop-content', array( $this, 'simple_shop_content' ) );
+		add_shortcode( 'SimpleShop-form', [ $this, 'simple_shop_form' ] );
+		add_shortcode( 'SimpleShop-content', [ $this, 'simple_shop_content' ] );
 	}
 
 
@@ -28,14 +28,14 @@ class Shortcodes {
 	}
 
 	public function simple_shop_content( $atts, $content = '' ) {
-		$atts = shortcode_atts( array(
+		$atts = shortcode_atts( [
 			'group_id'           => '',
 			'is_member'          => '',
 			'days_to_view'       => '',
 			'specific_date_from' => '',
 			'specific_date_to'   => '',
 
-		), $atts, 'SimpleShop-content' );
+		], $atts, 'SimpleShop-content' );
 
 		$group_id           = $atts['group_id'];
 		$is_member          = $atts['is_member'];

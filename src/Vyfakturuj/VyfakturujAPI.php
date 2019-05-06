@@ -15,7 +15,7 @@ class VyfakturujAPI extends \VyfakturujAPI {
 	public function initWPPlugin( $domain ) {
 		return $this->fetchPost(
 			'wpplugin/init/',
-			array( 'domain' => $domain, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION )
+			[ 'domain' => $domain, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ]
 		);
 	}
 }

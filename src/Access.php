@@ -23,12 +23,12 @@ class Access {
 	 */
 	public function __construct( Settings $settings ) {
 		$this->settings = $settings;
-		add_action( 'template_redirect', array( $this, 'check_access' ) );
-		add_filter( 'wp_setup_nav_menu_item', array( $this, 'setup_nav_menu_item' ) );
-		add_action( 'wp_head', array( $this, 'hide_menu_items' ) );
-		add_action( 'init', array( $this, 'mioweb_remove_login_redirect' ) );
-		add_filter( 'login_redirect', array( $this, 'login_redirect' ), 10, 3 );
-		add_filter( 'pre_get_posts', array( $this, 'hide_protected_from_rss' ) );
+		add_action( 'template_redirect', [ $this, 'check_access' ] );
+		add_filter( 'wp_setup_nav_menu_item', [ $this, 'setup_nav_menu_item' ] );
+		add_action( 'wp_head', [ $this, 'hide_menu_items' ] );
+		add_action( 'init', [ $this, 'mioweb_remove_login_redirect' ] );
+		add_filter( 'login_redirect', [ $this, 'login_redirect' ], 10, 3 );
+		add_filter( 'pre_get_posts', [ $this, 'hide_protected_from_rss' ] );
 	}
 
 	/**
@@ -302,6 +302,7 @@ class Access {
 
 	/**
 	 * Hide protected posts from RSS if requested
+	 *
 	 * @param $query
 	 *
 	 * @return mixed
@@ -310,12 +311,12 @@ class Access {
 		if ( ! $query->is_admin && $query->is_feed && $this->settings->ssc_get_option( 'ssc_hide_from_rss' ) ) {
 			$meta_query = $query->get( 'meta_query' );
 			if ( ! $meta_query ) {
-				$meta_query = array();
+				$meta_query = [];
 			}
-			$meta_query[] = array(
+			$meta_query[] = [
 				'key'     => '_ssc_groups',
 				'compare' => 'NOT EXISTS',
-			);
+			];
 			$query->set( 'meta_query', $meta_query ); // id of page or post
 		}
 

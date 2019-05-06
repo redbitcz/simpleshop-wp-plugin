@@ -10,7 +10,7 @@ namespace Redbit\SimpleShop\WpPlugin;
 
 class Membership {
 	private $user_id;
-	public $groups = array();
+	public $groups = [];
 
 	/**
 	 * Membership constructor.
@@ -33,11 +33,11 @@ class Membership {
 		$groups     = $ssc_groups->get_user_groups( $this->user_id );
 
 		foreach ( $groups as $group ) {
-			$this->groups[ $group ] = array(
+			$this->groups[ $group ] = [
 				'group_id'          => $group,
 				'subscription_date' => $this->get_subscription_date( $group ),
 				'valid_to'          => $this->get_valid_to( $group )
-			);
+			];
 		}
 	}
 

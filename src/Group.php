@@ -26,13 +26,13 @@ class Group {
 	 */
 	public function get_groups() {
 
-		$args = array(
+		$args = [
 			'post_type'      => 'ssc_group',
 			'posts_per_page' => - 1,
 			'post_status'    => 'publish'
-		);
+		];
 
-		$groups = array();
+		$groups = [];
 
 		$posts = get_posts( $args );
 
@@ -90,7 +90,7 @@ class Group {
 		$groups = $this->get_user_groups( $user_id );
 
 		if ( ! $groups ) {
-			$groups = array();
+			$groups = [];
 		}
 
 		if ( ! in_array( $this->id, $groups ) ) {

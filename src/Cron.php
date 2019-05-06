@@ -22,26 +22,26 @@ class Cron {
 		}
 
 		add_action( 'ssc_send_user_has_access_to_post_notification',
-			array( $this, 'send_user_has_access_to_post_notification' ) );
+			[ $this, 'send_user_has_access_to_post_notification' ] );
 	}
 
 	public function send_user_has_access_to_post_notification() {
 		// Get posts, that have set either days to view or specific date
-		$args = array(
+		$args = [
 			'post_type'      => 'any',
 			'posts_per_page' => - 1,
-			'meta_query'     => array(
+			'meta_query'     => [
 				'relation'                           => 'OR',
-				SIMPLESHOP_PREFIX . 'days_to_access' => array(
+				SIMPLESHOP_PREFIX . 'days_to_access' => [
 					'key'     => SIMPLESHOP_PREFIX . 'days_to_access',
 					'compare' => 'EXISTS'
-				),
-				SIMPLESHOP_PREFIX . 'date_to_access' => array(
+				],
+				SIMPLESHOP_PREFIX . 'date_to_access' => [
 					'key'     => SIMPLESHOP_PREFIX . 'date_to_access',
 					'compare' => 'EXISTS'
-				)
-			)
-		);
+				]
+			]
+		];
 
 		$the_query = new \WP_Query( $args );
 
@@ -52,7 +52,7 @@ class Cron {
 			$users = get_users();
 
 			// Get all groups to array
-			$users_groups = array();
+			$users_groups = [];
 			foreach ( $users as $user ) {
 				$membership                = new Membership( $user->ID );
 				$users_groups[ $user->ID ] = $membership->groups;

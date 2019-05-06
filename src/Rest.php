@@ -18,7 +18,7 @@ class Rest extends \WP_REST_Controller {
 	public function __construct( Loader $loader ) {
 		$this->loader = $loader;
 
-		add_action( 'rest_api_init', array( $this, 'register_routes' ) );
+		add_action( 'rest_api_init', [ $this, 'register_routes' ] );
 	}
 
 	/**
@@ -30,27 +30,27 @@ class Rest extends \WP_REST_Controller {
 		register_rest_route(
 			$namespace,
 			'/group',
-			array(
-				array(
+			[
+				[
 					'methods'             => \WP_REST_Server::READABLE,
-					'callback'            => array( $this, 'get_groups' ),
-					'permission_callback' => array( $this, 'create_item_permissions_check' ),
+					'callback'            => [ $this, 'get_groups' ],
+					'permission_callback' => [ $this, 'create_item_permissions_check' ],
 					'args'                => $this->get_endpoint_args_for_item_schema( true ),
-				),
-			)
+				],
+			]
 		);
 
 		register_rest_route(
 			$namespace,
 			'/add-member',
-			array(
-				array(
+			[
+				[
 					'methods'             => \WP_REST_Server::READABLE,
-					'callback'            => array( $this, 'create_item' ),
-					'permission_callback' => array( $this, 'create_item_permissions_check' ),
+					'callback'            => [ $this, 'create_item' ],
+					'permission_callback' => [ $this, 'create_item_permissions_check' ],
 					'args'                => $this->get_endpoint_args_for_item_schema( true ),
-				),
-			)
+				],
+			]
 		);
 	}
 
@@ -69,12 +69,12 @@ class Rest extends \WP_REST_Controller {
 	 */
 	public function create_item( $request ) {
 		// Check if we got all the needed params
-		$params_to_validate = array( 'email' );
+		$params_to_validate = [ 'email' ];
 		foreach ( $params_to_validate as $param ) {
 			if ( ! $request->get_param( $param ) ) {
 				return new \WP_Error( 'required-param-missing',
 					sprintf( __( 'Required parameter %s is missing', 'simpleshop-cz' ), $param ),
-					array( 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ) );
+					[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
 		}
 
@@ -82,7 +82,7 @@ class Rest extends \WP_REST_Controller {
 		$email = sanitize_email( $request->get_param( 'email' ) );
 		if ( ! is_email( $email ) ) {
 			return new \WP_Error( 'wrong-email-format', __( 'The email is in wrong format', 'simpleshop-cz' ),
-				array( 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ) );
+				[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 		}
 
 		// Check if user with this email exists, if not, create a new user
@@ -90,20 +90,20 @@ class Rest extends \WP_REST_Controller {
 		$_password = '<a href="' . wp_lostpassword_url( get_bloginfo( 'url' ) ) . '">Změnit ho můžete zde</a>';
 		if ( ! email_exists( $email ) ) {
 			$_password = wp_generate_password( 8, false );
-			$userdata  = array(
+			$userdata  = [
 				'user_login' => $email,
 				'user_email' => $email,
 				'first_name' => sanitize_text_field( $request->get_param( 'firstname' ) ),
 				'last_name'  => sanitize_text_field( $request->get_param( 'lastname' ) ),
 				'user_pass'  => $_password,
-			);
+			];
 
 			$user_id = wp_insert_user( $userdata );
 //            wp_new_user_notification($user_id,$userdata['user_pass']); // poslani notifikacniho e-mailu
 
 			if ( is_wp_error( $user_id ) ) {
 				return new \WP_Error( 'could-not-create-user', __( "The user couldn't be created", 'simpleshop-cz' ),
-					array( 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ) );
+					[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
 		} else {
 			// Get user_by email
@@ -112,7 +112,7 @@ class Rest extends \WP_REST_Controller {
 		}
 
 		// Check if group exists
-		$user_groups = array();
+		$user_groups = [];
 		foreach ( $request->get_param( 'user_group' ) as $group ) {
 			$ssc_group = new Group( $group );
 
@@ -135,20 +135,20 @@ class Rest extends \WP_REST_Controller {
 		}
 
 		// Get the posts that have some group assigned
-		$args = array(
-			'posts_status' => array( 'published', 'draft' ),
-			'meta_query'   => array(
-				array(
+		$args = [
+			'posts_status' => [ 'published', 'draft' ],
+			'meta_query'   => [
+				[
 					'key'     => '_ssc_groups',
 					'compare' => 'EXISTS',
-				),
-			),
-		);
+				],
+			],
+		];
 
 		$posts = get_posts( $args );
 
 		// Get the post details
-		$links = array();
+		$links = [];
 		$i     = 0;
 
 		// For each group from request
@@ -200,7 +200,7 @@ class Rest extends \WP_REST_Controller {
 				$pages .= '</ul>';
 			}
 
-			$replaceArray = array( // pole ktera je mozne nahradit
+			$replaceArray = [ // pole ktera je mozne nahradit
 				'{pages}'     => $pages, // zpetna kompatibilita s v1.1
 				'{mail}'      => $email, // zpetna kompatibilita s v1.1
 				'{login}'     => $_login,
@@ -208,17 +208,17 @@ class Rest extends \WP_REST_Controller {
 				'{login_url}' => wp_login_url(),
 //                '{login}' => $_login,
 //                '{password}' => $_password,
-			);
+			];
 			$email_body   = str_replace( array_keys( $replaceArray ), array_values( $replaceArray ), $email_body );
 //            $email_body = str_replace('{pages}',$pages,$email_body);
 //            $email_body = str_replace('{mail}',$email,$email_body);
-			$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+			$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
 
 			// Send the email
 			wp_mail( $email, $email_subject, $email_body, $headers );
 		}
 
-		return new \WP_REST_Response( array( 'status' => 'success', 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ),
+		return new \WP_REST_Response( [ 'status' => 'success', 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ],
 			200 );
 	}
 
@@ -242,7 +242,7 @@ class Rest extends \WP_REST_Controller {
 	 * @return mixed
 	 */
 	public function prepare_item_for_response( $item, $request ) {
-		return array();
+		return [];
 	}
 
 	/**
@@ -253,7 +253,7 @@ class Rest extends \WP_REST_Controller {
 	 * @return array $prepared_item
 	 */
 	protected function prepare_item_for_database( $request ) {
-		return array();
+		return [];
 	}
 
 }
