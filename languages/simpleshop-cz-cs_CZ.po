@@ -77,7 +77,7 @@ msgid ""
 "Access to this page is permit only for users of selected Member Sections. "
 "If no one section selected, all users is permit to access this page."
 msgstr ""
-"Pouze uživatelé v zaškrtnutých členskéch sekcích mají přístup na tuto "
+"Pouze uživatelé v zaškrtnutých členských sekcích mají přístup na tuto "
 "stránku. Pokud nic nezaškrtnete, stránku uvidí všichni uživatelé"
 
 #: src/Metaboxes.php:63
@@ -90,9 +90,9 @@ msgid ""
 "but have no access to page. This is preffered way. Redirect will works even if "
 "target page URL will be changer in future."
 msgstr ""
-"Vyberte stránku, na kterou uživatel bude přesměrován, pokud je přihlášen, "
+"Vyberte stránku, na kterou bude uživatel přesměrován, pokud je přihlášen, "
 "ale nemá oprávnění k přístupu. Toto je preferovaný způsob - přesměrování bude "
-"fungovat, i pokud se v budoucnu změní adresa stránky"
+"fungovat, i pokud se v budoucnu změní adresa stránky."
 
 #: src/Metaboxes.php:75
 msgid "Manual URL to redirect"
@@ -104,7 +104,7 @@ msgid ""
 "but have no access to page. If you want to use this method, keep "
 "previous field empty."
 msgstr ""
-"Zadejte ručně adresu, na kterou uživatel bude přesměrován, pokud je "
+"Zadejte ručně adresu, na kterou bude uživatel přesměrován, pokud je "
 "přihlášen, ale nemá oprávnění k přístupu. Pokud využijete tuto volbu, pole "
 "výše musí být prázdné."
 
@@ -130,7 +130,7 @@ msgstr "Povolit přístup OD data"
 msgid ""
 "Date which will be access to content allowed (applied to all groups)"
 msgstr ""
-"Zadejte datum, od kterého bude stránka přístupná (platí pro všechny skupiny)"
+"Zadejte datum, od kterého bude stránka přístupná (platí pro všechny skupiny)."
 
 #: src/Metaboxes.php:108
 msgid "Allow access to date"
@@ -140,7 +140,7 @@ msgstr "Povolit přístup DO data"
 msgid ""
 "Date until will be access to content allowed (applied to all groups)"
 msgstr ""
-"Zadejte datum, do kterého bude stránka přístupná (platí pro všechny skupiny)"
+"Zadejte datum, do kterého bude stránka přístupná (platí pro všechny skupiny)."
 
 #: src/Metaboxes.php:117
 msgid "Subject of email when content access allowed"
@@ -151,7 +151,7 @@ msgid ""
 "Enter the subject of the email that will automatically be sent to the user "
 "when gains access to this content based on the days set above."
 msgstr ""
-"Zadejte předmět emailu, který se uživateli automaticky odešlě v okamžiku, "
+"Zadejte předmět emailu, který se uživateli automaticky odešle v okamžiku, "
 "kdy získá přístup k tomuto obsahu na základě nastavení dní výše."
 
 #: src/Metaboxes.php:125
@@ -163,7 +163,7 @@ msgid ""
 "Enter an email that will automatically be sent to the user when gains access "
 "to this content based on the days set above."
 msgstr ""
-"Zadejte email, který se uživateli automaticky odešlě v okamžiku, kdy získá "
+"Zadejte email, který se uživateli automaticky odešle v okamžiku, kdy získá "
 "přístup k tomuto obsahu na základě nastavení dní výše."
 
 #: src/Metaboxes.php:159
@@ -220,7 +220,7 @@ msgstr "Přihlašovací email"
 
 #: src/Settings.php:208
 msgid "Put email used for login to SimpleShop"
-msgstr "Zadejte email, který používáte pro přihlášení do služby SimpleShop"
+msgstr "Zadejte email, který používáte pro přihlášení do služby SimpleShop."
 
 #: src/Settings.php:214
 msgid "SimpleShop API Key"
