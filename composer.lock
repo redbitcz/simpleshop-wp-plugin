@@ -116,16 +116,16 @@
         },
         {
             "name": "vyfakturuj/vyfakturuj-api-php",
-            "version": "v2.3.0",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/redbitcz/vyfakturuj-api-php.git",
-                "reference": "d552d95db6755d67cc95e4e64215a921947f4f6a"
+                "reference": "84b9238c894281980654d03ae8b9364701c5ea30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/redbitcz/vyfakturuj-api-php/zipball/d552d95db6755d67cc95e4e64215a921947f4f6a",
-                "reference": "d552d95db6755d67cc95e4e64215a921947f4f6a",
+                "url": "https://api.github.com/repos/redbitcz/vyfakturuj-api-php/zipball/84b9238c894281980654d03ae8b9364701c5ea30",
+                "reference": "84b9238c894281980654d03ae8b9364701c5ea30",
                 "shasum": ""
             },
             "require": {
@@ -159,7 +159,7 @@
                 "faktura",
                 "vyfakturuj"
             ],
-            "time": "2019-05-06T00:47:50+00:00"
+            "time": "2019-05-15T20:05:42+00:00"
         },
         {
             "name": "webdevstudios/cmb2-post-search-field",
