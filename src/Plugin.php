@@ -29,6 +29,11 @@ class Plugin {
 	private $access;
 
 	/**
+	 * @var Admin
+	 */
+	private $admin;
+
+	/**
 	 * @var string
 	 */
 	private $pluginMainFile;
@@ -53,11 +58,12 @@ class Plugin {
 		$this->settings = new Settings( $this );
 		$this->access   = new Access( $this->settings );
 
-		new Admin( $this );
+		$this->admin = new Admin( $this );
 		new Rest( $this );
 		new Cron( $this );
 		new Metaboxes( $this );
 		new Shortcodes();
+		new Gutenberg($this->admin);
 	}
 
 	public function generate_secure_key() {
