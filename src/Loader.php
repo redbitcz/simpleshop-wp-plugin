@@ -28,6 +28,11 @@ class Loader {
 	 */
 	private $access;
 
+	/**
+	 * @var Admin
+	 */
+	private $admin;
+
 	public function __construct() {
 		$this->init();
 		$this->init_i18n();
@@ -43,35 +48,32 @@ class Loader {
 		$this->settings = new Settings( $this );
 		$this->access   = new Access( $this->settings );
 
-		new Admin( $this );
+		$this->admin = new Admin( $this );
 		new Rest( $this );
 		new Cron( $this );
 		new Metaboxes( $this );
 		new Shortcodes();
+		new Gutenberg( $this->admin );
 	}
 
-	public function generate_secure_key() {
-		return bin2hex( random_bytes( 22 ) );
+	public function init_i18n() {
+		add_action( 'plugins_loaded', [ $this, 'load_textdomain_i18n' ] );
 	}
 
-	public function save_secure_key( $key ) {
-		update_option( 'ssc_secure_key', $key );
-	}
-
-	public function has_credentials() {
-		return $this->email && $this->secure_key;
+	protected function load_api_key() {
+		return $this->settings->ssc_get_option( 'ssc_api_key' );
 	}
 
 	protected function load_email() {
 		return $this->settings->ssc_get_option( 'ssc_api_email' );
 	}
 
-	public function get_api_email() {
-		return $this->email;
+	public function has_credentials() {
+		return $this->email && $this->secure_key;
 	}
 
-	protected function load_api_key() {
-		return $this->settings->ssc_get_option( 'ssc_api_key' );
+	public function get_api_email() {
+		return $this->email;
 	}
 
 	public function get_api_key() {
@@ -101,7 +103,7 @@ class Loader {
 					'name'     => 'Wordpress Rest API',
 					'slug'     => 'rest-api',
 					'required' => true,
-				]
+				],
 			];
 
 			$config = [
@@ -123,12 +125,11 @@ class Loader {
 
 	public function get_post_types() {
 		$args = [
-			'public' => true
+			'public' => true,
 		];
 
 		return get_post_types( $args );
 	}
-
 
 	public function ssc_activation_hook() {
 		if ( ! function_exists( 'curl_init' ) || ! function_exists( 'random_bytes' ) ) {
@@ -145,8 +146,12 @@ class Loader {
 		$this->save_secure_key( $key );
 	}
 
-	public function init_i18n() {
-		add_action( 'plugins_loaded', [ $this, 'load_textdomain_i18n' ] );
+	public function generate_secure_key() {
+		return bin2hex( random_bytes( 22 ) );
+	}
+
+	public function save_secure_key( $key ) {
+		update_option( 'ssc_secure_key', $key );
 	}
 
 	public function load_textdomain_i18n() {
