@@ -143,6 +143,7 @@ class Rest extends \WP_REST_Controller {
 					'compare' => 'EXISTS',
 				],
 			],
+			'post_type'    => 'any',
 		];
 
 		$posts = get_posts( $args );
