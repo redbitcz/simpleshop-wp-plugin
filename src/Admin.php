@@ -231,7 +231,7 @@ class Admin {
 	 */
 	public function enqueue_admin_scripts() {
 		wp_enqueue_style( 'ssc', SIMPLESHOP_PLUGIN_URL . 'css/ssc.css' );
-		wp_register_style( 'jquery-ui', 'http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
+		wp_register_style( 'jquery-ui', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
 		wp_enqueue_style( 'jquery-ui' );
 	}
 }
