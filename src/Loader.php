@@ -33,6 +33,12 @@ class Loader {
 	 */
 	private $admin;
 
+	/**
+	 * @var Group
+	 */
+	private $group;
+
+
 	public function __construct() {
 		$this->init();
 		$this->init_i18n();
@@ -49,11 +55,12 @@ class Loader {
 		$this->access   = new Access( $this->settings );
 
 		$this->admin = new Admin( $this );
+		$this->group = new Group();
 		new Rest( $this );
 		new Cron( $this );
 		new Metaboxes( $this );
-		new Shortcodes();
-		new Gutenberg( $this->admin );
+		new Shortcodes( $this->access );
+		new Gutenberg( $this->admin, $this->group, $this->access );
 	}
 
 	public function init_i18n() {

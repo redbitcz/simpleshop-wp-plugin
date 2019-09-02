@@ -36,7 +36,9 @@ class Admin {
 	 * Get products from simple shop via API
 	 */
 	public function wp_ajax_load_simple_shop_products() {
-		echo json_encode( $this->get_simpleshop_products() );
+		$products = $this->get_simpleshop_products();
+		update_option( 'simpleshop_products', $products );
+		echo wp_json_encode( $products );
 		exit();
 	}
 
