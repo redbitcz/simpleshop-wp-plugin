@@ -7,11 +7,23 @@ class Gutenberg {
 	 * @var Admin
 	 */
 	private $admin;
+	/**
+	 * @var Group
+	 */
+	private $group;
+	/**
+	 * @var Access
+	 */
+	private $access;
 
-	public function __construct( Admin $admin ) {
+	public function __construct( Admin $admin, Group $group, Access $access ) {
 		add_action( 'init', array( $this, 'load_block_assets' ) );
 		add_action( 'admin_init', array( $this, 'load_products' ) );
-		$this->admin = $admin;
+		add_filter( 'render_block', array( $this, 'maybe_hide_block' ), 10, 2 );
+
+		$this->admin  = $admin;
+		$this->group  = $group;
+		$this->access = $access;
 	}
 
 	function load_products() {
@@ -45,6 +57,7 @@ class Gutenberg {
 			'ssGutenbergVariables',
 			[
 				'products' => get_option( 'simpleshop_products', [] ),
+				'groups'   => $this->group->get_groups(),
 			]
 		);
 
@@ -75,4 +88,29 @@ class Gutenberg {
 			)
 		);
 	}
+
+	/**
+	 * Maybe hide block from frontend based on the custom settings
+	 *
+	 * @param $content
+	 * @param $block
+	 */
+	public function maybe_hide_block( $content, $block ) {
+		$args = [
+			'group_id'           => isset( $block['attrs']['simpleShopGroup'] ) ? $block['attrs']['simpleShopGroup'] : '',
+			'is_member'          => isset( $block['attrs']['simpleShopIsMember'] ) ? $block['attrs']['simpleShopIsMember'] : '',
+			'is_logged_in'       => isset( $block['attrs']['simpleShopIsLoggedIn'] ) ? $block['attrs']['simpleShopIsLoggedIn'] : '',
+			'days_to_view'       => isset( $block['attrs']['simpleShopDaysToView'] ) ? $block['attrs']['simpleShopDaysToView'] : '',
+			'specific_date_from' => isset( $block['attrs']['simpleShopSpecificDateFrom'] ) ? $block['attrs']['simpleShopSpecificDateFrom'] : '',
+			'specific_date_to'   => isset( $block['attrs']['simpleShopSpecificDateTo'] ) ? $block['attrs']['simpleShopSpecificDateTo'] : '',
+		];
+
+		if ( ! $this->access->user_can_view_content( $args ) ) {
+			return '';
+		}
+
+
+		return $content;
+	}
+
 }

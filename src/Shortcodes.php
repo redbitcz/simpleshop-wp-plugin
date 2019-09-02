@@ -10,8 +10,14 @@ namespace Redbit\SimpleShop\WpPlugin;
 
 class Shortcodes {
 
-	public function __construct() {
+	/**
+	 * @var Access
+	 */
+	private $access;
+
+	public function __construct( Access $access ) {
 		add_action( 'init', [ $this, 'initialize' ] );
+		$this->access = $access;
 	}
 
 	public function initialize() {
@@ -37,65 +43,17 @@ class Shortcodes {
 
 		], $atts, 'SimpleShop-content' );
 
-		$group_id           = $atts['group_id'];
-		$is_member          = $atts['is_member'];
-		$is_logged_in       = $atts['is_logged_in'];
-		$specific_date_from = $atts['specific_date_from'];
-		$specific_date_to   = $atts['specific_date_to'];
-		$days_to_view       = $atts['days_to_view'];
+		$args = [
+			'group_id'           => $atts['group_id'],
+			'is_member'          => $atts['is_member'],
+			'is_logged_in'       => $atts['is_logged_in'],
+			'days_to_view'       => $atts['days_to_view'],
+			'specific_date_from' => $atts['specific_date_from'],
+			'specific_date_to'   => $atts['specific_date_to'],
+		];
 
-		if ( ! empty( $specific_date_from ) ) {
-			// Check against the from date, this has nothing to do with groups or other settings
-			if ( date( 'Y-m-d' ) < $specific_date_from ) {
-				return '';
-			}
-		}
-
-		if ( ! empty( $specific_date_to ) ) {
-			// Check against the to date, this has nothing to do with groups or other settings
-			if ( date( 'Y-m-d' ) > $specific_date_to ) {
-				return '';
-			}
-		}
-
-		// Stop if there's no group_id or is_member, and no specific date is set
-		if ( empty( $group_id ) || ( empty( $is_member ) && empty( $specific_date_from ) && empty( $specific_date_to ) ) ) {
+		if ( ! $this->access->user_can_view_content( $args ) ) {
 			return '';
-		}
-
-		$group = new Group( $group_id );
-
-		if ( $is_member == 'yes' ) {
-			// Check, if the user is logged in and is member of the group, if not, bail
-			if ( ! is_user_logged_in() || ! $group->user_is_member_of_group( get_current_user_id() ) ) {
-				return '';
-			}
-		} elseif ( $is_member == 'no' ) {
-			// Check, if the user is NOT a member of specific group. This includes non-logged-in users
-			if ( is_user_logged_in() && $group->user_is_member_of_group( get_current_user_id() ) ) {
-				return '';
-			}
-		} else {
-			// If the is_member isn't 'yes' or 'no', the parameter is wrong, so stop here
-			return '';
-		}
-
-		// Check if we should display content for logged-in or non-logged-in user
-		if ($is_logged_in == 'yes' && !is_user_logged_in()) {
-			return '';
-		} else if ($is_logged_in == 'no' && is_user_logged_in()) {
-			return '';
-		}
-
-		// Group check done, check if there are some days set and if is_member is yes
-		// it doesn't make sense to check days condition for users who should NOT be members of a group
-		if ( ! empty( $days_to_view ) && $is_member == 'yes' ) {
-			$membership        = new Membership( get_current_user_id() );
-			$subscription_date = $membership->groups[ $group_id ]['subscription_date'];
-			// Compare against today's date
-			if ( date( 'Y-m-d' ) < date( 'Y-m-d', strtotime( "$subscription_date + $days_to_view days" ) ) ) {
-				return '';
-			}
 		}
 
 		// Support shortcodes inside shortcodes
