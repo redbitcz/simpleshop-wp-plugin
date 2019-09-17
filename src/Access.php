@@ -41,9 +41,9 @@ class Access {
 	 * @return mixed
 	 */
 	public function login_redirect( $redirect, $request, $user ) {
-
-		if ( $redirect_url = $this->settings->ssc_get_option( 'ssc_redirect_url' ) ) {
-			$redirect = $redirect_url;
+		$redirect_url = $this->settings->ssc_get_option( 'ssc_redirect_url' );
+		if ( $redirect_url ) {
+			$redirect = remove_query_arg( [ 'redirect_to' ], $redirect_url );;
 		}
 
 		return $redirect;
@@ -70,7 +70,7 @@ class Access {
 
 		// Check if current user has access to the post, if not, redirect him to defined URL or home if the URL is not set
 		if ( $post_groups && ! $this->user_can_view_post() && ! is_home() && ! is_front_page() ) {
-			$no_access_url = $this->get_no_access_redirect_url();
+			$no_access_url = remove_query_arg( [ 'redirect_to' ], $this->get_no_access_redirect_url() );
 
 			$main_redirect_url = is_user_logged_in() ? site_url() : wp_login_url();
 			$url               = $no_access_url ?: $main_redirect_url;
