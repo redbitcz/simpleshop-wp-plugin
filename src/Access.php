@@ -23,7 +23,12 @@ class Access {
 	 */
 	public function __construct( Settings $settings ) {
 		$this->settings = $settings;
-		add_action( 'template_redirect', [ $this, 'check_access' ] );
+
+		$redirect       = true;
+		if ( apply_filters( 'ssc_redirect_on_locked_content', $redirect ) === true ) {
+			add_action( 'template_redirect', [ $this, 'check_access' ] );
+		}
+		
 		add_filter( 'wp_setup_nav_menu_item', [ $this, 'setup_nav_menu_item' ] );
 		add_action( 'wp_head', [ $this, 'hide_menu_items' ] );
 		add_action( 'init', [ $this, 'mioweb_remove_login_redirect' ] );
