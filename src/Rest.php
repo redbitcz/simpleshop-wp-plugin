@@ -90,7 +90,8 @@ class Rest extends \WP_REST_Controller {
 		$_password = '<a href="' . wp_lostpassword_url( get_bloginfo( 'url' ) ) . '">Změnit ho můžete zde</a>';
 		if ( ! email_exists( $email ) ) {
 			$_password = wp_generate_password( 8, false );
-			$userdata  = [
+
+			$userdata = [
 				'user_login' => $email,
 				'user_email' => $email,
 				'first_name' => sanitize_text_field( $request->get_param( 'firstname' ) ),
@@ -98,8 +99,12 @@ class Rest extends \WP_REST_Controller {
 				'user_pass'  => $_password,
 			];
 
+			$userdata = apply_filters( 'ssc_new_user_data', $userdata );
+
 			$user_id = wp_insert_user( $userdata );
 //            wp_new_user_notification($user_id,$userdata['user_pass']); // poslani notifikacniho e-mailu
+
+			do_action( 'ssc_new_user_created', $user_id );
 
 			if ( is_wp_error( $user_id ) ) {
 				return new \WP_Error( 'could-not-create-user', __( "The user couldn't be created", 'simpleshop-cz' ),
