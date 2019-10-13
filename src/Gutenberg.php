@@ -15,8 +15,12 @@ class Gutenberg {
 	 * @var Access
 	 */
 	private $access;
+	/**
+	 * @var string
+	 */
+	private $pluginDirUrl;
 
-	public function __construct( Admin $admin, Group $group, Access $access ) {
+	public function __construct( Admin $admin, Group $group, Access $access, $pluginMainFile ) {
 		add_action( 'init', array( $this, 'load_block_assets' ) );
 		add_action( 'admin_init', array( $this, 'load_products' ) );
 		add_filter( 'render_block', array( $this, 'maybe_hide_block' ), 10, 2 );
@@ -24,6 +28,7 @@ class Gutenberg {
 		$this->admin  = $admin;
 		$this->group  = $group;
 		$this->access = $access;
+		$this->pluginDirUrl = plugin_dir_url($pluginMainFile);
 	}
 
 	function load_products() {
@@ -38,7 +43,7 @@ class Gutenberg {
 		// Register block styles for both frontend + backend.
 		wp_register_style(
 			'simpleshop-gutenberg-style-css', // Handle.
-			SIMPLESHOP_PLUGIN_URL . 'js/gutenberg/blocks.style.build.css', // Block style CSS.
+			$this->pluginDirUrl . 'js/gutenberg/blocks.style.build.css', // Block style CSS.
 			array( 'wp-editor' ), // Dependency to include the CSS after it.
 			null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
 		);
@@ -46,7 +51,7 @@ class Gutenberg {
 		// Register block editor script for backend.
 		wp_register_script(
 			'simpleshop-gutenberg-block-js', // Handle.
-			SIMPLESHOP_PLUGIN_URL . 'js/gutenberg/blocks.build.js', // Block.build.js: We register the block here. Built with Webpack.
+			$this->pluginDirUrl . 'js/gutenberg/blocks.build.js', // Block.build.js: We register the block here. Built with Webpack.
 			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ), // Dependencies, defined above.
 			null, // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
 			true // Enqueue the script in the footer.
@@ -64,7 +69,7 @@ class Gutenberg {
 		// Register block editor styles for backend.
 		wp_register_style(
 			'simpleshop-gutenberg-block-editor-css', // Handle.
-			SIMPLESHOP_PLUGIN_URL . 'js/gutenberg/blocks.editor.build.css', // Block editor CSS.
+			$this->pluginDirUrl . 'js/gutenberg/blocks.editor.build.css', // Block editor CSS.
 			array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
 			null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
 		);

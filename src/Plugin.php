@@ -69,7 +69,7 @@ class Plugin {
 		new Cron( $this );
 		new Metaboxes( $this );
 		new Shortcodes($this->access);
-		new Gutenberg($this->admin, $this->group, $this->access);
+		new Gutenberg($this->admin, $this->group, $this->access, $this->pluginMainFile);
 	}
 
 	public function generate_secure_key() {
