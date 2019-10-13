@@ -21,10 +21,14 @@ class Admin {
 	 */
 	private $pluginDirUrl;
 
+	/**
+	 * @param Plugin $loader
+	 * @param string $pluginMainFile
+	 */
 	public function __construct(Plugin $loader) {
 		$this->loader = $loader;
 
-		$this->pluginDirUrl = plugin_dir_url(__DIR__ . '/../');
+		$this->pluginDirUrl = plugin_dir_url($loader->get_plugin_main_file());
 
 		add_action( 'admin_menu', [ $this, 'add_settings_page' ] );
 		add_filter( 'manage_edit-ssc_group_columns', [ $this, 'ssc_group_columns' ] );

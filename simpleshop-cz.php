@@ -27,4 +27,5 @@ define( 'SIMPLESHOP_PREFIX', '_ssc_' );
 /**
  * Start plugin
  */
+SimpleShop::$pluginMainFile = __FILE__;
 SimpleShop::getInstance();
