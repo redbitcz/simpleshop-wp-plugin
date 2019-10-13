@@ -140,7 +140,7 @@ class Plugin {
 				'simpleshop-cz' ), E_USER_ERROR );
 		}
 
-		// Generate and save the secure key$this = new Plugin();
+		// Generate and save the secure key
 		$key = $this->generate_secure_key();
 		$this->save_secure_key( $key );
 	}
