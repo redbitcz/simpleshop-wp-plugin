@@ -28,15 +28,22 @@ class Plugin {
 	 */
 	private $access;
 
+	/**
+	 * @var string
+	 */
+	private $pluginDirPath;
+
 	public function __construct() {
 		$this->init();
 		$this->init_i18n();
+
+		$this->pluginDirPath = plugin_dir_path( __DIR__ . '/../' );
 
 		$this->secure_key = $this->load_api_key();
 		$this->email      = $this->load_email();
 
 		add_action( 'tgmpa_register', [ $this, 'register_required_plugins' ] );
-		register_activation_hook( __FILE__, [ $this, 'ssc_activation_hook' ] );
+		register_activation_hook( $this->pluginDirPath, [ $this, 'ssc_activation_hook' ] );
 	}
 
 	private function init() {
@@ -150,7 +157,7 @@ class Plugin {
 	}
 
 	public function load_textdomain_i18n() {
-		$plugin_rel_path = str_replace( WP_PLUGIN_DIR . '/', '', SIMPLESHOP_PLUGIN_DIR . 'languages/' );
+		$plugin_rel_path     = str_replace( WP_PLUGIN_DIR . '/', '', $this->pluginDirPath . 'languages/' );
 		load_plugin_textdomain( 'simpleshop-cz', false, $plugin_rel_path );
 	}
 }
