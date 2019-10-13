@@ -29,4 +29,4 @@ define( 'SIMPLESHOP_PREFIX', '_ssc_' );
 /**
  * Start plugin
  */
-new Loader();
+new Plugin();

@@ -44,17 +44,19 @@ class Settings {
 	 */
 	private $metabox_id = 'ssc_option_metabox';
 	/**
-	 * @var Loader
+	 * @var Plugin
 	 */
 	private $loader;
 
 	/**
 	 * Constructor
+	 *
+	 * @param Plugin $loader
+	 *
 	 * @since 0.1.0
 	 *
-	 * @param Loader $loader
 	 */
-	public function __construct( Loader $loader ) {
+	public function __construct( Plugin $loader ) {
 		// Set our title
 		$this->title = 'Settings';
 		$this->register_hooks();

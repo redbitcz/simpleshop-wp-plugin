@@ -13,11 +13,11 @@ use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
 class Admin {
 
 	/**
-	 * @var Loader
+	 * @var Plugin
 	 */
 	private $loader;
 
-	public function __construct(Loader $loader) {
+	public function __construct(Plugin $loader) {
 		$this->loader = $loader;
 
 		add_action( 'admin_menu', [ $this, 'add_settings_page' ] );

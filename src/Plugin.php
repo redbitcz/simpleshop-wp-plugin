@@ -8,7 +8,7 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
-class Loader {
+class Plugin {
 	/**
 	 * @var string
 	 */
@@ -140,7 +140,7 @@ class Loader {
 				'simpleshop-cz' ), E_USER_ERROR );
 		}
 
-		// Generate and save the secure key$this = new Loader();
+		// Generate and save the secure key$this = new Plugin();
 		$key = $this->generate_secure_key();
 		$this->save_secure_key( $key );
 	}

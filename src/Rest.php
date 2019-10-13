@@ -11,11 +11,11 @@ namespace Redbit\SimpleShop\WpPlugin;
 class Rest extends \WP_REST_Controller {
 
 	/**
-	 * @var Loader
+	 * @var Plugin
 	 */
 	private $loader;
 
-	public function __construct( Loader $loader ) {
+	public function __construct( Plugin $loader ) {
 		$this->loader = $loader;
 
 		add_action( 'rest_api_init', [ $this, 'register_routes' ] );

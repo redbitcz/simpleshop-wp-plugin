@@ -10,11 +10,11 @@ namespace Redbit\SimpleShop\WpPlugin;
 
 class Cron {
 	/**
-	 * @var Loader
+	 * @var Plugin
 	 */
 	private $loader;
 
-	public function __construct(Loader $loader) {
+	public function __construct(Plugin $loader) {
 		$this->loader = $loader;
 
 		if ( ! wp_next_scheduled( 'ssc_send_user_has_access_to_post_notification' ) ) {
