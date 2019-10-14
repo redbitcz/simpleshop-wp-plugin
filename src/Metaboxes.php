@@ -12,11 +12,11 @@ class Metaboxes {
 	public $prefix = '_ssc_';
 
 	/**
-	 * @var Loader
+	 * @var Plugin
 	 */
 	private $loader;
 
-	public function __construct(Loader $loader) {
+	public function __construct(Plugin $loader) {
 		$this->loader = $loader;
 		add_action( 'cmb2_admin_init', [ $this, 'page_metaboxes' ] );
 		add_action( 'cmb2_admin_init', [ $this, 'user_metaboxes' ] );
