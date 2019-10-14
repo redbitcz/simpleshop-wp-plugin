@@ -28,7 +28,17 @@ class Plugin {
 	 */
 	private $access;
 
-	public function __construct() {
+	/**
+	 * @var string
+	 */
+	private $pluginMainFile;
+
+	/**
+	 * @param string $mainFile Filename of main plugin path. Used for native WP functions
+	 */
+	public function __construct( $mainFile ) {
+		$this->pluginMainFile = $mainFile;
+
 		$this->init();
 		$this->init_i18n();
 
@@ -36,7 +46,7 @@ class Plugin {
 		$this->email      = $this->load_email();
 
 		add_action( 'tgmpa_register', [ $this, 'register_required_plugins' ] );
-		register_activation_hook( __FILE__, [ $this, 'ssc_activation_hook' ] );
+		register_activation_hook( plugin_dir_path( $this->pluginMainFile ), [ $this, 'ssc_activation_hook' ] );
 	}
 
 	private function init() {
@@ -150,7 +160,11 @@ class Plugin {
 	}
 
 	public function load_textdomain_i18n() {
-		$plugin_rel_path = str_replace( WP_PLUGIN_DIR . '/', '', SIMPLESHOP_PLUGIN_DIR . 'languages/' );
+		$plugin_rel_path = str_replace( WP_PLUGIN_DIR . '/', '', plugin_dir_path( $this->pluginMainFile ) . 'languages/' );
 		load_plugin_textdomain( 'simpleshop-cz', false, $plugin_rel_path );
+	}
+
+	public function get_plugin_main_file() {
+		return $this->pluginMainFile;
 	}
 }

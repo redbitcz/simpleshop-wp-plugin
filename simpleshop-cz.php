@@ -21,12 +21,11 @@ namespace Redbit\SimpleShop\WpPlugin;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-define( 'SIMPLESHOP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'SIMPLESHOP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'SIMPLESHOP_PLUGIN_VERSION', 'dev-master' );
 define( 'SIMPLESHOP_PREFIX', '_ssc_' );
 
 /**
  * Start plugin
  */
+SimpleShop::$pluginMainFile = __FILE__;
 SimpleShop::getInstance();

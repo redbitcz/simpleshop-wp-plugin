@@ -16,9 +16,19 @@ class Admin {
 	 * @var Plugin
 	 */
 	private $loader;
+	/**
+	 * @var string
+	 */
+	private $pluginDirUrl;
 
+	/**
+	 * @param Plugin $loader
+	 * @param string $pluginMainFile
+	 */
 	public function __construct(Plugin $loader) {
 		$this->loader = $loader;
+
+		$this->pluginDirUrl = plugin_dir_url($loader->get_plugin_main_file());
 
 		add_action( 'admin_menu', [ $this, 'add_settings_page' ] );
 		add_filter( 'manage_edit-ssc_group_columns', [ $this, 'ssc_group_columns' ] );
@@ -122,7 +132,7 @@ class Admin {
 	 * @return mixed
 	 */
 	public function tiny_mce_add_buttons( $plugins ) {
-		$plugins['ssctinymceplugin'] = SIMPLESHOP_PLUGIN_URL . 'js/tiny-mce/tiny-mce.js';
+		$plugins['ssctinymceplugin'] = $this->pluginDirUrl . 'js/tiny-mce/tiny-mce.js';
 
 		return $plugins;
 	}
@@ -192,7 +202,7 @@ class Admin {
             'manage_options',
             'simple_shop_settings',
 			[ $this, 'render_settings_page' ],
-            SIMPLESHOP_PLUGIN_URL . '/img/white_logo.png',
+			$this->pluginDirUrl . '/img/white_logo.png',
             99
 		);
 	}
@@ -230,7 +240,7 @@ class Admin {
 	 * Enqueue admin scripts
 	 */
 	public function enqueue_admin_scripts() {
-		wp_enqueue_style( 'ssc', SIMPLESHOP_PLUGIN_URL . 'css/ssc.css' );
+		wp_enqueue_style( 'ssc', $this->pluginDirUrl . 'css/ssc.css' );
 		wp_register_style( 'jquery-ui', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
 		wp_enqueue_style( 'jquery-ui' );
 	}
