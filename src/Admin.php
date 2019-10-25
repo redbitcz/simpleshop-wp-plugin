@@ -46,6 +46,13 @@ class Admin {
 	 * Get products from simple shop via API
 	 */
 	public function wp_ajax_load_simple_shop_products() {
+		$products = $this->get_simpleshop_products();
+		update_option( 'simpleshop_products', $products );
+		echo wp_json_encode( $products );
+		exit();
+	}
+
+	public function get_simpleshop_products() {
 		$values = [];
 		if ( $this->loader->has_credentials() ) {
 			$vyfakturuj_api = new VyfakturujAPI( $this->loader->get_api_email(), $this->loader->get_api_key() );
@@ -57,8 +64,8 @@ class Admin {
 				}
 			}
 		}
-		echo json_encode( $values );
-		exit();
+
+		return $values;
 	}
 
 	/**
@@ -147,7 +154,7 @@ class Admin {
 	public function tiny_mce_register_buttons( $buttons ) {
 		$newBtns = [
 			'sscaddformbutton',
-			'ssccontentbutton'
+			'ssccontentbutton',
 		];
 		$buttons = array_merge( $buttons, $newBtns );
 
@@ -172,7 +179,7 @@ class Admin {
 			'search_items'       => __( 'Find groups', 'simpleshop-cz' ),
 			'parent_item_colon'  => __( 'Parent group:', 'simpleshop-cz' ),
 			'not_found'          => __( 'No Groups found.', 'simpleshop-cz' ),
-			'not_found_in_trash' => __( 'No Groups is a Trash', 'simpleshop-cz' )
+			'not_found_in_trash' => __( 'No Groups is a Trash', 'simpleshop-cz' ),
 		];
 
 		$args = [
@@ -186,7 +193,7 @@ class Admin {
 			'has_archive'        => false,
 			'hierarchical'       => true,
 			'menu_position'      => null,
-			'supports'           => [ 'title' ]
+			'supports'           => [ 'title' ],
 		];
 
 		register_post_type( 'ssc_group', $args );
@@ -198,12 +205,12 @@ class Admin {
 	public function add_settings_page() {
 		add_menu_page(
 			__( 'SimpleShop', 'simpleshop-cz' ),
-            __( 'SimpleShop', 'simpleshop-cz' ),
-            'manage_options',
-            'simple_shop_settings',
+			__( 'SimpleShop', 'simpleshop-cz' ),
+			'manage_options',
+			'simple_shop_settings',
 			[ $this, 'render_settings_page' ],
 			$this->pluginDirUrl . '/img/white_logo.png',
-            99
+			99
 		);
 	}
 
