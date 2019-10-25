@@ -52,6 +52,12 @@ class DeployScript {
 
 		$this->validateVersion( $this->version );
 
+		// Update deps
+		echo "Updating dependencies...\n";
+		$this->updateComposer();
+		echo "Updating dependencides done OK.\n\n";
+
+
 		// Building package
 		echo sprintf( 'Building package for version %s... ', $this->version );
 		$package = $this->buildPackage();
@@ -167,6 +173,19 @@ class DeployScript {
 			if ( ! unlink( $fileName = $file->getPathname() ) ) {
 				throw new \RuntimeException( sprintf( 'Unable to delete file "%s"', $fileName ) );
 			}
+		}
+	}
+
+	private function updateComposer($baseDir = __DIR__) {
+		$prevDir = getcwd();
+		$cmd = 'composer install';
+
+		chdir( $baseDir );
+		passthru( $cmd, $return_var );
+		chdir( $prevDir );
+
+		if ( $return_var !== 0 ) {
+			throw new \RuntimeException( sprintf( 'Compoase command failed, command was: "%s"', $cmd ) );
 		}
 	}
 

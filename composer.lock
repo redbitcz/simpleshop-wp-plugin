@@ -1,9 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+    "hash": "e749b0019292645f6aa4f47996f02c3e",
     "content-hash": "473013ad8107af44f03fb6dbf3625347",
     "packages": [
         {
@@ -57,7 +58,7 @@
                 "plugin",
                 "wordpress"
             ],
-            "time": "2019-01-21T04:30:08+00:00"
+            "time": "2019-01-21 04:30:08"
         },
         {
             "name": "tgmpa/tgm-plugin-activation",
@@ -112,7 +113,7 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2016-05-19T15:46:51+00:00"
+            "time": "2016-05-19 15:46:51"
         },
         {
             "name": "vyfakturuj/vyfakturuj-api-php",
@@ -159,20 +160,20 @@
                 "faktura",
                 "vyfakturuj"
             ],
-            "time": "2019-05-15T20:05:42+00:00"
+            "time": "2019-05-15 20:05:42"
         },
         {
             "name": "webdevstudios/cmb2-post-search-field",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/WebDevStudios/CMB2-Post-Search-field.git",
-                "reference": "f1c0422a3de6e95f5b5597fe734f86ae51990ce8"
+                "url": "https://github.com/CMB2/CMB2-Post-Search-field.git",
+                "reference": "262559872d03815c1dfc5bbd95a6f71dc69728a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WebDevStudios/CMB2-Post-Search-field/zipball/f1c0422a3de6e95f5b5597fe734f86ae51990ce8",
-                "reference": "f1c0422a3de6e95f5b5597fe734f86ae51990ce8",
+                "url": "https://api.github.com/repos/CMB2/CMB2-Post-Search-field/zipball/262559872d03815c1dfc5bbd95a6f71dc69728a9",
+                "reference": "262559872d03815c1dfc5bbd95a6f71dc69728a9",
                 "shasum": ""
             },
             "require": {
@@ -192,10 +193,16 @@
                     "email": "contact@webdevstudios.com",
                     "homepage": "https://github.com/WebDevStudios",
                     "role": "Developer"
+                },
+                {
+                    "name": "Justin Sternberg",
+                    "email": "justin@dsgnwrks.pro",
+                    "homepage": "https://dsgnwrks.pro",
+                    "role": "Developer"
                 }
             ],
             "description": "Custom field for CMB2 which adds a post-search dialog for searching/attaching other post IDs.",
-            "homepage": "https://github.com/WebDevStudios/CMB2",
+            "homepage": "https://github.com/CMB2/CMB2",
             "keywords": [
                 "field",
                 "metabox",
@@ -203,7 +210,7 @@
                 "search",
                 "wordpress"
             ],
-            "time": "2016-05-30T06:58:49+00:00"
+            "time": "2019-05-06 18:50:39"
         }
     ],
     "packages-dev": [],

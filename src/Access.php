@@ -273,6 +273,91 @@ class Access {
 	}
 
 	/**
+	 * Check if the user is allowed to view specific content (shortcode or Gutenberg block)
+	 *
+	 * @param $args
+	 *
+	 * @return bool
+	 */
+	public function user_can_view_content( $args = [] ) {
+		$defaults = [
+			'group_id'           => '',
+			'is_member'          => '',
+			'is_logged_in'       => '',
+			'specific_date_from' => '',
+			'specific_date_to'   => '',
+			'days_to_view'       => '',
+		];
+
+		$args               = wp_parse_args( $args, $defaults );
+		$group_id           = $args['group_id'];
+		$is_member          = $args['is_member'];
+		$is_logged_in       = $args['is_logged_in'];
+		$specific_date_from = $args['specific_date_from'];
+		$specific_date_to   = $args['specific_date_to'];
+		$days_to_view       = $args['days_to_view'];
+
+
+		if ( ! empty( $specific_date_from ) ) {
+			// Check against the from date, this has nothing to do with groups or other settings
+			if ( date( 'Y-m-d' ) < $specific_date_from ) {
+				return false;
+			}
+		}
+
+		if ( ! empty( $specific_date_to ) ) {
+			// Check against the to date, this has nothing to do with groups or other settings
+			if ( date( 'Y-m-d' ) > $specific_date_to ) {
+				return false;
+			}
+		}
+
+		// Stop if there's no group_id or is_member, and no specific date is set
+//		if ( empty( $group_id ) || ( empty( $is_member ) && empty( $specific_date_from ) && empty( $specific_date_to ) ) ) {
+//			return false;
+//		}
+
+
+		$group = new Group( $group_id );
+
+		if ( $is_member == 'yes' ) {
+			// Check, if the user is logged in and is member of the group, if not, bail
+			if ( ! is_user_logged_in() || ! $group->user_is_member_of_group( get_current_user_id() ) ) {
+				return false;
+			}
+		} elseif ( $is_member == 'no' ) {
+			// Check, if the user is NOT a member of specific group. This includes non-logged-in users
+			if ( is_user_logged_in() && $group->user_is_member_of_group( get_current_user_id() ) ) {
+				return false;
+			}
+		} else {
+			// If the is_member isn't 'yes' or 'no', the parameter is wrong, so stop here
+			//return false;
+		}
+
+
+		// Check if we should display content for logged-in or non-logged-in user
+		if ( $is_logged_in == 'yes' && ! is_user_logged_in() ) {
+			return false;
+		} elseif ( $is_logged_in == 'no' && is_user_logged_in() ) {
+			return false;
+		}
+
+		// Group check done, check if there are some days set and if is_member is yes
+		// it doesn't make sense to check days condition for users who should NOT be members of a group
+		if ( ! empty( $days_to_view ) && $is_member == 'yes' ) {
+			$membership        = new Membership( get_current_user_id() );
+			$subscription_date = $membership->groups[ $group_id ]['subscription_date'];
+			// Compare against today's date
+			if ( date( 'Y-m-d' ) < date( 'Y-m-d', strtotime( "$subscription_date + $days_to_view days" ) ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Setup the cart in menu
 	 *
 	 * @param $item
