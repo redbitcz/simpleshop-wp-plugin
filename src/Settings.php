@@ -157,7 +157,7 @@ class Settings {
 		$cmb->add_field(
 			[
 				'name'       => 'Nastavení e-mailu, který se posílá novým členům:',
-				'classes_cb' => [ $this, 'is_valid_api_keys' ],
+				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 				'type'       => 'title',
 				'id'         => 'ssc_email_title',
 			]
@@ -168,7 +168,7 @@ class Settings {
 				'id'               => 'ssc_email_enable',
 				'type'             => 'select',
 				'show_option_none' => false,
-				'classes_cb'       => [ $this, 'is_valid_api_keys' ],
+				'classes_cb'       => [ $this, 'hide_when_invalid_keys' ],
 				'default'          => '1',
 				'options'          => [
 					'1' => __( 'Yes, send email to new member.', 'cmb2', 'simpleshop.cz', 'simpleshop-cz' ),
@@ -181,7 +181,7 @@ class Settings {
 				'name'       => __( 'Email subject', 'simpleshop-cz' ),
 //            'desc' => __('Najdete ho ve svém SimpleShop účtu v Nastavení -> WP Plugin','ssc'),
 				'id'         => 'ssc_email_subject',
-				'classes_cb' => [ $this, 'is_valid_api_keys' ],
+				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 				'type'       => 'text',
 				'default'    => 'Byl Vám udělen přístup do členské sekce',
 			]
@@ -201,7 +201,7 @@ class Settings {
 				                    . '', 'simpleshop-cz' ),
 				'id'         => 'ssc_email_text',
 				'type'       => 'wysiwyg',
-				'classes_cb' => [ $this, 'is_valid_api_keys' ],
+				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 				'default'    => 'Dobrý den,
 byl udělen přístup do členské sekce.
 
@@ -226,7 +226,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 			[
 				'name' => 'Nastavení API - propojení s aplikací SimpleShop:',
 //            'desc' => 'This is a title description',
-//            'show_on_cb' => array($this,'is_valid_api_keys'),
+//            'show_on_cb' => array($this,'hide_when_invalid_keys'),
 				'type' => 'title',
 				'id'   => 'ssc_api_title',
 			]
@@ -266,7 +266,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'name'       => 'Obecná nastavení',
 				'type'       => 'title',
 				'id'         => 'ssc_general_settings_title',
-				'classes_cb' => [ $this, 'is_valid_api_keys' ],
+				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 			]
 		);
 
@@ -275,7 +275,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'name'       => 'Přesměrování po přihlášení',
 				'type'       => 'text',
 				'id'         => 'ssc_redirect_url',
-				'classes_cb' => [ $this, 'is_valid_api_keys' ],
+				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 			]
 		);
 		$cmb->add_field(
@@ -283,7 +283,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'name'       => 'Přesměrování po přihlášení',
 				'type'       => 'text',
 				'id'         => 'ssc_redirect_url',
-				'classes_cb' => [ $this, 'is_valid_api_keys' ],
+				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 			]
 		);
 		$cmb->add_field(
@@ -291,7 +291,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'name'       => 'Odebrat zabezpečené z RSS',
 				'type'       => 'checkbox',
 				'id'         => 'ssc_hide_from_rss',
-				'classes_cb' => [ $this, 'is_valid_api_keys' ],
+				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 			]
 		);
 
@@ -301,7 +301,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'name'       => 'Odebrat propojení',
 				'type'       => 'title',
 				'id'         => 'ssc_remove_api_title',
-				'classes_cb' => [ $this, 'is_valid_api_keys' ],
+				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 			]
 		);
 
@@ -311,7 +311,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'desc'       => __( 'You found it at SimpleShop in Settings (Nastavení) -> WP Plugin', 'simpleshop-cz' ),
 				'id'         => 'ssc_api_disconnect',
 				'type'       => 'disconnect_button',
-				'classes_cb' => [ $this, 'is_valid_api_keys' ],
+				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 			]
 		);
 	}
@@ -380,7 +380,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 	 * but previously the fields were removed completely from the form, so the default values were not saved until the API keys were in place
 	 * @return array
 	 */
-	function is_valid_api_keys() {
+	public function hide_when_invalid_keys() {
 		// If the keys are valid, do nothing
 		if ( get_option( 'ssc_valid_api_keys' ) == 1 ) {
 			return [];
