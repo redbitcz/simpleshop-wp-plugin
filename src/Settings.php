@@ -253,6 +253,16 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 		$cmb->add_field(
 			[
+				'name' => __( 'SimpleShop API Endpoint URL', 'simpleshop-cz' ),
+				'desc' => __( '[SERVICE FLAG] You can here override URL to SimpleShop API. Leave blank to use default API.', 'simpleshop-cz' ),
+				'id'   => 'ssc_api_endpoint_url',
+				'type' => 'text',
+				'classes_cb' => [ $this, 'show_endpoint_url_when_flagged' ],
+			]
+		);
+
+		$cmb->add_field(
+			[
 				'name'       => 'Obecná nastavení',
 				'type'       => 'title',
 				'id'         => 'ssc_general_settings_title',
@@ -373,6 +383,14 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 	function is_valid_api_keys() {
 		// If the keys are valid, do nothing
 		if ( get_option( 'ssc_valid_api_keys' ) == 1 ) {
+			return [];
+		}
+
+		return [ 'hidden' ];
+	}
+
+	public function show_endpoint_url_when_flagged() {
+		if ( $_GET['edit_url_endpoint'] == 'yes' ) {
 			return [];
 		}
 
