@@ -1,11 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "hash": "e749b0019292645f6aa4f47996f02c3e",
-    "content-hash": "473013ad8107af44f03fb6dbf3625347",
+    "content-hash": "f56955a90af8d9947e1d650ae80b6ee9",
     "packages": [
         {
             "name": "cmb2/cmb2",
@@ -58,7 +57,7 @@
                 "plugin",
                 "wordpress"
             ],
-            "time": "2019-01-21 04:30:08"
+            "time": "2019-01-21T04:30:08+00:00"
         },
         {
             "name": "tgmpa/tgm-plugin-activation",
@@ -113,20 +112,20 @@
                 "theme",
                 "wordpress"
             ],
-            "time": "2016-05-19 15:46:51"
+            "time": "2016-05-19T15:46:51+00:00"
         },
         {
             "name": "vyfakturuj/vyfakturuj-api-php",
-            "version": "v2.3.1",
+            "version": "v2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/redbitcz/vyfakturuj-api-php.git",
-                "reference": "84b9238c894281980654d03ae8b9364701c5ea30"
+                "reference": "c5a7b00a496a649087f7eaca78b62546ab6bc766"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/redbitcz/vyfakturuj-api-php/zipball/84b9238c894281980654d03ae8b9364701c5ea30",
-                "reference": "84b9238c894281980654d03ae8b9364701c5ea30",
+                "url": "https://api.github.com/repos/redbitcz/vyfakturuj-api-php/zipball/c5a7b00a496a649087f7eaca78b62546ab6bc766",
+                "reference": "c5a7b00a496a649087f7eaca78b62546ab6bc766",
                 "shasum": ""
             },
             "require": {
@@ -160,7 +159,7 @@
                 "faktura",
                 "vyfakturuj"
             ],
-            "time": "2019-05-15 20:05:42"
+            "time": "2019-11-13T12:11:31+00:00"
         },
         {
             "name": "webdevstudios/cmb2-post-search-field",
@@ -210,7 +209,7 @@
                 "search",
                 "wordpress"
             ],
-            "time": "2019-05-06 18:50:39"
+            "time": "2019-05-06T18:50:39+00:00"
         }
     ],
     "packages-dev": [],

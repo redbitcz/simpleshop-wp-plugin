@@ -19,7 +19,7 @@
     "cmb2/cmb2": "dev-master",
     "tgmpa/tgm-plugin-activation": "dev-master",
     "webdevstudios/cmb2-post-search-field": "dev-master",
-    "vyfakturuj/vyfakturuj-api-php": "^2.3"
+    "vyfakturuj/vyfakturuj-api-php": "^2.4"
   },
   "config": {
     "optimize-autoloader": true,
