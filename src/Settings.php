@@ -357,7 +357,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 			$api_key = sanitize_text_field( $_POST['ssc_api_key'] );
 		}
 
-		$vyfakturuj_api = new VyfakturujAPI( $api_email, $api_key );
+		$vyfakturuj_api = $this->loader->get_api_client( $api_email, $api_key );
 		$result         = $vyfakturuj_api->initWPPlugin( site_url() );
 		if ( isset( $result['status'] ) && $result['status'] == 'success' ) {
 			update_option( 'ssc_valid_api_keys', 1 );
