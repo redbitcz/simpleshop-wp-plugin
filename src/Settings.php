@@ -390,7 +390,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 	}
 
 	public function show_endpoint_url_when_flagged() {
-		if ( $_GET['edit_url_endpoint'] == 'yes' ) {
+		if ( isset($_GET['debug']) ) {
 			return [];
 		}
 
