@@ -55,7 +55,7 @@ class Admin {
 	public function get_simpleshop_products() {
 		$values = [];
 		if ( $this->loader->has_credentials() ) {
-			$vyfakturuj_api = new VyfakturujAPI( $this->loader->get_api_email(), $this->loader->get_api_key() );
+			$vyfakturuj_api = $this->loader->get_api_client();
 			$ret            = $vyfakturuj_api->getProducts();
 
 			if ( $ret ) {

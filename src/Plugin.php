@@ -8,6 +8,8 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
+use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
+
 class Plugin {
 	/**
 	 * @var string
@@ -178,5 +180,25 @@ class Plugin {
 
 	public function get_plugin_main_file() {
 		return $this->pluginMainFile;
+	}
+
+	/**
+	 * @param string|null $overrideLogin
+	 * @param string|null $overrideApiKey
+	 * @return VyfakturujAPI
+	 * @throws \VyfakturujAPIException
+	 */
+	public function get_api_client( $overrideLogin = null, $overrideApiKey = null ) {
+		$email  = $overrideLogin !== null ? $overrideLogin : $this->get_api_email();
+		$apiKey = $overrideApiKey !== null ? $overrideApiKey : $this->get_api_key();
+
+		$client = new VyfakturujAPI( $email, $apiKey );
+
+		$endpointUrl = $this->settings->ssc_get_option( 'ssc_api_endpoint_url' );
+		if(empty($endpointUrl) === false) {
+			$client->setEndpointUrl($endpointUrl);
+		}
+
+		return $client;
 	}
 }
