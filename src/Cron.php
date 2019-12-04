@@ -108,7 +108,8 @@ class Cron {
 							$userdata = get_userdata( $user_id );
 							if ( ! get_user_meta( $user_id, SIMPLESHOP_PREFIX . 'notification_email_sent_' . $post->ID,
 								true ) ) {
-								wp_mail( $userdata->user_email, $email_subject, $email_text );
+								$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
+								wp_mail( $userdata->user_email, $email_subject, $email_text, $headers );
 								update_user_meta( $user_id, SIMPLESHOP_PREFIX . 'notification_email_sent_' . $post->ID, 1 );
 							}
 						}
