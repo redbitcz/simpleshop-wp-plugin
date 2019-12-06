@@ -32,10 +32,7 @@ class Gutenberg {
 	}
 
 	function load_products() {
-		if ( ! get_option( 'simpleshop_products' ) ) {
-			update_option( 'simpleshop_products', $this->admin->get_simpleshop_products() );
-
-		}
+		$this->admin->get_simpleshop_products();
 	}
 
 	function load_block_assets() { // phpcs:ignore
@@ -61,7 +58,7 @@ class Gutenberg {
 			'simpleshop-gutenberg-block-js',
 			'ssGutenbergVariables',
 			[
-				'products' => get_option( 'simpleshop_products', [] ),
+				'products' => $this->load_products(),
 				'groups'   => $this->group->get_groups(),
 			]
 		);

@@ -8,9 +8,11 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
-use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
+use VyfakturujAPIException;
 
 class Admin {
+	const PRODUCTS_CACHE_TTL = 3600 * 24;
+	const PRODUCTS_CACHE_FIELD = '__cache_timestamp';
 
 	/**
 	 * @var Plugin
@@ -23,12 +25,11 @@ class Admin {
 
 	/**
 	 * @param Plugin $loader
-	 * @param string $pluginMainFile
 	 */
-	public function __construct(Plugin $loader) {
+	public function __construct( Plugin $loader ) {
 		$this->loader = $loader;
 
-		$this->pluginDirUrl = plugin_dir_url($loader->get_plugin_main_file());
+		$this->pluginDirUrl = plugin_dir_url( $loader->get_plugin_main_file() );
 
 		add_action( 'admin_menu', [ $this, 'add_settings_page' ] );
 		add_filter( 'manage_edit-ssc_group_columns', [ $this, 'ssc_group_columns' ] );
@@ -46,13 +47,81 @@ class Admin {
 	 * Get products from simple shop via API
 	 */
 	public function wp_ajax_load_simple_shop_products() {
+		$this->update_simpleshop_products_cache();
 		$products = $this->get_simpleshop_products();
-		update_option( 'simpleshop_products', $products );
 		echo wp_json_encode( $products );
 		exit();
 	}
 
+	/**
+	 * Return products. If you need force refresh products from API, call `update_simpleshop_products_cache()` before
+	 *
+	 * @return array
+	 * @throws VyfakturujAPIException
+	 */
 	public function get_simpleshop_products() {
+		$products = $this->get_simpleshop_products_cache();
+
+		if ( $products === null ) {
+			$this->update_simpleshop_products_cache();
+			$products = $this->get_simpleshop_products_cache();
+		}
+
+		return $products;
+	}
+
+	/**
+	 * Returns current and valid products from cache or null if valid cache unavailable
+	 *
+	 * @return array|null
+	 */
+	protected function get_simpleshop_products_cache() {
+		$cache    = get_option( 'ssc_cache_products', [] );
+		$cacheKey = $this->loader->get_cache_user_key();
+
+		// Check if cache is exists & is valid
+		$cachedTime = isset( $cache[ $cacheKey ][ self::PRODUCTS_CACHE_FIELD ] ) ? (int) $cache[ $cacheKey ][ self::PRODUCTS_CACHE_FIELD ] : 0;
+		$age        = time() - $cachedTime;
+
+		if ( $age < self::PRODUCTS_CACHE_TTL ) {
+			$products = $cache[ $cacheKey ];
+			unset( $products[ self::PRODUCTS_CACHE_FIELD ] );
+
+			return $products;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Update Products cache from Vyfakturuj API
+	 *
+	 * @throws VyfakturujAPIException
+	 */
+	public function update_simpleshop_products_cache() {
+		$products = $this->load_simpleshop_products();
+
+		$cacheKey   = $this->loader->get_cache_user_key();
+		$cachedTime = time();
+
+		$cache = [
+		        $cacheKey => array_merge(
+		                $products,
+                        [ self::PRODUCTS_CACHE_FIELD => $cachedTime ]
+                )
+        ];
+
+		update_option( 'ssc_cache_products', $cache );
+	}
+
+
+	/**
+	 * Load products from Vyfakturuj API. Don't call method directly, use `get_simpleshop_products()` to use cache
+	 *
+	 * @return array
+	 * @throws VyfakturujAPIException
+	 */
+	protected function load_simpleshop_products() {
 		$values = [];
 		if ( $this->loader->has_credentials() ) {
 			$vyfakturuj_api = $this->loader->get_api_client();

@@ -90,6 +90,11 @@ class Plugin {
 		return $this->settings->ssc_get_option( 'ssc_api_email' );
 	}
 
+	/** @return string|null Cache key related to API identity, or null when unlogged */
+	public function get_cache_user_key() {
+		return $this->email ? md5( strtolower( $this->email ) ) : null;
+	}
+
 	public function get_api_email() {
 		return $this->email;
 	}
