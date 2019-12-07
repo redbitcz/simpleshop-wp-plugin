@@ -172,7 +172,7 @@ class Settings {
 				'default'          => '1',
 				'options'          => [
 					'1' => __( 'Yes, send email to new member.', 'cmb2', 'simpleshop.cz', 'simpleshop-cz' ),
-					'2' => __( 'No, doesn\'t send email to new members.', 'cmb2', 'simpleshop.cz', 'simpleshop-cz' ),
+					'2' => __( 'No, don\'t send email to new members.', 'cmb2', 'simpleshop.cz', 'simpleshop-cz' ),
 				],
 			]
 		);
