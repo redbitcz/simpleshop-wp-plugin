@@ -57,7 +57,6 @@ class Plugin {
 		$this->secure_key = $this->load_api_key();
 		$this->email      = $this->load_email();
 
-		add_action( 'tgmpa_register', [ $this, 'register_required_plugins' ] );
 		register_activation_hook( plugin_dir_path( $this->pluginMainFile ), [ $this, 'ssc_activation_hook' ] );
 	}
 
@@ -112,37 +111,6 @@ class Plugin {
 
 	public function get_access() {
 		return $this->access;
-	}
-
-	/**
-	 * Register the required plugins for this plugin.
-	 */
-	public function register_required_plugins() {
-		global $wp_version;
-		if ( $wp_version < '4.7' ) {
-			$plugins = [
-				[
-					'name'     => 'Wordpress Rest API',
-					'slug'     => 'rest-api',
-					'required' => true,
-				]
-			];
-
-			$config = [
-				'id'           => 'ssc',
-				'default_path' => '',
-				'menu'         => 'ssc-install-plugins',
-				'parent_slug'  => 'tools.php',
-				'capability'   => 'edit_theme_options',
-				'has_notices'  => true,
-				'dismissable'  => true,
-				'dismiss_msg'  => '',
-				'is_automatic' => false,
-				'message'      => '',
-			];
-
-			tgmpa( $plugins, $config );
-		}
 	}
 
 	public function get_post_types() {

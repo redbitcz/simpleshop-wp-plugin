@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f56955a90af8d9947e1d650ae80b6ee9",
+    "content-hash": "6b6e70862f0e367df758e4f80b3d9925",
     "packages": [
         {
             "name": "cmb2/cmb2",
@@ -60,72 +60,17 @@
             "time": "2019-01-21T04:30:08+00:00"
         },
         {
-            "name": "tgmpa/tgm-plugin-activation",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/TGMPA/TGM-Plugin-Activation.git",
-                "reference": "c626d0d91fc8ef24916e809c7b79eeafab1c1cac"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/TGMPA/TGM-Plugin-Activation/zipball/c626d0d91fc8ef24916e809c7b79eeafab1c1cac",
-                "reference": "c626d0d91fc8ef24916e809c7b79eeafab1c1cac",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "class-tgm-plugin-activation.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Thomas Griffin",
-                    "homepage": "http://thomasgriffinmedia.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Gary Jones",
-                    "homepage": "https://github.com/GaryJones",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Juliette Reinders Folmer",
-                    "homepage": "https://github.com/jrfnl",
-                    "role": "Developer"
-                }
-            ],
-            "description": "TGM Plugin Activation is a PHP library that allows you to easily require or recommend plugins for your WordPress themes (and plugins).",
-            "homepage": "http://tgmpluginactivation.com",
-            "keywords": [
-                "activation",
-                "library",
-                "plugins",
-                "theme",
-                "wordpress"
-            ],
-            "time": "2016-05-19T15:46:51+00:00"
-        },
-        {
             "name": "vyfakturuj/vyfakturuj-api-php",
-            "version": "v2.4.0",
+            "version": "v2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/redbitcz/vyfakturuj-api-php.git",
-                "reference": "c5a7b00a496a649087f7eaca78b62546ab6bc766"
+                "reference": "8d70aed2c05ec9d311a23477712ea69e3a46de74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/redbitcz/vyfakturuj-api-php/zipball/c5a7b00a496a649087f7eaca78b62546ab6bc766",
-                "reference": "c5a7b00a496a649087f7eaca78b62546ab6bc766",
+                "url": "https://api.github.com/repos/redbitcz/vyfakturuj-api-php/zipball/8d70aed2c05ec9d311a23477712ea69e3a46de74",
+                "reference": "8d70aed2c05ec9d311a23477712ea69e3a46de74",
                 "shasum": ""
             },
             "require": {
@@ -159,7 +104,7 @@
                 "faktura",
                 "vyfakturuj"
             ],
-            "time": "2019-11-13T12:11:31+00:00"
+            "time": "2019-12-06T11:51:20+00:00"
         },
         {
             "name": "webdevstudios/cmb2-post-search-field",
@@ -217,7 +162,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "cmb2/cmb2": 20,
-        "tgmpa/tgm-plugin-activation": 20,
         "webdevstudios/cmb2-post-search-field": 20
     },
     "prefer-stable": false,
