@@ -31,14 +31,11 @@ class Gutenberg {
 		$this->pluginDirUrl = plugin_dir_url($pluginMainFile);
 	}
 
-	function load_products() {
-		if ( ! get_option( 'simpleshop_products' ) ) {
-			update_option( 'simpleshop_products', $this->admin->get_simpleshop_products() );
-
-		}
+	public function load_products() {
+		$this->admin->get_simpleshop_products();
 	}
 
-	function load_block_assets() { // phpcs:ignore
+	public function load_block_assets() { // phpcs:ignore
 
 		// Register block styles for both frontend + backend.
 		wp_register_style(
@@ -61,7 +58,7 @@ class Gutenberg {
 			'simpleshop-gutenberg-block-js',
 			'ssGutenbergVariables',
 			[
-				'products' => get_option( 'simpleshop_products', [] ),
+				'products' => $this->load_products(),
 				'groups'   => $this->group->get_groups(),
 			]
 		);
@@ -99,6 +96,8 @@ class Gutenberg {
 	 *
 	 * @param $content
 	 * @param $block
+	 *
+	 * @return string
 	 */
 	public function maybe_hide_block( $content, $block ) {
 		$args = [

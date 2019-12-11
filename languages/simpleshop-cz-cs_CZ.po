@@ -203,7 +203,7 @@ msgid "Yes, send email to new member."
 msgstr "Ano, poslat každému novému členovi e-mail."
 
 #: src/Settings.php:152
-msgid "No, doesn't send email to new members."
+msgid "No, don't send email to new members."
 msgstr "Ne, zakázat posílání e-mailu novým členům."
 
 #: src/Settings.php:156
