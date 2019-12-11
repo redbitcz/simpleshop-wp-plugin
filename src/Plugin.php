@@ -71,6 +71,15 @@ class Plugin {
 		new Cron( $this );
 		new Metaboxes( $this );
 		new Shortcodes($this->access);
+		$this->init_gutenberg();
+	}
+
+	private function init_gutenberg() {
+		if(function_exists('register_block_type') === false) {
+			// Skip init Gutenberg features - Gurenberg not supported in WP
+			return;
+		}
+
 		new Gutenberg($this->admin, $this->group, $this->access, $this->pluginMainFile);
 	}
 
