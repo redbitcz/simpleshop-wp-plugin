@@ -27,10 +27,38 @@ class Shortcodes {
 
 
 	public function simple_shop_form( $atts ) {
-		$url = substr( $_SERVER['SERVER_NAME'],
-			- 2 ) === 'lc' ? 'http://form.simpleshop.czlc' : 'https://form.simpleshop.cz';
+		$productCode = $atts['id'];
+		$formUrl     = 'https://form.simpleshop.cz/prj/js/SimpleShopService.js';
 
-		return '<script type="text/javascript" src="' . $url . '/iframe/js/?id=' . $atts['id'] . '"></script>';
+		$template = /** @lang TEXT */
+			<<<'EOD'
+<!-- www.SimpleShop.cz form-code/%1$s start -->
+<script>
+	(function(i, s, o, g, r, a, m) {
+		i[r] = i[r] || function(){
+			(i[r].q = i[r].q || []).push(arguments)
+		}, i[r].l = 1 * new Date();
+		a = s.createElement(o),
+		m = s.getElementsByTagName(o)[0];
+		a.async = 1;
+		a.src = g;
+		m.parentNode.insertBefore(a, m)
+	})(window, document, "script", %2$s, "sss");
+	sss("createForm", %3$s);
+</script>
+<div data-SimpleShopForm="%1$s"><div>%4$s</div></div>
+<!-- www.SimpleShop.cz form-code/%1$s end -->
+EOD;
+
+		$html = sprintf( $template,
+			htmlspecialchars( $productCode, ENT_QUOTES ),
+			json_encode( $formUrl ),
+			json_encode( $productCode ),
+			__( 'Sales form is created in a system <a href="https://www.simpleshop.cz/" title="Sell online anything you want via sales form SimpleShop">Simpleshop.cz</a>.',
+				'simpleshop-cz' )
+		);
+
+		return $html;
 	}
 
 	public function simple_shop_content( $atts, $content = '' ) {
