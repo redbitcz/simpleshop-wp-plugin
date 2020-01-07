@@ -49,8 +49,7 @@ class Admin {
 	public function wp_ajax_load_simple_shop_products() {
 		$this->update_simpleshop_products_cache();
 		$products = $this->get_simpleshop_products();
-		echo wp_json_encode( $products );
-		exit();
+		wp_send_json( $products );
 	}
 
 	/**
@@ -105,11 +104,11 @@ class Admin {
 		$cachedTime = time();
 
 		$cache = [
-		        $cacheKey => array_merge(
-		                $products,
-                        [ self::PRODUCTS_CACHE_FIELD => $cachedTime ]
-                )
-        ];
+			$cacheKey => array_merge(
+				$products,
+				[ self::PRODUCTS_CACHE_FIELD => $cachedTime ]
+			)
+		];
 
 		update_option( 'ssc_cache_products', $cache );
 	}
