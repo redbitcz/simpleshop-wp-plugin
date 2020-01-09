@@ -71,6 +71,15 @@ class Plugin {
 		new Cron( $this );
 		new Metaboxes( $this );
 		new Shortcodes($this->access);
+		$this->init_gutenberg();
+	}
+
+	private function init_gutenberg() {
+		if(function_exists('register_block_type') === false) {
+			// Skip init Gutenberg features - Gurenberg not supported in WP
+			return;
+		}
+
 		new Gutenberg($this->admin, $this->group, $this->access, $this->pluginMainFile);
 	}
 
@@ -88,6 +97,11 @@ class Plugin {
 
 	protected function load_email() {
 		return $this->settings->ssc_get_option( 'ssc_api_email' );
+	}
+
+	/** @return string|null Cache key related to API identity, or null when unlogged */
+	public function get_cache_user_key() {
+		return $this->email ? md5( strtolower( $this->email ) ) : null;
 	}
 
 	public function get_api_email() {
