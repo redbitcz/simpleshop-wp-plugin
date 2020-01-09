@@ -97,7 +97,7 @@ class DeployScript {
 		// Stamp root file
 		$stampedFile = $this->copyStampedFile(
 			__DIR__ . '/' . $this->productName . '.php',
-			array(
+			[
 				'Version: dev-master'                                      => sprintf(
 					'Version: %s',
 					$this->getNakedVersion()
@@ -106,7 +106,7 @@ class DeployScript {
 					'define( \'SIMPLESHOP_PLUGIN_VERSION\', \'%s\' );',
 					$this->version
 				),
-			),
+			],
 			$this->distDir
 		);
 
@@ -116,12 +116,12 @@ class DeployScript {
 		// Stamp readme.txt
 		$stampedFile = $this->copyStampedFile(
 			__DIR__ . '/readme.txt',
-			array(
+			[
 				'Stable tag: trunk'                                      => sprintf(
 					'Stable tag: %s',
 					$this->getNakedVersion()
 				),
-			),
+			],
 			$this->distDir
 		);
 
