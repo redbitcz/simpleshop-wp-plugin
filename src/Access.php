@@ -258,12 +258,6 @@ class Access {
 			$post_id = $post->ID;
 		}
 
-		// First check, if we should redirect the user to login form
-//        if ($redirect_post_id = get_post_meta($post_id, SSC_PREFIX . 'no_access_redirect_to_login_form', true)) {
-//            $actual_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-//            return wp_login_url($actual_url);
-//        }
-
 		// Next try to get the ID and return permalink
 		if ( $redirect_post_id = get_post_meta( $post_id, '_ssc_no_access_redirect_post_id', true ) ) {
 			return get_the_permalink( $redirect_post_id );
@@ -311,12 +305,6 @@ class Access {
 				return false;
 			}
 		}
-
-		// Stop if there's no group_id or is_member, and no specific date is set
-//		if ( empty( $group_id ) || ( empty( $is_member ) && empty( $specific_date_from ) && empty( $specific_date_to ) ) ) {
-//			return false;
-//		}
-
 
 		$group = new Group( $group_id );
 

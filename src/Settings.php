@@ -8,8 +8,6 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
-use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
-
 /**
  * CMB2 Theme Options
  * @version 0.1.0
@@ -151,9 +149,7 @@ class Settings {
 			]
 		);
 
-		#
-		# MAIL
-		#
+		// MAIL
 		$cmb->add_field(
 			[
 				'name'       => 'Nastavení e-mailu, který se posílá novým členům:',
@@ -162,6 +158,7 @@ class Settings {
 				'id'         => 'ssc_email_title',
 			]
 		);
+
 		$cmb->add_field(
 			[
 				'name'             => 'Poslat e-mail novému členovi?',
@@ -176,17 +173,16 @@ class Settings {
 				],
 			]
 		);
+
 		$cmb->add_field(
 			[
 				'name'       => __( 'Email subject', 'simpleshop-cz' ),
-//            'desc' => __('Najdete ho ve svém SimpleShop účtu v Nastavení -> WP Plugin','ssc'),
 				'id'         => 'ssc_email_subject',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 				'type'       => 'text',
 				'default'    => 'Byl Vám udělen přístup do členské sekce',
 			]
 		);
-
 
 		$cmb->add_field(
 			[
@@ -218,15 +214,10 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 			]
 		);
 
-
-		#
-		# API
-		#
+		// API
 		$cmb->add_field(
 			[
 				'name' => 'Nastavení API - propojení s aplikací SimpleShop:',
-//            'desc' => 'This is a title description',
-//            'show_on_cb' => array($this,'hide_when_invalid_keys'),
 				'type' => 'title',
 				'id'   => 'ssc_api_title',
 			]
@@ -278,6 +269,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 			]
 		);
+
 		$cmb->add_field(
 			[
 				'name'       => 'Přesměrování po přihlášení',
@@ -286,6 +278,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 			]
 		);
+
 		$cmb->add_field(
 			[
 				'name'       => 'Odebrat zabezpečené z RSS',
@@ -294,7 +287,6 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 			]
 		);
-
 
 		$cmb->add_field(
 			[
@@ -326,8 +318,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 		// Unset only API keys, leave the other settings saved
 		$options = get_option( $this->key );
-		unset( $options['ssc_api_email'] );
-		unset( $options['ssc_api_key'] );
+		unset( $options['ssc_api_email'], $options['ssc_api_key'] );
 
 		// Set valid API keys to false
 		update_option( 'ssc_valid_api_keys', 0 );
@@ -338,12 +329,14 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 	/**
 	 * Register settings notices for display
-	 * @since  0.1.0
 	 *
-	 * @param  int $object_id Option key
-	 * @param  array $updated Array of updated fields
+	 * @param int $object_id Option key
+	 * @param array $updated Array of updated fields
 	 *
 	 * @return void
+	 * @throws \VyfakturujAPIException
+	 * @since  0.1.0
+	 *
 	 */
 	public function settings_notices( $object_id, $updated ) {
 		$api_email = $this->loader->get_api_email();

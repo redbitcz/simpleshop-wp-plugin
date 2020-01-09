@@ -212,12 +212,9 @@ class Rest extends \WP_REST_Controller {
 				'{login}'     => $_login,
 				'{password}'  => $_password,
 				'{login_url}' => wp_login_url(),
-//                '{login}' => $_login,
-//                '{password}' => $_password,
 			];
+
 			$email_body   = str_replace( array_keys( $replaceArray ), array_values( $replaceArray ), $email_body );
-//            $email_body = str_replace('{pages}',$pages,$email_body);
-//            $email_body = str_replace('{mail}',$email,$email_body);
 			$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
 
 			// Send the email
