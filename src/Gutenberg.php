@@ -42,7 +42,7 @@ class Gutenberg {
 			'simpleshop-gutenberg-style-css', // Handle.
 			$this->pluginDirUrl . 'js/gutenberg/blocks.style.build.css', // Block style CSS.
 			[ 'wp-editor' ], // Dependency to include the CSS after it.
-			null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
+			null // Version: File modification time.
 		);
 
 		// Register block editor script for backend.
@@ -51,8 +51,7 @@ class Gutenberg {
 			$this->pluginDirUrl . 'js/gutenberg/blocks.build.js',
 			// Block.build.js: We register the block here. Built with Webpack.
 			[ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ], // Dependencies, defined above.
-			null,
-			// filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ), // Version: filemtime — Gets file modification time.
+			null, // Version: filemtime — Gets file modification time.
 			true // Enqueue the script in the footer.
 		);
 
@@ -70,7 +69,7 @@ class Gutenberg {
 			'simpleshop-gutenberg-block-editor-css', // Handle.
 			$this->pluginDirUrl . 'js/gutenberg/blocks.editor.build.css', // Block editor CSS.
 			[ 'wp-edit-blocks' ], // Dependency to include the CSS after it.
-			null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
+			null // Version: File modification time.
 		);
 
 		/**

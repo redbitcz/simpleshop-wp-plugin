@@ -79,14 +79,6 @@ class Metaboxes {
 				'type' => 'text'
 			] );
 
-//            $cmb->add_field(array(
-//                'name' => __('Přesměrovat na přihlášení', 'ssc'),
-//                'desc' => __('Zaškrtněte, pokud chcete uživatele přesměrovat na přihlašovací formulář. Po přihlášení bude uživatel přesměrován zpět na tuto stránku.', 'ssc'),
-//                'id' => $this->prefix . 'no_access_redirect_to_login_form',
-//                'type' => 'checkbox'
-//            ));
-
-
 			$cmb->add_field( [
 				'name' => __( 'Delay access to content (days from group assign)', 'simpleshop-cz' ),
 				'desc' => __( 'Put number of days to delay before access to content is allowed after registration. For example: If registration to group is at January 1st and you set delay to 5 days, user get access to content from January 6th.',
@@ -158,7 +150,6 @@ class Metaboxes {
 			$cmb->add_field( [
 				'name'    => __( 'SimpleShop - member sections<br/><small style=\"font-weight:normal;\">Choose which member sections the user should have access to.</small>',
 					'simpleshop-cz' ),
-//            'desc' => __('Vyberte, do kterých členských sekcí má mít uživatel přístup','ssc'),
 				'id'      => $this->prefix . 'user_groups',
 				'type'    => 'multicheck',
 				'options' => $groups,

@@ -47,8 +47,6 @@ class Helpers {
 					? $ref->getStartLine()
 					: $ref->getMethod( substr( $item['function'],
 						strpos( $item['function'], '::' ) + 2 ) )->getStartLine();
-
-				// array( object, method ), array( string object, method ), array( string object, string 'parent::method' )
 			} elseif ( is_array( $item['function'] ) ) {
 
 				$ref = new \ReflectionClass( $item['function'][0] );

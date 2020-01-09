@@ -188,7 +188,6 @@ class Admin {
         </script>
 
 		<?php
-
 	}
 
 	/**
