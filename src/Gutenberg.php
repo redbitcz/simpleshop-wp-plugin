@@ -87,6 +87,7 @@ class Gutenberg {
 				'editor_script' => 'simpleshop-gutenberg-block-js',
 				// Enqueue blocks.editor.build.css in the editor only.
 				'editor_style'  => 'simpleshop-gutenberg-block-editor-css',
+				'render_callback' => [ $this, 'render_block' ],
 			)
 		);
 	}
@@ -115,6 +116,20 @@ class Gutenberg {
 
 
 		return $content;
+	}
+
+	/**
+	 * Render the Gutenberg form block
+	 * @param $args
+	 *
+	 * @return string
+	 */
+	public function render_block( $args ) {
+		if ( is_admin() ) {
+			return '';
+		}
+
+		return sprintf( '[SimpleShop-form ID="%s"]', $args['ssFormId'] );
 	}
 
 }
