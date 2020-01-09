@@ -32,7 +32,7 @@ class Gutenberg {
 	}
 
 	public function load_products() {
-		$this->admin->get_simpleshop_products();
+		return $this->admin->get_simpleshop_products();
 	}
 
 	public function load_block_assets() { // phpcs:ignore
