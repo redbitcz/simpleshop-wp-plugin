@@ -34,6 +34,6 @@ class SimpleShop {
 	 * @return Plugin
 	 */
 	protected static function factory() {
-		return new Plugin(self::$pluginMainFile);
+		return new Plugin( self::$pluginMainFile );
 	}
 }

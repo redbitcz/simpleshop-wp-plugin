@@ -9,6 +9,7 @@
 namespace Redbit\SimpleShop\WpPlugin;
 
 use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
+use VyfakturujAPIException;
 
 class Plugin {
 	/**
@@ -69,17 +70,17 @@ class Plugin {
 		new Rest( $this );
 		new Cron( $this );
 		new Metaboxes( $this );
-		new Shortcodes($this->access);
+		new Shortcodes( $this->access );
 		$this->init_gutenberg();
 	}
 
 	private function init_gutenberg() {
-		if(function_exists('register_block_type') === false) {
+		if ( function_exists( 'register_block_type' ) === false ) {
 			// Skip init Gutenberg features - Gurenberg not supported in WP
 			return;
 		}
 
-		new Gutenberg($this->admin, $this->group, $this->access, $this->pluginMainFile);
+		new Gutenberg( $this->admin, $this->group, $this->access, $this->pluginMainFile );
 	}
 
 	public function generate_secure_key() {
@@ -138,8 +139,10 @@ class Plugin {
 
 	public function ssc_activation_hook() {
 		if ( ! function_exists( 'curl_init' ) || ! function_exists( 'random_bytes' ) ) {
-			echo '<h3>' . __( 'Plugin activation failed. Please contact your provider and ask to install PHP extensions: cUrl and Mcrypt.',
-					'simpleshop-cz' ) . '</h3>';
+			echo '<h3>' . __(
+					'Plugin activation failed. Please contact your provider and ask to install PHP extensions: cUrl and Mcrypt.',
+					'simpleshop-cz'
+				) . '</h3>';
 
 			//Adding @ before will prevent XDebug output
 			@trigger_error( __( 'Plugin activation failed. Please contact your provider and ask to install PHP extensions: cUrl and Mcrypt.',
@@ -156,7 +159,8 @@ class Plugin {
 	}
 
 	public function load_textdomain_i18n() {
-		$plugin_rel_path = str_replace( WP_PLUGIN_DIR . '/', '', plugin_dir_path( $this->pluginMainFile ) . 'languages/' );
+		$plugin_rel_path = str_replace( WP_PLUGIN_DIR . '/', '',
+			plugin_dir_path( $this->pluginMainFile ) . 'languages/' );
 		load_plugin_textdomain( 'simpleshop-cz', false, $plugin_rel_path );
 	}
 
@@ -167,8 +171,9 @@ class Plugin {
 	/**
 	 * @param string|null $overrideLogin
 	 * @param string|null $overrideApiKey
+	 *
 	 * @return VyfakturujAPI
-	 * @throws \VyfakturujAPIException
+	 * @throws VyfakturujAPIException
 	 */
 	public function get_api_client( $overrideLogin = null, $overrideApiKey = null ) {
 		$email  = $overrideLogin !== null ? $overrideLogin : $this->get_api_email();
@@ -177,8 +182,8 @@ class Plugin {
 		$client = new VyfakturujAPI( $email, $apiKey );
 
 		$endpointUrl = $this->settings->ssc_get_option( 'ssc_api_endpoint_url' );
-		if(empty($endpointUrl) === false) {
-			$client->setEndpointUrl($endpointUrl);
+		if ( empty( $endpointUrl ) === false ) {
+			$client->setEndpointUrl( $endpointUrl );
 		}
 
 		return $client;

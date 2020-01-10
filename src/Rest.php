@@ -8,7 +8,14 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
-class Rest extends \WP_REST_Controller {
+use WP_Error;
+use WP_Post;
+use WP_REST_Controller;
+use WP_REST_Request;
+use WP_REST_Response;
+use WP_REST_Server;
+
+class Rest extends WP_REST_Controller {
 
 	/**
 	 * @var Plugin
@@ -32,7 +39,7 @@ class Rest extends \WP_REST_Controller {
 			'/group',
 			[
 				[
-					'methods'             => \WP_REST_Server::READABLE,
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => [ $this, 'get_groups' ],
 					'permission_callback' => [ $this, 'create_item_permissions_check' ],
 					'args'                => $this->get_endpoint_args_for_item_schema( true ),
@@ -45,7 +52,7 @@ class Rest extends \WP_REST_Controller {
 			'/add-member',
 			[
 				[
-					'methods'             => \WP_REST_Server::READABLE,
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => [ $this, 'create_item' ],
 					'permission_callback' => [ $this, 'create_item_permissions_check' ],
 					'args'                => $this->get_endpoint_args_for_item_schema( true ),
@@ -57,22 +64,22 @@ class Rest extends \WP_REST_Controller {
 	public function get_groups() {
 		$ssc_group = new Group();
 
-		return new \WP_REST_Response( $ssc_group->get_groups(), 200 );
+		return new WP_REST_Response( $ssc_group->get_groups(), 200 );
 	}
 
 	/**
 	 * Create one item from the collection
 	 *
-	 * @param \WP_REST_Request $request Full data about the request.
+	 * @param WP_REST_Request $request Full data about the request.
 	 *
-	 * @return \WP_REST_Response
+	 * @return WP_REST_Response
 	 */
 	public function create_item( $request ) {
 		// Check if we got all the needed params
 		$params_to_validate = [ 'email' ];
 		foreach ( $params_to_validate as $param ) {
 			if ( ! $request->get_param( $param ) ) {
-				return new \WP_Error( 'required-param-missing',
+				return new WP_Error( 'required-param-missing',
 					sprintf( __( 'Required parameter %s is missing', 'simpleshop-cz' ), $param ),
 					[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
@@ -81,13 +88,15 @@ class Rest extends \WP_REST_Controller {
 		// Check if we got valid email
 		$email = sanitize_email( $request->get_param( 'email' ) );
 		if ( ! is_email( $email ) ) {
-			return new \WP_Error( 'wrong-email-format', __( 'The email is in wrong format', 'simpleshop-cz' ),
+			return new WP_Error( 'wrong-email-format', __( 'The email is in wrong format', 'simpleshop-cz' ),
 				[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 		}
 
 		// Check if user with this email exists, if not, create a new user
 		$_login    = $email;
-		$_password = '<a href="' . wp_lostpassword_url( get_bloginfo( 'url' ) ) . '">Změnit ho můžete zde</a>';
+		$_password = '<a href="' . wp_lostpassword_url( get_bloginfo( 'url' ) ) . '">'
+		             . __( 'You can change it here', 'simpleshop-cz' )
+		             . '</a>';
 		if ( ! email_exists( $email ) ) {
 			$_password = wp_generate_password( 8, false );
 
@@ -107,7 +116,7 @@ class Rest extends \WP_REST_Controller {
 			do_action( 'ssc_new_user_created', $user_id );
 
 			if ( is_wp_error( $user_id ) ) {
-				return new \WP_Error( 'could-not-create-user', __( "The user couldn't be created", 'simpleshop-cz' ),
+				return new WP_Error( 'could-not-create-user', __( "The user couldn't be created", 'simpleshop-cz' ),
 					[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
 		} else {
@@ -164,7 +173,7 @@ class Rest extends \WP_REST_Controller {
 		foreach ( $SSC_group->get_user_groups( $user_id ) as $group ) {
 			// Scrub through posts and check, if some of the posts has that group assigned
 			foreach ( $posts as $post ) {
-				/** @var \WP_Post $post */
+				/** @var WP_Post $post */
 				$access = $this->loader->get_access();
 				$groups = $access->get_post_groups( $post->ID );
 
@@ -214,23 +223,23 @@ class Rest extends \WP_REST_Controller {
 				'{login_url}' => wp_login_url(),
 			];
 
-			$email_body   = str_replace( array_keys( $replaceArray ), array_values( $replaceArray ), $email_body );
-			$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
+			$email_body = str_replace( array_keys( $replaceArray ), array_values( $replaceArray ), $email_body );
+			$headers    = [ 'Content-Type: text/html; charset=UTF-8' ];
 
 			// Send the email
 			wp_mail( $email, $email_subject, $email_body, $headers );
 		}
 
-		return new \WP_REST_Response( [ 'status' => 'success', 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ],
+		return new WP_REST_Response( [ 'status' => 'success', 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ],
 			200 );
 	}
 
 	/**
 	 * Check if a given request has access to create items
 	 *
-	 * @param \WP_REST_Request $request Full data about the request.
+	 * @param WP_REST_Request $request Full data about the request.
 	 *
-	 * @return \WP_Error|bool
+	 * @return WP_Error|bool
 	 */
 	public function create_item_permissions_check( $request ) {
 		return $this->loader->validate_secure_key( $request->get_param( 'hash' ) );
@@ -240,7 +249,7 @@ class Rest extends \WP_REST_Controller {
 	 * Prepare the item for the REST response
 	 *
 	 * @param mixed $item WordPress representation of the item.
-	 * @param \WP_REST_Request $request Request object.
+	 * @param WP_REST_Request $request Request object.
 	 *
 	 * @return mixed
 	 */
@@ -251,7 +260,7 @@ class Rest extends \WP_REST_Controller {
 	/**
 	 * Prepare the item for create or update operation
 	 *
-	 * @param \WP_REST_Request $request Request object
+	 * @param WP_REST_Request $request Request object
 	 *
 	 * @return array $prepared_item
 	 */

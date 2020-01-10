@@ -1,30 +1,33 @@
-# Copyright (C) 2018 SimpleShop.cz
+# Copyright (C) 2019 SimpleShop.cz
 # This file is distributed under the same license as the SimpleShop.cz package.
 msgid ""
 msgstr ""
 "Project-Id-Version: SimpleShop.cz 2.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/simpleshop-cz"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/simpleshop-cz\n"
 "POT-Creation-Date: 2018-10-01 06:22:45+00:00\n"
+"PO-Revision-Date: 2020-01-10 04:00+0100\n"
+"Last-Translator: Jakub Bouček <pan@jakubboucek.cz>\n"
+"Language-Team: Redbit s.r.o. <info@redbit.cz>\n"
+"Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2019-12-17 14:58:00+01:00\n"
-"Last-Translator: Jakub Bouček <pan@jakubboucek.cz>\n"
-"Language-Team: Redbit s.r.o. <info@redbit.cz>\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: src/Admin.php:152 src/Admin.php:154 src/Admin.php:155 src/Admin.php:161
+#: src/Admin.php:237 src/Admin.php:239 src/Admin.php:240 src/Admin.php:246
 msgid "Member sections"
 msgstr "Členské sekce"
 
-#: src/Admin.php:153
+#: src/Admin.php:153 src/Admin.php:238
 msgid "Group"
 msgstr "Skupina"
 
-#: src/Admin.php:156
+#: src/Admin.php:156 src/Admin.php:241
 msgid "Add group"
 msgstr "Přidat skupinu"
 
-#: src/Admin.php:157
+#: src/Admin.php:157 src/Admin.php:242 src/Admin.php:243
 msgid "Add new group"
 msgstr "Přidat novou skupinu"
 
@@ -32,34 +35,34 @@ msgstr "Přidat novou skupinu"
 msgid "New group"
 msgstr "Nová skupina"
 
-#: src/Admin.php:159
+#: src/Admin.php:159 src/Admin.php:244
 msgid "Edit group"
 msgstr "Upravit skupinu"
 
-#: src/Admin.php:160
+#: src/Admin.php:160 src/Admin.php:245
 msgid "Show group"
 msgstr "Zobrazit skupinu"
 
-#: src/Admin.php:162
+#: src/Admin.php:162 src/Admin.php:247
 msgid "Find groups"
 msgstr "Hledat skupiny"
 
-#: src/Admin.php:163
+#: src/Admin.php:163 src/Admin.php:248
 msgid "Parent group:"
 msgstr "Nadřazená skupina:"
 
 #: src/Admin.php:164
 msgid "No Groups found"
-msgstr "Nebyly nalezeny žádné skupiny."
+msgstr "Nebyly nalezeny žádné skupiny"
 
-#: src/Admin.php:165
+#: src/Admin.php:165 src/Admin.php:250
 msgid "No Groups is a Trash"
 msgstr "Žádné skupiny v koši"
 
-#: src/Loader.php:134 src/Loader.php:138
+#: src/Loader.php:134 src/Loader.php:138 src/Plugin.php:173 src/Plugin.php:177
 msgid ""
-"Plugin activation failed. Please contact your provider and ask to "
-"install PHP extensions: cUrl and Mcrypt."
+"Plugin activation failed. Please contact your provider and ask to install "
+"PHP extensions: cUrl and Mcrypt."
 msgstr ""
 "Aktivace se nezdařila. Kontaktuje prosím poskytovatele Vašeho hostingu a "
 "požádejte o instalaci rozšíření PHP - cUrl a Mcrypt."
@@ -74,11 +77,11 @@ msgstr "Členské sekce, které mají přístup na stránku"
 
 #: src/Metaboxes.php:52
 msgid ""
-"Access to this page is permit only for users of selected Member Sections. "
-"If no one section selected, all users is permit to access this page."
+"Access to this page is permit only for users of selected Member Sections. If "
+"no one section selected, all users is permit to access this page."
 msgstr ""
 "Pouze uživatelé v zaškrtnutých členských sekcích mají přístup na tuto "
-"stránku. Pokud nic nezaškrtnete, stránku uvidí všichni uživatelé"
+"stránku. Pokud nic nezaškrtnete, stránku uvidí všichni uživatelé."
 
 #: src/Metaboxes.php:63
 msgid "Page ID to redirect"
@@ -86,13 +89,13 @@ msgstr "ID stránky pro přesměrování"
 
 #: src/Metaboxes.php:64
 msgid ""
-"Select one Page to which user will be redirected when uses is logged in, "
-"but have no access to page. This is preffered way. Redirect will works even if "
+"Select one Page to which user will be redirected when uses is logged in, but "
+"have no access to page. This is preffered way. Redirect will works even if "
 "target page URL will be changer in future."
 msgstr ""
 "Vyberte stránku, na kterou bude uživatel přesměrován, pokud je přihlášen, "
-"ale nemá oprávnění k přístupu. Toto je preferovaný způsob - přesměrování bude "
-"fungovat, i pokud se v budoucnu změní adresa stránky."
+"ale nemá oprávnění k přístupu. Toto je preferovaný způsob - přesměrování "
+"bude fungovat, i pokud se v budoucnu změní adresa stránky."
 
 #: src/Metaboxes.php:75
 msgid "Manual URL to redirect"
@@ -101,8 +104,8 @@ msgstr "Manuální adresa přesměrování"
 #: src/Metaboxes.php:76
 msgid ""
 "Put manually URL to which user will be redirected when uses is logged in, "
-"but have no access to page. If you want to use this method, keep "
-"previous field empty."
+"but have no access to page. If you want to use this method, keep previous "
+"field empty."
 msgstr ""
 "Zadejte ručně adresu, na kterou bude uživatel přesměrován, pokud je "
 "přihlášen, ale nemá oprávnění k přístupu. Pokud využijete tuto volbu, pole "
@@ -114,9 +117,9 @@ msgstr "Povolit přístup po X dnech od přiřazení do skupiny"
 
 #: src/Metaboxes.php:92
 msgid ""
-"Number of days to delay before access to content is allowed after registration. "
-"For example: If registration to group is at January 1st and you set delay to 5 days, "
-"user get access to content from January 6th."
+"Number of days to delay before access to content is allowed after "
+"registration. For example: If registration to group is at January 1st and "
+"you set delay to 5 days, user get access to content from January 6th."
 msgstr ""
 "Zadejte počet dní, které musí uplynout od přihlášení uživatele do skupiny "
 "pro získání přístupu k tomuto obsahu. Pokud např. uživatel koupí produkt 1."
@@ -127,8 +130,7 @@ msgid "Allow access from date"
 msgstr "Povolit přístup OD data"
 
 #: src/Metaboxes.php:100
-msgid ""
-"Date which will be access to content allowed (applied to all groups)"
+msgid "Date which will be access to content allowed (applied to all groups)"
 msgstr ""
 "Zadejte datum, od kterého bude stránka přístupná (platí pro všechny skupiny)."
 
@@ -137,8 +139,7 @@ msgid "Allow access to date"
 msgstr "Povolit přístup DO data"
 
 #: src/Metaboxes.php:109
-msgid ""
-"Date until will be access to content allowed (applied to all groups)"
+msgid "Date until will be access to content allowed (applied to all groups)"
 msgstr ""
 "Zadejte datum, do kterého bude stránka přístupná (platí pro všechny skupiny)."
 
@@ -168,8 +169,8 @@ msgstr ""
 
 #: src/Metaboxes.php:159
 msgid ""
-"SimpleShop - member sections<br/><small style=\"font-weight:normal;\">Choose which "
-"member sections the user should have access to.</small>"
+"SimpleShop - member sections<br/><small style=\"font-weight:normal;\">Choose "
+"which member sections the user should have access to.</small>"
 msgstr ""
 "SimpleShop - členské sekce<br/><small style=\"font-weight:normal;\">Vyberte, "
 "do kterých členských sekcí má mít uživatel přístup.</small>"
@@ -182,15 +183,15 @@ msgstr "Datum registrace do skupiny %s."
 msgid "Expiration date of registration to group %s."
 msgstr "Datum vypršení platnosti registrace do skupiny %s."
 
-#: src/Rest.php:73
+#: src/Rest.php:73 src/Rest.php:76
 msgid "Required parameter %s is missing"
 msgstr "Povinný parametr %s chybí"
 
-#: src/Rest.php:81
+#: src/Rest.php:81 src/Rest.php:84
 msgid "The email is in wrong format"
 msgstr "E-mail je ve špatném tvaru"
 
-#: src/Rest.php:102
+#: src/Rest.php:102 src/Rest.php:110
 msgid "The user couldn't be created"
 msgstr "Uživatele nebylo možné vytvořit"
 
@@ -198,47 +199,182 @@ msgstr "Uživatele nebylo možné vytvořit"
 msgid "Settings"
 msgstr "Nastavení"
 
-#: src/Settings.php:151
-msgid "Yes, send email to new member."
-msgstr "Ano, poslat každému novému členovi e-mail."
+#: src/Settings.php:151 src/Settings.php:174
+msgid "Yes, send email to new member"
+msgstr "Ano, poslat každému novému členovi e-mail"
 
-#: src/Settings.php:152
-msgid "No, don't send email to new members."
-msgstr "Ne, zakázat posílání e-mailu novým členům."
+#: src/Settings.php:152 src/Settings.php:175
+msgid "No, don't send email to new members"
+msgstr "Ne, neposílat e-mail novým členům"
 
-#: src/Settings.php:156
+#: src/Settings.php:156 src/Settings.php:181
 msgid "Email subject"
 msgstr "Předmět e-mailu"
 
-#: src/Settings.php:166
+#: src/Settings.php:166 src/Settings.php:193
 msgid "Email message"
 msgstr "Text e-mailu"
 
-#: src/Settings.php:207
+#: src/Settings.php:207 src/Settings.php:238
 msgid "Username (email)"
-msgstr "Přihlašovací email"
+msgstr "Přihlašovací jméno (e-mail)"
 
-#: src/Settings.php:208
+#: src/Settings.php:208 src/Settings.php:239
 msgid "Put email used for login to SimpleShop"
-msgstr "Zadejte email, který používáte pro přihlášení do služby SimpleShop."
+msgstr "Zadejte email, který používáte pro přihlášení do služby SimpleShop"
 
-#: src/Settings.php:214
+#: src/Settings.php:214 src/Settings.php:247
 msgid "SimpleShop API Key"
 msgstr "SimpleShop API Klíč"
 
-#: src/Settings.php:215
-msgid "You found it at SimpleShop in Settings (Nastavení) -> WP Plugin"
-msgstr "Najdete ho ve svém SimpleShop účtu v Nastavení -> WP Plugin"
-
-#: src/Settings.php:244
+#: src/Settings.php:244 src/Settings.php:373
 msgid "Settings updated."
-msgstr "Nastavení upraveno"
+msgstr "Nastavení upraveno."
 
 #: Description of the plugin/theme
-msgid "Plugin implement SimpleShop.cz into Wordpress"
+msgid "Plugin implements SimpleShop.cz into Wordpress"
 msgstr "Plugin pro propojení Wordpress a SimpleShop.cz"
 
-#: SS form ads note
-msgid "Sales form is created in a system <a href=\"https://www.simpleshop.cz/\" title=\"Sell online anything you want via sales form SimpleShop\">Simpleshop.cz</a>."
-msgstr "Prodejní formulář je vytvořen v systému <a href=\"https://www.simpleshop.cz/\" title=\"Prodávejte online cokoliv s prodejním formulářem SimpleShop\" target=\"_blank\">SimpleShop.cz</a>."
+#: src/Shortcodes.php:57
+msgid ""
+"Sales form is created in a system <a href=\"https://www.simpleshop.cz/\" "
+"title=\"Sell online anything you want via sales form SimpleShop\">Simpleshop."
+"cz</a>."
+msgstr ""
+"Prodejní formulář je vytvořen v systému <a href=\"https://www.simpleshop.cz/"
+"\" title=\"Prodávejte online cokoliv s prodejním formulářem SimpleShop\" "
+"target=\"_blank\">SimpleShop.cz</a>."
 
+#: src/Rest.php:98
+msgid "You can change it here"
+msgstr "Změnit ho můžete zde"
+
+#: src/Settings.php:199
+msgid ""
+"<u>Allowed placeholders:</u><br/><div style=\"font-style:normal;\"><b>{login}"
+"</b> = login<br/><b>{password}</b> = password<br/><b>{login_url}</b> = URL "
+"to Page where User can login<br/><b>{pages}</b> = list of pages where user "
+"has granted access<br/><b>{mail}</b> = user email (usually same as login)<br/"
+"></div>"
+msgstr ""
+"<u>Povolené zástupné znaky:</u><br/><div style=\"font-style:normal;"
+"\"><b>{login}</b> = login<br/><b>{password}</b> = heslo<br/><b>{login_url}</"
+"b> = URL adresa, na které je možné se přihlásit<br/><b>{pages}</b> = seznam "
+"stránek, do kterých má uživatel zakoupený přístup<br/><b>{mail}</b> = e-mail "
+"uživatele (většinou stejný jako login)<br/></div>"
+
+#: src/Settings.php:257
+msgid ""
+"[SERVICE FLAG] You can here override URL to SimpleShop API. Leave blank to "
+"use default API."
+msgstr ""
+"[SERVICE FLAG] Zde můžete přetížit URL na SimpleShop API. Pro použití "
+"výchozího nastavení ponechte prázdné."
+
+#: src/Settings.php:256
+msgid "SimpleShop API Endpoint URL"
+msgstr "SimpleShop API Endpoint URL"
+
+#. Plugin URI of the plugin
+msgid "https://www.simpleshop.cz/category/wordpress-plugin/"
+msgstr "https://www.simpleshop.cz/category/wordpress-plugin/"
+
+#: src/Settings.php:79 src/Settings.php:310
+msgid "Disconnect SimpleShop"
+msgstr "Odpojit SimpleShop"
+
+#. Author URI of the plugin
+msgid "https://www.redbit.cz"
+msgstr "https://www.redbit.cz"
+
+#. Author of the plugin
+msgid "Redbit s.r.o."
+msgstr "Redbit s.r.o."
+
+#. Plugin Name of the plugin
+msgid "SimpleShop.cz"
+msgstr "SimpleShop.cz"
+
+#: src/Settings.php:215 src/Settings.php:248 src/Settings.php:311
+msgid "You found it at SimpleShop in Settings -> WP Plugin"
+msgstr "Najdete ho ve svém SimpleShop účtu v Nastavení -> WP Plugin"
+
+#: src/Metaboxes.php:109
+msgid ""
+"Put date until will be access to content allowed (applied to all groups)"
+msgstr ""
+"Zadejte datum, do kterého bude stránka přístupná (platí pro všechny skupiny)"
+
+#: src/Metaboxes.php:100
+msgid ""
+"Put date which will be access to content allowed (applied to all groups)"
+msgstr ""
+"Zadejte datum, od kterého bude stránka přístupná (platí pro všechny skupiny)"
+
+#: src/Metaboxes.php:92
+msgid ""
+"Put number of days to delay before access to content is allowed after "
+"registration. For example: If registration to group is at January 1st and "
+"you set delay to 5 days, user get access to content from January 6th."
+msgstr ""
+"Zadejte zpoždění (počet dní), než uživatel po registraci získá přístup k "
+"obsahu. Například: Pokud je registrace do skupiny k 1. lednu a nastavíte "
+"zpoždění na 5 dní, uživatel získá přístup k obsahu od 6. ledna."
+
+#: src/Metaboxes.php:76
+msgid ""
+"Put URL to which user will be redirected when uses is logged in, but have no "
+"access to page. If you want to use this method, keep previous field empty."
+msgstr ""
+"Zadejte adresu URL, na kterou bude přesměrován přihlášený uživatel, který "
+"nemá přístup na stránku. Chcete-li použít tuto metodu, nechte předchozí pole "
+"prázdné."
+
+#: src/Admin.php:275 src/Admin.php:276 src/Metaboxes.php:144
+msgid "SimpleShop"
+msgstr "SimpleShop"
+
+#: src/Settings.php:288
+msgid "Remove connection"
+msgstr "Odebrat propojení"
+
+#: src/Settings.php:164
+msgid "Email which is send to new members:"
+msgstr "Nastavení e-mailu, který se posílá novým členům:"
+
+#: src/Settings.php:164
+msgid "Send email to new member?"
+msgstr "Poslat e-mail novému členovi?"
+
+#: src/Settings.php:192
+msgid "You have been granted access to the member section"
+msgstr "Byl Vám udělen přístup do členské sekce"
+
+#: src/Settings.php:223
+msgid "API Settings - connection with SimpleShop:"
+msgstr "Nastavení API - propojení s aplikací SimpleShop:"
+
+#: src/Settings.php:261
+msgid "General settings"
+msgstr "Obecná nastavení"
+
+#: src/Settings.php:270
+msgid "Redirect after success login"
+msgstr "Přesměrování po přihlášení"
+
+#: src/Settings.php:279
+msgid "Remove hidden content from RSS"
+msgstr "Odebrat zabezpečené z RSS"
+
+msgid ""
+"Hello,\nYou have been granted access to the member section.\n\n"
+"Login: {login}\nPassword: {password}\n\n"
+"You can login at: {login_url}\n\n"
+"Your purchased content:\n{pages}\n\n"
+"Have a nice day,\nSimpleShop.cz - <i>S námi zvládne prodávat každý</i>"
+msgstr ""
+"Dobrý den,\nbyl Vám udělen přístup do členské sekce.\n\n"
+"Login: {login}\nHeslo: {password}\n\n"
+"Přihlásit se můžete na: {login_url}\n\n"
+"Váš zakoupený obsah:\n{pages}\n\n"
+"S pozdravem a přáním pěkného dne,\nSimpleShop.cz - <i>S námi zvládne prodávat každý</i>"

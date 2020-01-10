@@ -9,7 +9,7 @@
 /*
  * Plugin Name: SimpleShop.cz
  * Plugin URI: https://www.simpleshop.cz/category/wordpress-plugin/
- * Description: Plugin implement SimpleShop.cz into Wordpress
+ * Description: Plugin implements SimpleShop.cz into Wordpress
  * Author:  Redbit s.r.o.
  * Author URI: https://www.redbit.cz
  * Version: dev-master

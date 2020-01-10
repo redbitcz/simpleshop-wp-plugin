@@ -8,6 +8,9 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
+use Exception;
+use VyfakturujAPIException;
+
 /**
  * CMB2 Theme Options
  * @version 0.1.0
@@ -73,9 +76,15 @@ class Settings {
 		add_action( 'admin_init', [ $this, 'maybe_disconnect_simpleshop' ] );
 	}
 
-	public function field_type_disconnect_button( $field, $escaped_value, $object_id, $object_type, $field_type_object ) { ?>
-        <a href="<?php echo admin_url( 'admin.php?page=ssc_options&disconnect_simpleshop=1' ) ?>"><?php _e( 'Disconnect Simple Shop', 'simpleshop-cz' ); ?></a>
-		<?php
+	public function field_type_disconnect_button(
+		$field,
+		$escaped_value,
+		$object_id,
+		$object_type,
+		$field_type_object
+	) {
+		echo '<a href="' . admin_url( 'admin.php?page=ssc_options&disconnect_simpleshop=1' ) . '">'
+		     . __( 'Disconnect SimpleShop', 'simpleshop-cz' ) . '</a>';
 	}
 
 	/**
@@ -91,7 +100,7 @@ class Settings {
 	 * @since 0.1.0
 	 */
 	public function add_options_page() {
-		$translatedTitle = __( $this->title, 'simpleshop-cz' );
+		$translatedTitle = __( 'Settings', 'simpleshop-cz' );
 
 		add_submenu_page(
 			'simple_shop_settings',
@@ -152,7 +161,7 @@ class Settings {
 		// MAIL
 		$cmb->add_field(
 			[
-				'name'       => 'Nastavení e-mailu, který se posílá novým členům:',
+				'name'       => __( 'Email which is send to new members:', 'simpleshop-cz' ),
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 				'type'       => 'title',
 				'id'         => 'ssc_email_title',
@@ -161,15 +170,15 @@ class Settings {
 
 		$cmb->add_field(
 			[
-				'name'             => 'Poslat e-mail novému členovi?',
+				'name'             => __( 'Send email to new member?', 'simpleshop-cz' ),
 				'id'               => 'ssc_email_enable',
 				'type'             => 'select',
 				'show_option_none' => false,
 				'classes_cb'       => [ $this, 'hide_when_invalid_keys' ],
 				'default'          => '1',
 				'options'          => [
-					'1' => __( 'Yes, send email to new member.', 'cmb2', 'simpleshop.cz', 'simpleshop-cz' ),
-					'2' => __( 'No, don\'t send email to new members.', 'cmb2', 'simpleshop.cz', 'simpleshop-cz' ),
+					'1' => __( 'Yes, send email to new member', 'simpleshop-cz' ),
+					'2' => __( 'No, don\'t send email to new members', 'simpleshop-cz' ),
 				],
 			]
 		);
@@ -180,44 +189,38 @@ class Settings {
 				'id'         => 'ssc_email_subject',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 				'type'       => 'text',
-				'default'    => 'Byl Vám udělen přístup do členské sekce',
+				'default'    => __( 'You have been granted access to the member section', 'simpleshop-cz' ),
 			]
 		);
 
 		$cmb->add_field(
 			[
 				'name'       => __( 'Email message', 'simpleshop-cz' ),
-				'desc'       => __( '<u>Povolené zástupné znaky:</u><br/>'
-				                    . '<div style="font-style:normal;"><b>{login}</b> = login<br/>'
-				                    . '<b>{password}</b> = heslo<br/>'
-				                    . '<b>{login_url}</b> = adresa, na které je možné se přihlásit<br/>'
-				                    . '<b>{pages}</b> = seznam stránek, do kterých má uživatel zakoupený přístup<br/>'
-				                    . '<b>{mail}</b> = e-mail uživatele (většinou stejný jako login)<br/>'
-				                    . '</div>'
-				                    . '', 'simpleshop-cz' ),
+				'desc'       => __( '<u>Allowed placeholders:</u><br/>'
+				                    . '<div style="font-style:normal;">'
+				                    . '<b>{login}</b> = login<br/>'
+				                    . '<b>{password}</b> = password<br/>'
+				                    . '<b>{login_url}</b> = URL to Page where User can login<br/>'
+				                    . '<b>{pages}</b> = list of pages where user has granted access<br/>'
+				                    . '<b>{mail}</b> = user email (usually same as login)<br/>'
+				                    . '</div>',
+					'simpleshop-cz' ),
 				'id'         => 'ssc_email_text',
 				'type'       => 'wysiwyg',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
-				'default'    => 'Dobrý den,
-byl udělen přístup do členské sekce.
-
-Login: {login}
-Heslo: {password}
-
-Přihlásit se můžete na: ' . wp_login_url() . '
-
-Váš zakoupený obsah:
-{pages}
-
-S pozdravem a přáním pěkného dne,
-SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
+				'default'    => __( "Hello,\nYou have been granted access to the member section.\n\n"
+				                    . "Login: {login}\nPassword: {password}\n\n"
+				                    . "You can login at: {login_url}\n\n"
+				                    . "Your purchased content:\n{pages}\n\n"
+				                    . "Have a nice day,\nSimpleShop.cz - <i>S námi zvládne prodávat každý</i>",
+					'simpleshop-cz' )
 			]
 		);
 
 		// API
 		$cmb->add_field(
 			[
-				'name' => 'Nastavení API - propojení s aplikací SimpleShop:',
+				'name' => __( 'API Settings - connection with SimpleShop:', 'simpleshop-cz' ),
 				'type' => 'title',
 				'id'   => 'ssc_api_title',
 			]
@@ -236,7 +239,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 		$cmb->add_field(
 			[
 				'name' => __( 'SimpleShop API Key', 'simpleshop-cz' ),
-				'desc' => __( 'You found it at SimpleShop in Settings (Nastavení) -> WP Plugin', 'simpleshop-cz' ),
+				'desc' => __( 'You found it at SimpleShop in Settings -> WP Plugin', 'simpleshop-cz' ),
 				'id'   => 'ssc_api_key',
 				'type' => 'text',
 			]
@@ -244,17 +247,18 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 		$cmb->add_field(
 			[
-				'name' => __( 'SimpleShop API Endpoint URL', 'simpleshop-cz' ),
-				'desc' => __( '[SERVICE FLAG] You can here override URL to SimpleShop API. Leave blank to use default API.', 'simpleshop-cz' ),
-				'id'   => 'ssc_api_endpoint_url',
-				'type' => 'text',
+				'name'       => __( 'SimpleShop API Endpoint URL', 'simpleshop-cz' ),
+				'desc'       => __( '[SERVICE FLAG] You can here override URL to SimpleShop API. Leave blank to use default API.',
+					'simpleshop-cz' ),
+				'id'         => 'ssc_api_endpoint_url',
+				'type'       => 'text',
 				'classes_cb' => [ $this, 'show_endpoint_url_when_flagged' ],
 			]
 		);
 
 		$cmb->add_field(
 			[
-				'name'       => 'Obecná nastavení',
+				'name'       => __( 'General settings', 'simpleshop-cz' ),
 				'type'       => 'title',
 				'id'         => 'ssc_general_settings_title',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
@@ -263,7 +267,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 		$cmb->add_field(
 			[
-				'name'       => 'Přesměrování po přihlášení',
+				'name'       => __( 'Redirect after success login', 'simpleshop-cz' ),
 				'type'       => 'text',
 				'id'         => 'ssc_redirect_url',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
@@ -272,16 +276,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 		$cmb->add_field(
 			[
-				'name'       => 'Přesměrování po přihlášení',
-				'type'       => 'text',
-				'id'         => 'ssc_redirect_url',
-				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
-			]
-		);
-
-		$cmb->add_field(
-			[
-				'name'       => 'Odebrat zabezpečené z RSS',
+				'name'       => __( 'Remove hidden content from RSS', 'simpleshop-cz' ),
 				'type'       => 'checkbox',
 				'id'         => 'ssc_hide_from_rss',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
@@ -290,7 +285,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 		$cmb->add_field(
 			[
-				'name'       => 'Odebrat propojení',
+				'name'       => __( 'Remove connection', 'simpleshop-cz' ),
 				'type'       => 'title',
 				'id'         => 'ssc_remove_api_title',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
@@ -299,8 +294,9 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 		$cmb->add_field(
 			[
-				'name'       => __( 'Disconnect Simple Shop', 'simpleshop-cz' ),
-				'desc'       => __( 'You found it at SimpleShop in Settings (Nastavení) -> WP Plugin', 'simpleshop-cz' ),
+				'name'       => __( 'Disconnect SimpleShop', 'simpleshop-cz' ),
+				'desc'       => __( 'You found it at SimpleShop in Settings -> WP Plugin',
+					'simpleshop-cz' ),
 				'id'         => 'ssc_api_disconnect',
 				'type'       => 'disconnect_button',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
@@ -334,7 +330,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 	 * @param array $updated Array of updated fields
 	 *
 	 * @return void
-	 * @throws \VyfakturujAPIException
+	 * @throws VyfakturujAPIException
 	 * @since  0.1.0
 	 *
 	 */
@@ -383,7 +379,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 	}
 
 	public function show_endpoint_url_when_flagged() {
-		if ( isset($_GET['debug']) ) {
+		if ( isset( $_GET['debug'] ) ) {
 			return [];
 		}
 
@@ -392,12 +388,13 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 	/**
 	 * Public getter method for retrieving protected/private variables
-	 * @since  0.1.0
 	 *
-	 * @param  string $field Field to retrieve
+	 * @param string $field Field to retrieve
 	 *
 	 * @return mixed          Field value or exception is thrown
-	 * @throws \Exception
+	 * @throws Exception
+	 * @since  0.1.0
+	 *
 	 */
 	public function __get( $field ) {
 		// Allowed fields to retrieve
@@ -405,17 +402,18 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 			return $this->{$field};
 		}
 
-		throw new \Exception( 'Invalid property: ' . $field );
+		throw new Exception( 'Invalid property: ' . $field );
 	}
 
 	/**
 	 * Wrapper function around cmb2_get_option
-	 * @since  0.1.0
 	 *
-	 * @param  string $key Options array key
-	 * @param  mixed $default Optional default value
+	 * @param string $key Options array key
+	 * @param mixed $default Optional default value
 	 *
 	 * @return mixed           Option value
+	 * @since  0.1.0
+	 *
 	 */
 	public function ssc_get_option( $key = '', $default = null ) {
 		if ( function_exists( 'cmb2_get_option' ) ) {

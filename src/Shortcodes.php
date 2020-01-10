@@ -54,8 +54,10 @@ EOD;
 			htmlspecialchars( $productCode, ENT_QUOTES ),
 			json_encode( $formUrl ),
 			json_encode( $productCode ),
-			__( 'Sales form is created in a system <a href="https://www.simpleshop.cz/" title="Sell online anything you want via sales form SimpleShop">Simpleshop.cz</a>.',
-				'simpleshop-cz' )
+			__(
+				'Sales form is created in a system <a href="https://www.simpleshop.cz/" title="Sell online anything you want via sales form SimpleShop">Simpleshop.cz</a>.',
+				'simpleshop-cz'
+			)
 		);
 
 		return $html;

@@ -44,7 +44,7 @@ class Admin {
 	}
 
 	/**
-	 * Get products from simple shop via API
+	 * Get products from SimpleShop via API
 	 */
 	public function wp_ajax_load_simple_shop_products() {
 		$this->update_simpleshop_products_cache();
@@ -245,7 +245,7 @@ class Admin {
 			'all_items'          => __( 'Member sections', 'simpleshop-cz' ),
 			'search_items'       => __( 'Find groups', 'simpleshop-cz' ),
 			'parent_item_colon'  => __( 'Parent group:', 'simpleshop-cz' ),
-			'not_found'          => __( 'No Groups found.', 'simpleshop-cz' ),
+			'not_found'          => __( 'No Groups found', 'simpleshop-cz' ),
 			'not_found_in_trash' => __( 'No Groups is a Trash', 'simpleshop-cz' ),
 		];
 
