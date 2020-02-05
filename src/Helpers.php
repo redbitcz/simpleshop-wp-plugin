@@ -79,10 +79,11 @@ class Helpers {
 
 	/**
 	 * An utility function to remove any hook from a class
+	 * Note: I't unable to remove Closure-based filters
 	 *
-	 * @param $tag
-	 * @param $class
-	 * @param $method
+	 * @param string $tag
+	 * @param string $class
+	 * @param string $method
 	 *
 	 * @return array|bool|null
 	 */
@@ -93,7 +94,7 @@ class Helpers {
 
 		foreach ( $GLOBALS['wp_filter'][ $tag ] as $priority => $filter ) {
 			foreach ( $filter as $identifier => $function ) {
-				if ( is_array( $function )
+				if ( is_array( $function ) && is_array( $function['function'] )
 				     && is_a( $function['function'][0], $class )
 				         && $method === $function['function'][1]
 				) {
