@@ -8,7 +8,7 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
-use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
+use Exception;
 
 /**
  * CMB2 Theme Options
@@ -75,9 +75,16 @@ class Settings {
 		add_action( 'admin_init', [ $this, 'maybe_disconnect_simpleshop' ] );
 	}
 
-	public function field_type_disconnect_button( $field, $escaped_value, $object_id, $object_type, $field_type_object ) { ?>
-        <a href="<?php echo admin_url( 'admin.php?page=ssc_options&disconnect_simpleshop=1' ) ?>"><?php _e( 'Disconnect Simple Shop', 'simpleshop-cz' ); ?></a>
-		<?php
+	public function field_type_disconnect_button(
+		$field,
+		$escaped_value,
+		$object_id,
+		$object_type,
+		$field_type_object
+	) {
+		echo '<a href="' . admin_url( 'admin.php?page=ssc_options&disconnect_simpleshop=1' ) . '">'
+		     . _e( 'Disconnect Simple Shop', 'simpleshop-cz' )
+		     . '</a>';
 	}
 
 	/**
@@ -253,20 +260,22 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 		$cmb->add_field(
 			[
-				'name' => __( 'SimpleShop API Endpoint URL', 'simpleshop-cz' ),
-				'desc' => __( '[SERVICE FLAG] You can here override URL to SimpleShop API. Leave blank to use default API.', 'simpleshop-cz' ),
-				'id'   => 'ssc_api_endpoint_url',
-				'type' => 'text',
+				'name'       => __( 'SimpleShop API Endpoint URL', 'simpleshop-cz' ),
+				'desc'       => __( '[SERVICE FLAG] You can here override URL to SimpleShop API. Leave blank to use default API.',
+					'simpleshop-cz' ),
+				'id'         => 'ssc_api_endpoint_url',
+				'type'       => 'text',
 				'classes_cb' => [ $this, 'show_debug_fields' ],
 			]
 		);
 
 		$cmb->add_field(
 			[
-				'name' => __( 'Simplehop Form base URL', 'simpleshop-cz' ),
-				'desc' => __( '[SERVICE FLAG] Base URL to SimpleShop form URL. Leave blank to use default URL.', 'simpleshop-cz' ),
-				'id'   => 'ssc_ss_form_url',
-				'type' => 'text',
+				'name'       => __( 'Simplehop Form base URL', 'simpleshop-cz' ),
+				'desc'       => __( '[SERVICE FLAG] Base URL to SimpleShop form URL. Leave blank to use default URL.',
+					'simpleshop-cz' ),
+				'id'         => 'ssc_ss_form_url',
+				'type'       => 'text',
 				'classes_cb' => [ $this, 'show_debug_fields' ],
 			]
 		);
@@ -318,7 +327,8 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 		$cmb->add_field(
 			[
 				'name'       => __( 'Disconnect Simple Shop', 'simpleshop-cz' ),
-				'desc'       => __( 'You found it at SimpleShop in Settings (Nastavení) -> WP Plugin', 'simpleshop-cz' ),
+				'desc'       => __( 'You found it at SimpleShop in Settings (Nastavení) -> WP Plugin',
+					'simpleshop-cz' ),
 				'id'         => 'ssc_api_disconnect',
 				'type'       => 'disconnect_button',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
@@ -348,12 +358,13 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 	/**
 	 * Register settings notices for display
-	 * @since  0.1.0
 	 *
-	 * @param  int $object_id Option key
-	 * @param  array $updated Array of updated fields
+	 * @param int $object_id Option key
+	 * @param array $updated Array of updated fields
 	 *
 	 * @return void
+	 * @since  0.1.0
+	 *
 	 */
 	public function settings_notices( $object_id, $updated ) {
 		$api_email = $this->loader->get_api_email();
@@ -400,7 +411,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 	}
 
 	public function show_debug_fields() {
-		if ( isset($_GET['debug']) ) {
+		if ( isset( $_GET['debug'] ) ) {
 			return [];
 		}
 
@@ -409,12 +420,13 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 	/**
 	 * Public getter method for retrieving protected/private variables
-	 * @since  0.1.0
 	 *
-	 * @param  string $field Field to retrieve
+	 * @param string $field Field to retrieve
 	 *
 	 * @return mixed          Field value or exception is thrown
-	 * @throws \Exception
+	 * @throws Exception
+	 * @since  0.1.0
+	 *
 	 */
 	public function __get( $field ) {
 		// Allowed fields to retrieve
@@ -422,17 +434,18 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 			return $this->{$field};
 		}
 
-		throw new \Exception( 'Invalid property: ' . $field );
+		throw new Exception( 'Invalid property: ' . $field );
 	}
 
 	/**
 	 * Wrapper function around cmb2_get_option
-	 * @since  0.1.0
 	 *
-	 * @param  string $key Options array key
-	 * @param  mixed $default Optional default value
+	 * @param string $key Options array key
+	 * @param mixed $default Optional default value
 	 *
 	 * @return mixed           Option value
+	 * @since  0.1.0
+	 *
 	 */
 	public function ssc_get_option( $key = '', $default = null ) {
 		if ( function_exists( 'cmb2_get_option' ) ) {

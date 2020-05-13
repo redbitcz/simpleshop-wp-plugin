@@ -117,7 +117,7 @@ class DeployScript {
 		$stampedFile = $this->copyStampedFile(
 			__DIR__ . '/readme.txt',
 			array(
-				'Stable tag: trunk'                                      => sprintf(
+				'Stable tag: trunk' => sprintf(
 					'Stable tag: %s',
 					$this->getNakedVersion()
 				),
@@ -176,9 +176,9 @@ class DeployScript {
 		}
 	}
 
-	private function updateComposer($baseDir = __DIR__) {
+	private function updateComposer( $baseDir = __DIR__ ) {
 		$prevDir = getcwd();
-		$cmd = 'composer install';
+		$cmd     = 'composer install';
 
 		chdir( $baseDir );
 		passthru( $cmd, $return_var );

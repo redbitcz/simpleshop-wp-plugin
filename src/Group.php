@@ -8,6 +8,8 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
+use WP_Post;
+
 class Group {
 
 	public $id = '';
@@ -60,7 +62,7 @@ class Group {
 
 	/**
 	 * Check if group exists
-	 * @return array|null|\WP_Post
+	 * @return array|null|WP_Post
 	 */
 	public function group_exists() {
 		return get_post( $this->id );

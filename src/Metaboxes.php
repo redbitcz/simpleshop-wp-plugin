@@ -16,7 +16,7 @@ class Metaboxes {
 	 */
 	private $loader;
 
-	public function __construct(Plugin $loader) {
+	public function __construct( Plugin $loader ) {
 		$this->loader = $loader;
 		add_action( 'cmb2_admin_init', [ $this, 'page_metaboxes' ] );
 		add_action( 'cmb2_admin_init', [ $this, 'user_metaboxes' ] );

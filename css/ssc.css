@@ -1,10 +1,10 @@
 .cmb-row.hidden {
     display: none;
 }
+
 .one-half {
     width: 48%;
     display: inline-block;
     vertical-align: top;
     margin-right: 1%;
-
 }
