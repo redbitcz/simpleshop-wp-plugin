@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f56955a90af8d9947e1d650ae80b6ee9",
+    "content-hash": "2ad287176984ef415aee4e21d2c79f39",
     "packages": [
         {
             "name": "cmb2/cmb2",
@@ -116,16 +116,16 @@
         },
         {
             "name": "vyfakturuj/vyfakturuj-api-php",
-            "version": "v2.4.0",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/redbitcz/vyfakturuj-api-php.git",
-                "reference": "c5a7b00a496a649087f7eaca78b62546ab6bc766"
+                "reference": "93d8131257ad260dc83c90e7904d58adae51e6eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/redbitcz/vyfakturuj-api-php/zipball/c5a7b00a496a649087f7eaca78b62546ab6bc766",
-                "reference": "c5a7b00a496a649087f7eaca78b62546ab6bc766",
+                "url": "https://api.github.com/repos/redbitcz/vyfakturuj-api-php/zipball/93d8131257ad260dc83c90e7904d58adae51e6eb",
+                "reference": "93d8131257ad260dc83c90e7904d58adae51e6eb",
                 "shasum": ""
             },
             "require": {
@@ -159,7 +159,7 @@
                 "faktura",
                 "vyfakturuj"
             ],
-            "time": "2019-11-13T12:11:31+00:00"
+            "time": "2020-05-13T11:28:43+00:00"
         },
         {
             "name": "webdevstudios/cmb2-post-search-field",
@@ -225,5 +225,6 @@
     "platform": {
         "php": ">=5.6.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
