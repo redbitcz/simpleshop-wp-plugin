@@ -27,10 +27,9 @@ class Shortcodes {
 
 
 	public function simple_shop_form( $atts ) {
-		$url = substr( $_SERVER['SERVER_NAME'],
-			- 2 ) === 'lc' ? 'http://form.simpleshop.czlc' : 'https://form.simpleshop.cz';
+		$query = http_build_query( [ 'id' => $atts['id'] ] );
 
-		return '<script type="text/javascript" src="' . $url . '/iframe/js/?id=' . $atts['id'] . '"></script>';
+		return '<script type="text/javascript" src="https://form.simpleshop.cz/iframe/js/?' . $query . '"></script>';
 	}
 
 	public function simple_shop_content( $atts, $content = '' ) {
