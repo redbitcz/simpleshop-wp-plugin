@@ -24,8 +24,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 define( 'SIMPLESHOP_PLUGIN_VERSION', 'dev-master' );
 define( 'SIMPLESHOP_PREFIX', '_ssc_' );
 
-/**
- * Start plugin
- */
+/** Start plugin*/
 SimpleShop::$pluginMainFile = __FILE__;
 SimpleShop::getInstance();

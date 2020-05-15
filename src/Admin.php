@@ -14,13 +14,9 @@ class Admin {
 	const PRODUCTS_CACHE_TTL = 3600 * 24;
 	const PRODUCTS_CACHE_FIELD = '__cache_timestamp';
 
-	/**
-	 * @var Plugin
-	 */
+	/** @var Plugin */
 	private $loader;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $pluginDirUrl;
 
 	/**

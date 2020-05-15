@@ -14,38 +14,19 @@ use VyfakturujAPIException;
 class Plugin {
 	const DEFAUT_API_ENDPOINT = 'https://api.simpleshop.cz';
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $secure_key;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $email;
-
-	/**
-	 * @var Settings
-	 */
+	/** @var Settings */
 	private $settings;
-
-	/**
-	 * @var Access
-	 */
+	/** @var Access */
 	private $access;
-
-	/**
-	 * @var Admin
-	 */
+	/** @var Admin */
 	private $admin;
-
-	/**
-	 * @var Group
-	 */
+	/** @var Group */
 	private $group;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $pluginMainFile;
 
 	/**

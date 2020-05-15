@@ -11,9 +11,7 @@ namespace Redbit\SimpleShop\WpPlugin;
 use WP_Query;
 
 class Cron {
-	/**
-	 * @var Plugin
-	 */
+	/** @var Plugin */
 	private $loader;
 
 	public function __construct( Plugin $loader ) {

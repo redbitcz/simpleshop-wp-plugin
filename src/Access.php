@@ -10,14 +10,9 @@ namespace Redbit\SimpleShop\WpPlugin;
 
 use WP_Error;
 
-/**
- * Handles the access for the posts / pages
- */
+/** Handles the access for the posts / pages */
 class Access {
-
-	/**
-	 * @var Settings
-	 */
+	/** @var Settings */
 	private $settings;
 
 	/**

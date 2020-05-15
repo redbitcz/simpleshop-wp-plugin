@@ -11,9 +11,7 @@ namespace Redbit\SimpleShop\WpPlugin;
 class Metaboxes {
 	public $prefix = '_ssc_';
 
-	/**
-	 * @var Plugin
-	 */
+	/** @var Plugin */
 	private $loader;
 
 	public function __construct( Plugin $loader ) {

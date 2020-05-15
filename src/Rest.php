@@ -16,10 +16,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 class Rest extends WP_REST_Controller {
-
-	/**
-	 * @var Plugin
-	 */
+	/** @var Plugin */
 	private $loader;
 
 	public function __construct( Plugin $loader ) {

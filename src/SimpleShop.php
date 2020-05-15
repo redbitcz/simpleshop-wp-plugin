@@ -9,14 +9,10 @@
 namespace Redbit\SimpleShop\WpPlugin;
 
 class SimpleShop {
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	public static $pluginMainFile = __DIR__ . '/../simpleshop-cz.php';
 
-	/**
-	 * @var Plugin|null
-	 */
+	/** @var Plugin|null */
 	private static $instance;
 
 	/**

@@ -8,9 +8,7 @@
 
 namespace Redbit\SimpleShop\WpPlugin\Vyfakturuj;
 
-/**
- * Rozšíření třídy \VyfakturujAPI o metody, které SSC potřebuje
- */
+/** Rozšíření třídy \VyfakturujAPI o metody, které SSC potřebuje */
 class VyfakturujAPI extends \VyfakturujAPI {
 	public function initWPPlugin( $domain ) {
 		return $this->fetchPost(

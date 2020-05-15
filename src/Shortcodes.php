@@ -10,9 +10,7 @@ namespace Redbit\SimpleShop\WpPlugin;
 
 class Shortcodes {
 
-	/**
-	 * @var Access
-	 */
+	/** @var Access */
 	private $access;
 
 	/** @var Settings */

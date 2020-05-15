@@ -3,21 +3,13 @@
 namespace Redbit\SimpleShop\WpPlugin;
 
 class Gutenberg {
-	/**
-	 * @var Admin
-	 */
+	/** @var Admin */
 	private $admin;
-	/**
-	 * @var Group
-	 */
+	/** @var Group */
 	private $group;
-	/**
-	 * @var Access
-	 */
+	/** @var Access */
 	private $access;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $pluginDirUrl;
 
 	public function __construct( Admin $admin, Group $group, Access $access, $pluginMainFile ) {

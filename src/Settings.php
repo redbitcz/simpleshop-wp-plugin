@@ -43,9 +43,8 @@ class Settings {
 	 * @var string
 	 */
 	private $metabox_id = 'ssc_option_metabox';
-	/**
-	 * @var Plugin
-	 */
+
+	/** @var Plugin */
 	private $loader;
 
 	/**
