@@ -15,9 +15,13 @@ class Shortcodes {
 	 */
 	private $access;
 
-	public function __construct( Access $access ) {
+	/** @var Settings */
+	private $settings;
+
+	public function __construct( Access $access, Settings $settings ) {
 		add_action( 'init', [ $this, 'initialize' ] );
-		$this->access = $access;
+		$this->access   = $access;
+		$this->settings = $settings;
 	}
 
 	public function initialize() {
@@ -27,9 +31,15 @@ class Shortcodes {
 
 
 	public function simple_shop_form( $atts ) {
-		$query = http_build_query( [ 'id' => $atts['id'] ] );
+		$formUrl = $this->settings->ssc_get_option( 'ssc_ss_form_url' );
+		$query   = http_build_query( [ 'id' => $atts['id'] ] );
+		$url     = sprintf(
+			"%s/iframe/js/?%s",
+			empty( $formUrl ) ? 'https://form.simpleshop.cz' : $formUrl,
+			$query
+		);
 
-		return '<script type="text/javascript" src="https://form.simpleshop.cz/iframe/js/?' . $query . '"></script>';
+		return '<script type="text/javascript" src="' . htmlspecialchars( $url ) . '"></script>';
 	}
 
 	public function simple_shop_content( $atts, $content = '' ) {
