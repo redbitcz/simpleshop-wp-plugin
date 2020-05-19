@@ -12,7 +12,7 @@ use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
 use VyfakturujAPIException;
 
 class Plugin {
-	const DEFAUT_API_ENDPOINT = 'https://api.simpleshop.cz';
+	const DEFAUT_API_ENDPOINT = 'https://api.simpleshop.cz/2.0/';
 
 	/** @var string */
 	private $secure_key;
