@@ -70,7 +70,7 @@ class Plugin {
 		new Rest( $this );
 		new Cron( $this );
 		new Metaboxes( $this );
-		new Shortcodes($this->access);
+		new Shortcodes($this->access, $this->settings);
 		$this->init_gutenberg();
 	}
 

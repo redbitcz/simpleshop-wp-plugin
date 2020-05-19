@@ -257,7 +257,17 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 				'desc' => __( '[SERVICE FLAG] You can here override URL to SimpleShop API. Leave blank to use default API.', 'simpleshop-cz' ),
 				'id'   => 'ssc_api_endpoint_url',
 				'type' => 'text',
-				'classes_cb' => [ $this, 'show_endpoint_url_when_flagged' ],
+				'classes_cb' => [ $this, 'show_debug_fields' ],
+			]
+		);
+
+		$cmb->add_field(
+			[
+				'name' => __( 'Simplehop Form base URL', 'simpleshop-cz' ),
+				'desc' => __( '[SERVICE FLAG] Base URL to SimpleShop form URL. Leave blank to use default URL.', 'simpleshop-cz' ),
+				'id'   => 'ssc_ss_form_url',
+				'type' => 'text',
+				'classes_cb' => [ $this, 'show_debug_fields' ],
 			]
 		);
 
@@ -389,7 +399,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 		return [ 'hidden' ];
 	}
 
-	public function show_endpoint_url_when_flagged() {
+	public function show_debug_fields() {
 		if ( isset($_GET['debug']) ) {
 			return [];
 		}
