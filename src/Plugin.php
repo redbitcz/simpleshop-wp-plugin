@@ -11,6 +11,8 @@ namespace Redbit\SimpleShop\WpPlugin;
 use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
 
 class Plugin {
+	const DEFAUT_API_ENDPOINT = 'https://api.simpleshop.cz';
+
 	/**
 	 * @var string
 	 */
@@ -199,6 +201,7 @@ class Plugin {
 	/**
 	 * @param string|null $overrideLogin
 	 * @param string|null $overrideApiKey
+	 *
 	 * @return VyfakturujAPI
 	 * @throws \VyfakturujAPIException
 	 */
@@ -206,12 +209,13 @@ class Plugin {
 		$email  = $overrideLogin !== null ? $overrideLogin : $this->get_api_email();
 		$apiKey = $overrideApiKey !== null ? $overrideApiKey : $this->get_api_key();
 
-		$client = new VyfakturujAPI( $email, $apiKey );
-
+		// Cannot use `default` value of option because option can exists but empty ''
 		$endpointUrl = $this->settings->ssc_get_option( 'ssc_api_endpoint_url' );
-		if(empty($endpointUrl) === false) {
-			$client->setEndpointUrl($endpointUrl);
+		if ( empty( $endpointUrl ) ) {
+			$endpointUrl = self::DEFAUT_API_ENDPOINT;
 		}
+
+		$client = new VyfakturujAPI( $email, $apiKey, $endpointUrl );
 
 		return $client;
 	}
