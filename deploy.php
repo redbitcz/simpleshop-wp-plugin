@@ -2,7 +2,7 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2018 Redbit s.r.o.
+ * @copyright 2016-2020 Redbit s.r.o.
  * @author Redbit s.r.o. <info@redbit.cz>
  */
 
@@ -117,7 +117,7 @@ class DeployScript {
 		$stampedFile = $this->copyStampedFile(
 			__DIR__ . '/readme.txt',
 			array(
-				'Stable tag: trunk'                                      => sprintf(
+				'Stable tag: trunk' => sprintf(
 					'Stable tag: %s',
 					$this->getNakedVersion()
 				),
@@ -176,9 +176,9 @@ class DeployScript {
 		}
 	}
 
-	private function updateComposer($baseDir = __DIR__) {
+	private function updateComposer( $baseDir = __DIR__ ) {
 		$prevDir = getcwd();
-		$cmd = 'composer install';
+		$cmd     = 'composer install';
 
 		chdir( $baseDir );
 		passthru( $cmd, $return_var );

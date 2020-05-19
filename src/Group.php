@@ -2,11 +2,13 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2018 Redbit s.r.o.
+ * @copyright 2016-2020 Redbit s.r.o.
  * @author Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
+
+use WP_Post;
 
 class Group {
 
@@ -60,7 +62,7 @@ class Group {
 
 	/**
 	 * Check if group exists
-	 * @return array|null|\WP_Post
+	 * @return array|null|WP_Post
 	 */
 	public function group_exists() {
 		return get_post( $this->id );

@@ -2,20 +2,17 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2018 Redbit s.r.o.
+ * @copyright 2016-2020 Redbit s.r.o.
  * @author Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
 
-/**
- * Handles the access for the posts / pages
- */
-class Access {
+use WP_Error;
 
-	/**
-	 * @var Settings
-	 */
+/** Handles the access for the posts / pages */
+class Access {
+	/** @var Settings */
 	private $settings;
 
 	/**
@@ -24,11 +21,11 @@ class Access {
 	public function __construct( Settings $settings ) {
 		$this->settings = $settings;
 
-		$redirect       = true;
+		$redirect = true;
 		if ( apply_filters( 'ssc_redirect_on_locked_content', $redirect ) === true ) {
 			add_action( 'template_redirect', [ $this, 'check_access' ] );
 		}
-		
+
 		add_filter( 'wp_setup_nav_menu_item', [ $this, 'setup_nav_menu_item' ] );
 		add_action( 'wp_head', [ $this, 'hide_menu_items' ] );
 		add_action( 'init', [ $this, 'mioweb_remove_login_redirect' ] );
@@ -48,7 +45,7 @@ class Access {
 	public function login_redirect( $redirect, $request, $user ) {
 		$redirect_url = $this->settings->ssc_get_option( 'ssc_redirect_url' );
 		if ( $redirect_url ) {
-			$redirect = remove_query_arg( [ 'redirect_to' ], $redirect_url );;
+			$redirect = remove_query_arg( [ 'redirect_to' ], $redirect_url );
 		}
 
 		return $redirect;
@@ -100,7 +97,7 @@ class Access {
 	 * @param string $post_id
 	 * @param string $user_id
 	 *
-	 * @return bool|\WP_Error
+	 * @return bool|WP_Error
 	 */
 	public function user_can_view_post( $post_id = '', $user_id = '' ) {
 		// Admins can view all posts
@@ -120,7 +117,7 @@ class Access {
 
 
 		if ( ! ( $post_id > 0 ) || ! ( $user_id >= 0 ) ) {
-			return new \WP_Error( '400', 'Wrong post ID or user ID' );
+			return new WP_Error( '400', 'Wrong post ID or user ID' );
 		}
 
 		$post_groups = $this->get_post_groups( $post_id );

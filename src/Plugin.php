@@ -2,49 +2,31 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2018 Redbit s.r.o.
+ * @copyright 2016-2020 Redbit s.r.o.
  * @author Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
 
 use Redbit\SimpleShop\WpPlugin\Vyfakturuj\VyfakturujAPI;
+use VyfakturujAPIException;
 
 class Plugin {
 	const DEFAUT_API_ENDPOINT = 'https://api.simpleshop.cz';
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $secure_key;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $email;
-
-	/**
-	 * @var Settings
-	 */
+	/** @var Settings */
 	private $settings;
-
-	/**
-	 * @var Access
-	 */
+	/** @var Access */
 	private $access;
-
-	/**
-	 * @var Admin
-	 */
+	/** @var Admin */
 	private $admin;
-
-	/**
-	 * @var Group
-	 */
+	/** @var Group */
 	private $group;
-
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $pluginMainFile;
 
 	/**
@@ -72,17 +54,17 @@ class Plugin {
 		new Rest( $this );
 		new Cron( $this );
 		new Metaboxes( $this );
-		new Shortcodes($this->access, $this->settings);
+		new Shortcodes( $this->access, $this->settings );
 		$this->init_gutenberg();
 	}
 
 	private function init_gutenberg() {
-		if(function_exists('register_block_type') === false) {
+		if ( function_exists( 'register_block_type' ) === false ) {
 			// Skip init Gutenberg features - Gurenberg not supported in WP
 			return;
 		}
 
-		new Gutenberg($this->admin, $this->group, $this->access, $this->pluginMainFile);
+		new Gutenberg( $this->admin, $this->group, $this->access, $this->pluginMainFile );
 	}
 
 	public function generate_secure_key() {
@@ -190,7 +172,11 @@ class Plugin {
 	}
 
 	public function load_textdomain_i18n() {
-		$plugin_rel_path = str_replace( WP_PLUGIN_DIR . '/', '', plugin_dir_path( $this->pluginMainFile ) . 'languages/' );
+		$plugin_rel_path = str_replace(
+			WP_PLUGIN_DIR . '/',
+			'',
+			plugin_dir_path( $this->pluginMainFile ) . 'languages/'
+		);
 		load_plugin_textdomain( 'simpleshop-cz', false, $plugin_rel_path );
 	}
 
@@ -203,7 +189,7 @@ class Plugin {
 	 * @param string|null $overrideApiKey
 	 *
 	 * @return VyfakturujAPI
-	 * @throws \VyfakturujAPIException
+	 * @throws VyfakturujAPIException
 	 */
 	public function get_api_client( $overrideLogin = null, $overrideApiKey = null ) {
 		$email  = $overrideLogin !== null ? $overrideLogin : $this->get_api_email();

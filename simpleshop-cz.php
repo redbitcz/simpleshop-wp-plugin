@@ -2,7 +2,7 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2018 Redbit s.r.o.
+ * @copyright 2016-2020 Redbit s.r.o.
  * @author Redbit s.r.o. <info@simpleshop.cz>
  */
 
@@ -24,8 +24,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 define( 'SIMPLESHOP_PLUGIN_VERSION', 'dev-master' );
 define( 'SIMPLESHOP_PREFIX', '_ssc_' );
 
-/**
- * Start plugin
- */
+/** Start plugin*/
 SimpleShop::$pluginMainFile = __FILE__;
 SimpleShop::getInstance();

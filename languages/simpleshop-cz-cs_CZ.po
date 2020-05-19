@@ -1,4 +1,4 @@
-# Copyright (C) 2018 SimpleShop.cz
+# Copyright (C) 2020 Redbit s.r.o.
 # This file is distributed under the same license as the SimpleShop.cz package.
 msgid ""
 msgstr ""

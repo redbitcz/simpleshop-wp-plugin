@@ -2,11 +2,15 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2018 Redbit s.r.o.
+ * @copyright 2016-2020 Redbit s.r.o.
  * @author Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
+
+use ReflectionClass;
+use ReflectionException;
+use ReflectionFunction;
 
 class Helpers {
 
@@ -17,7 +21,7 @@ class Helpers {
 	 * @param string $hook
 	 *
 	 * @return array
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public static function ssc_list_hooks( $hook = '' ) {
 		global $wp_filter;
@@ -40,10 +44,11 @@ class Helpers {
 
 			// function name as string or static class method eg. 'Foo::Bar'
 			if ( is_string( $item['function'] ) ) {
-				$ref          = strpos( $item['function'], '::' ) ? new \ReflectionClass( strstr( $item['function'],
-					'::', true ) ) : new \ReflectionFunction( $item['function'] );
+				$ref          = strpos( $item['function'], '::' )
+					? new ReflectionClass( strstr( $item['function'], '::', true ) )
+					: new ReflectionFunction( $item['function'] );
 				$item['file'] = $ref->getFileName();
-				$item['line'] = $ref instanceof \ReflectionFunction
+				$item['line'] = $ref instanceof ReflectionFunction
 					? $ref->getStartLine()
 					: $ref->getMethod( substr( $item['function'],
 						strpos( $item['function'], '::' ) + 2 ) )->getStartLine();
@@ -51,7 +56,7 @@ class Helpers {
 				// array( object, method ), array( string object, method ), array( string object, string 'parent::method' )
 			} elseif ( is_array( $item['function'] ) ) {
 
-				$ref = new \ReflectionClass( $item['function'][0] );
+				$ref = new ReflectionClass( $item['function'][0] );
 
 				// $item['function'][0] is a reference to existing object
 				$item['function'] = [
@@ -66,7 +71,7 @@ class Helpers {
 
 				// closures
 			} elseif ( is_callable( $item['function'] ) ) {
-				$ref              = new \ReflectionFunction( $item['function'] );
+				$ref              = new ReflectionFunction( $item['function'] );
 				$item['function'] = get_class( $item['function'] );
 				$item['file']     = $ref->getFileName();
 				$item['line']     = $ref->getStartLine();
@@ -96,7 +101,7 @@ class Helpers {
 			foreach ( $filter as $identifier => $function ) {
 				if ( is_array( $function ) && is_array( $function['function'] )
 				     && is_a( $function['function'][0], $class )
-				         && $method === $function['function'][1]
+				     && $method === $function['function'][1]
 				) {
 
 					remove_filter(

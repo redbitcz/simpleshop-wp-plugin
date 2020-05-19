@@ -2,7 +2,7 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2018 Redbit s.r.o.
+ * @copyright 2016-2020 Redbit s.r.o.
  * @author Redbit s.r.o. <info@simpleshop.cz>
  */
 
@@ -14,13 +14,9 @@ class Admin {
 	const PRODUCTS_CACHE_TTL = 3600 * 24;
 	const PRODUCTS_CACHE_FIELD = '__cache_timestamp';
 
-	/**
-	 * @var Plugin
-	 */
+	/** @var Plugin */
 	private $loader;
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $pluginDirUrl;
 
 	/**

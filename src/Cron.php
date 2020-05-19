@@ -2,19 +2,19 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2018 Redbit s.r.o.
+ * @copyright 2016-2020 Redbit s.r.o.
  * @author Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
 
+use WP_Query;
+
 class Cron {
-	/**
-	 * @var Plugin
-	 */
+	/** @var Plugin */
 	private $loader;
 
-	public function __construct(Plugin $loader) {
+	public function __construct( Plugin $loader ) {
 		$this->loader = $loader;
 
 		if ( ! wp_next_scheduled( 'ssc_send_user_has_access_to_post_notification' ) ) {
@@ -43,7 +43,7 @@ class Cron {
 			]
 		];
 
-		$the_query = new \WP_Query( $args );
+		$the_query = new WP_Query( $args );
 
 
 		if ( $the_query->have_posts() ) {
@@ -106,11 +106,12 @@ class Cron {
 						if ( $send_email ) {
 							// Woohoo, send the email
 							$userdata = get_userdata( $user_id );
-							if ( ! get_user_meta( $user_id, SIMPLESHOP_PREFIX . 'notification_email_sent_' . $post->ID,
+							$meta_key      = SIMPLESHOP_PREFIX . 'notification_email_sent_' . $post->ID;
+							if ( ! get_user_meta( $user_id, $meta_key,
 								true ) ) {
 								$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
 								wp_mail( $userdata->user_email, $email_subject, $email_text, $headers );
-								update_user_meta( $user_id, SIMPLESHOP_PREFIX . 'notification_email_sent_' . $post->ID, 1 );
+								update_user_meta( $user_id, $meta_key, 1 );
 							}
 						}
 					}
