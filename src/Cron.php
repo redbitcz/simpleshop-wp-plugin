@@ -93,7 +93,7 @@ class Cron {
 							if ( $date_to_access == date( 'Y-m-d' ) ) {
 								// Cool, send email
 								$send_email = true;
-							} elseif ( $days_to_access ) {
+							} elseif ( $days_to_access || $days_to_access === '0' ) {
 								$subscribed      = $user_groups[ $group ]['subscription_date'];
 								$date_to_compare = date( 'Y-m-d', strtotime( "$subscribed +$days_to_access days" ) );
 
