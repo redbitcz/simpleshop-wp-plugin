@@ -43,6 +43,11 @@ class Access {
 	 * @return mixed
 	 */
 	public function login_redirect( $redirect, $request, $user ) {
+        if ( isset( $user->roles ) && is_array( $user->roles ) && in_array('administrator', $user->roles)) {
+            // redirect admins to the default place
+            return $redirect;
+        }
+
 		$redirect_url = $this->settings->ssc_get_option( 'ssc_redirect_url' );
 		if ( $redirect_url ) {
 			$redirect = remove_query_arg( [ 'redirect_to' ], $redirect_url );
