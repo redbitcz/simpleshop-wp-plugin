@@ -178,14 +178,14 @@ class DeployScript {
 
 	private function updateComposer( $baseDir = __DIR__ ) {
 		$prevDir = getcwd();
-		$cmd     = 'composer install';
+		$cmd     = 'composer install --ignore-platform-reqs';
 
 		chdir( $baseDir );
 		passthru( $cmd, $return_var );
 		chdir( $prevDir );
 
 		if ( $return_var !== 0 ) {
-			throw new \RuntimeException( sprintf( 'Compoase command failed, command was: "%s"', $cmd ) );
+			throw new \RuntimeException( sprintf( 'Composer command failed, command was: "%s"', $cmd ) );
 		}
 	}
 
