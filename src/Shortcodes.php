@@ -44,6 +44,7 @@ class Shortcodes {
 		$atts = shortcode_atts( [
 			'group_id'           => '',
 			'is_member'          => '',
+			'is_logged_in'       => '',
 			'days_to_view'       => '',
 			'specific_date_from' => '',
 			'specific_date_to'   => '',

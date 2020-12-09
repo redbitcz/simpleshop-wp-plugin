@@ -122,9 +122,11 @@ class Admin {
 			$vyfakturuj_api = $this->loader->get_api_client();
 			$ret            = $vyfakturuj_api->getProducts();
 
-			if ( $ret ) {
+			if ( is_iterable( $ret ) ) {
 				foreach ( $ret as $product ) {
-					$values[ $product['code'] ] = $product['name'];
+					if ( isset( $product['code'], $product['name'] ) ) {
+						$values[ $product['code'] ] = $product['name'];
+					}
 				}
 			}
 		}
