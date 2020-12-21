@@ -11,16 +11,19 @@ class Gutenberg {
 	private $access;
 	/** @var string */
 	private $pluginDirUrl;
+    /** @var string */
+    private $pluginDirPath;
 
-	public function __construct( Admin $admin, Group $group, Access $access, $pluginMainFile ) {
+    public function __construct( Admin $admin, Group $group, Access $access, $pluginMainFile ) {
 		add_action( 'init', array( $this, 'load_block_assets' ) );
 		add_action( 'admin_init', array( $this, 'load_products' ) );
 		add_filter( 'render_block', array( $this, 'maybe_hide_block' ), 10, 2 );
 
-		$this->admin        = $admin;
-		$this->group        = $group;
-		$this->access       = $access;
-		$this->pluginDirUrl = plugin_dir_url( $pluginMainFile );
+		$this->admin         = $admin;
+		$this->group         = $group;
+		$this->access        = $access;
+		$this->pluginDirUrl  = plugin_dir_url( $pluginMainFile );
+		$this->pluginDirPath = plugin_dir_path( $pluginMainFile );
 	}
 
 	public function load_products() {
@@ -28,6 +31,26 @@ class Gutenberg {
 	}
 
 	public function load_block_assets() { // phpcs:ignore
+
+	    $build_dir_url  = $this->pluginDirUrl . 'build/';
+	    $build_dir_path = $this->pluginDirPath . 'build/';
+
+	    if (file_exists($build_dir_path . 'ss-gutenberg-test.asset.php')) {
+            $asset = require $build_dir_path . 'ss-gutenberg-test.asset.php';
+
+            wp_register_script(
+                'simpleshop-gutenberg-test',
+                $build_dir_url . 'ss-gutenberg-test.js',
+                $asset['dependencies'],
+                $asset['version']
+            );
+
+            register_block_type(
+                'simpleshop/test', array(
+                    'editor_script' => 'simpleshop-gutenberg-test',
+                )
+            );
+        }
 
 		// Register block styles for both frontend + backend.
 		wp_register_style(
