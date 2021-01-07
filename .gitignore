@@ -1,5 +1,7 @@
-dist/
 .idea/
+build/
+dist/
 nbproject/
+node_modules/
 vendor/
 wordpress/
