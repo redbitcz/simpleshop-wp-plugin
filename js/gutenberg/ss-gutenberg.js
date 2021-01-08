@@ -8,99 +8,6 @@ const {__experimentalGetSettings} = wp.date;
 const {addFilter} = wp.hooks;
 const {createHigherOrderComponent} = wp.compose;
 
-const EditSimpleShop = (props) => {
-    const {
-        attributes,
-        setAttributes,
-        className,
-    } = props;
-
-    const [loaded, setLoaded] = useState(false);
-    const [products, setProducts] = useState(null);
-
-    const loadProducts = () => {
-        let formData = new FormData();
-        formData.append('action', 'load_simple_shop_products');
-        fetch(ajaxurl, {
-            method: "post",
-            body: formData
-        })
-            .then(function (response) {
-                setLoaded(true);
-                return response.json();
-            })
-            .then(function (json) {
-                let select = [{label: __('Select product', 'simpleshop-cz'), value: ''}];
-
-                Object.keys(json).forEach(function (key) {
-                    select.push(
-                        {
-                            label: json[key],
-                            value: key
-                        });
-                });
-
-                setProducts(select)
-            });
-    }
-
-    const reloadProducts = () => {
-        setLoaded(false);
-        loadProducts();
-    }
-
-    if (!loaded) {
-        loadProducts();
-    }
-    return (
-        <div className={className}>
-            <div>SimpleShop Form {attributes.ssFormId}</div>
-
-            <InspectorControls key="inspector">
-                <PanelBody>
-                    {loaded ?
-                    <>
-                        <SelectControl
-                            className={'simpleshop-form-select'}
-                            label={__('Form')}
-                            description={__('Select the SimpleShop Form')}
-                            options={products}
-                            value={attributes.ssFormId}
-                            onChange={(ssFormId) => setAttributes({ssFormId})}
-                        />
-                        <Button onClick={() => reloadProducts()}>
-                            {__('Reload forms')}
-                        </Button>
-                    </> : <>Loading</>
-                    }
-                </PanelBody>
-            </InspectorControls>
-        </div>
-    );
-};
-
-const SaveSimpleShop = () => null;
-
-
-registerBlockType('simpleshop/simpleshop-form', {
-    title: __('SimpleShop Form'),
-    icon: 'shield',
-    category: 'common',
-    keywords: [
-        __('SimpleShop'),
-        __('form'),
-    ],
-    attributes: {
-        ssFormId: {
-            type: 'string',
-            default: 'Choose form'
-        }
-    },
-    edit: EditSimpleShop,
-    save: SaveSimpleShop,
-});
-
-
 /**
  * Add custom attributes to the blocks
  *
@@ -258,3 +165,96 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
 }, 'withInspectorControls');
 
 wp.hooks.addFilter('editor.BlockEdit', 'display-heading/with-inspector-controls', withInspectorControls);
+
+
+const EditSimpleShop = (props) => {
+    const {
+        attributes,
+        setAttributes,
+        className,
+    } = props;
+
+    const [loaded, setLoaded] = useState(false);
+    const [products, setProducts] = useState(null);
+
+    const loadProducts = () => {
+        let formData = new FormData();
+        formData.append('action', 'load_simple_shop_products');
+        fetch(ajaxurl, {
+            method: "post",
+            body: formData
+        })
+            .then(function (response) {
+                setLoaded(true);
+                return response.json();
+            })
+            .then(function (json) {
+                let select = [{label: __('Select product', 'simpleshop-cz'), value: ''}];
+
+                Object.keys(json).forEach(function (key) {
+                    select.push(
+                        {
+                            label: json[key],
+                            value: key
+                        });
+                });
+
+                setProducts(select)
+            });
+    }
+
+    const reloadProducts = () => {
+        setLoaded(false);
+        loadProducts();
+    }
+
+    if (!loaded) {
+        loadProducts();
+    }
+    return (
+        <div className={className}>
+            <div>SimpleShop Form {attributes.ssFormId}</div>
+
+            <InspectorControls key="inspector">
+                <PanelBody>
+                    {loaded ?
+                        <>
+                            <SelectControl
+                                className={'simpleshop-form-select'}
+                                label={__('Form')}
+                                description={__('Select the SimpleShop Form')}
+                                options={products}
+                                value={attributes.ssFormId}
+                                onChange={(ssFormId) => setAttributes({ssFormId})}
+                            />
+                            <Button onClick={() => reloadProducts()}>
+                                {__('Reload forms')}
+                            </Button>
+                        </> : <>Loading</>
+                    }
+                </PanelBody>
+            </InspectorControls>
+        </div>
+    );
+};
+
+const SaveSimpleShop = () => null;
+
+
+registerBlockType('simpleshop/simpleshop-form', {
+    title: __('SimpleShop Form'),
+    icon: 'shield',
+    category: 'common',
+    keywords: [
+        __('SimpleShop'),
+        __('form'),
+    ],
+    attributes: {
+        ssFormId: {
+            type: 'string',
+            default: 'Choose form'
+        }
+    },
+    edit: EditSimpleShop,
+    save: SaveSimpleShop,
+});
