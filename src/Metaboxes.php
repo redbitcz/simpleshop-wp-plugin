@@ -17,7 +17,8 @@ class Metaboxes {
 	public function __construct( Plugin $loader ) {
 		$this->loader = $loader;
 		add_action( 'cmb2_admin_init', [ $this, 'page_metaboxes' ] );
-		add_action( 'cmb2_admin_init', [ $this, 'user_metaboxes' ] );
+		add_action( 'show_user_profile', [ $this, 'render_user_profile_groups' ] );
+		add_action( 'edit_user_profile', [ $this, 'render_user_profile_groups' ] );
 	}
 
 	/**
@@ -162,74 +163,42 @@ class Metaboxes {
 		}
 	}
 
-	/**
-	 * Add metabox to user profile
-	 */
-	public function user_metaboxes() {
-		/**
-		 * Initiate the metabox
-		 */
-		$cmb = new_cmb2_box(
-			[
-				'id'           => 'ssc_user_groups',
-				'title'        => __( 'SimpleShop', 'simpleshop-cz' ),
-				'object_types' => [ 'user' ],
-				'context'      => 'normal',
-				'priority'     => 'high',
-				'show_names'   => true,
-			]
-		);
 
-		$ssc_group = new Group();
-		$groups    = $ssc_group->get_groups();
+	public function render_user_profile_groups( $user ) {
+		$ssc_group  = new Group();
+		$groups     = $ssc_group->get_groups();
+		$membership = new Membership( $user->ID );
+		$access     = $this->loader->get_access(); ?>
+        <table id="custom_user_field_table" class="form-table">
+            <tr id="simpleshop__groups">
+                <th>
+                    <label for="custom_field"><?php _e( 'Simpleshop Groups', 'simpleshop-cz' ); ?></label>
+                </th>
+                <td>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th><?php _e( 'Group name', 'simpleshop-cz' ); ?></th>
+                            <th><?php _e( 'Is member', 'simpleshop-cz' ); ?></th>
+                            <th><?php _e( 'Membership from', 'simpleshop-cz' ); ?></th>
+                            <th><?php _e( 'Membership to', 'simpleshop-cz' ); ?></th>
 
-
-		$access = $this->loader->get_access();
-
-		if ( $access->user_is_admin() ) {
-			$cmb->add_field(
-				[
-					'name'    => __(
-						'SimpleShop - member sections<br/><small style=\"font-weight:normal;\">Choose which member sections the user should have access to.</small>',
-						'simpleshop-cz'
-					),
-//            'desc' => __('Vyberte, do kterých členských sekcí má mít uživatel přístup','ssc'),
-					'id'      => $this->prefix . 'user_groups',
-					'type'    => 'multicheck',
-					'options' => $groups,
-				]
-			);
-
-			foreach ( $groups as $key => $group ) {
-				$cmb->add_field(
-					[
-						'name'        => '<small style="font-weight:normal;">' . sprintf(
-								__(
-									'Registration date to group %s.',
-									'simpleshop-cz'
-								),
-								$group
-							) . '</small>',
-						'id'          => $this->prefix . 'group_subscription_date_' . $key,
-						'type'        => 'text_date',
-						'date_format' => 'Y-m-d',
-					]
-				);
-				$cmb->add_field(
-					[
-						'name'        => '<small style="font-weight:normal;">' . sprintf(
-								__(
-									'Expiration date of registration to group %s.',
-									'simpleshop-cz'
-								),
-								$group
-							) . '</small>',
-						'id'          => $this->prefix . 'group_subscription_valid_to_' . $key,
-						'type'        => 'text_date',
-						'date_format' => 'Y-m-d',
-					]
-				);
-			}
-		}
+                        </tr>
+                        </thead>
+                        <tbody>
+						<?php foreach ( $groups as $group_id => $group_name ) { ?>
+                            <tr>
+                                <td><?php echo $group_name; ?></td>
+                                <td><input type="checkbox" name="ssc_groups[<?php echo $group_id ?>]['is_member']" <?php checked( array_key_exists( $group_id, $membership->groups ), true ); ?>/></td>
+                                <td><input type="text" name="ssc_groups[<?php echo $group_id ?>]['subscription_date']" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true ) ?>"/></td>
+                                <td><input type="text" name="ssc_groups[<?php echo $group_id ?>]['subscription_valid_to']" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true ) ?>"/></td>
+                            </tr>
+						<?php } ?>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
+		<?php
 	}
 }
