@@ -11,10 +11,10 @@ class Gutenberg {
 	private $access;
 	/** @var string */
 	private $pluginDirUrl;
-    /** @var string */
-    private $pluginDirPath;
+	/** @var string */
+	private $pluginDirPath;
 
-    public function __construct( Admin $admin, Group $group, Access $access, $pluginMainFile ) {
+	public function __construct( Admin $admin, Group $group, Access $access, $pluginMainFile ) {
 		add_action( 'init', array( $this, 'load_block_assets' ) );
 		add_action( 'admin_init', array( $this, 'load_products' ) );
 		add_filter( 'render_block', array( $this, 'maybe_hide_block' ), 10, 2 );
@@ -32,25 +32,29 @@ class Gutenberg {
 
 	public function load_block_assets() { // phpcs:ignore
 
-	    $build_dir_url  = $this->pluginDirUrl . 'build/';
-	    $build_dir_path = $this->pluginDirPath . 'build/';
+		$build_dir_url  = $this->pluginDirUrl . 'build/';
+		$build_dir_path = $this->pluginDirPath . 'build/';
 
-	    if (file_exists($build_dir_path . 'ss-gutenberg-test.asset.php')) {
-            $asset = require $build_dir_path . 'ss-gutenberg-test.asset.php';
+		$blockFile = 'ss-gutenberg-test.php';
+		$blockName = 'simpleshop-gutenberg-test';
 
-            wp_register_script(
-                'simpleshop-gutenberg-test',
-                $build_dir_url . 'ss-gutenberg-test.js',
-                $asset['dependencies'],
-                $asset['version']
-            );
+		if ( file_exists( $build_dir_path . $blockFile ) ) {
+			/** @noinspection PhpIncludeInspection */
+			$asset = require $build_dir_path . $blockFile;
 
-            register_block_type(
-                'simpleshop/test', array(
-                    'editor_script' => 'simpleshop-gutenberg-test',
-                )
-            );
-        }
+			wp_register_script(
+				$blockName,
+				$build_dir_url . $blockFile,
+				$asset['dependencies'],
+				$asset['version']
+			);
+
+			register_block_type(
+				'simpleshop/test', array(
+					'editor_script' => $blockName,
+				)
+			);
+		}
 
 		// Register block styles for both frontend + backend.
 		wp_register_style(
@@ -137,7 +141,6 @@ class Gutenberg {
 		if ( ! $this->access->user_can_view_content( $args ) ) {
 			return '';
 		}
-
 
 		return $content;
 	}
