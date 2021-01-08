@@ -8,6 +8,8 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
+use WP_User;
+
 class Metaboxes {
 	public $prefix = '_ssc_';
 
@@ -165,12 +167,21 @@ class Metaboxes {
 		}
 	}
 
-
+	/**
+	 * Add groups table to user profile
+	 *
+	 * @param WP_User $user WP User
+	 */
 	public function render_user_profile_groups( $user ) {
 		$ssc_group  = new Group();
 		$groups     = $ssc_group->get_groups();
 		$membership = new Membership( $user->ID );
 		$access     = $this->loader->get_access(); ?>
+        <style type="text/css">
+            #simpleshop__groups th {
+                padding: 15px 10px;
+            }
+        </style>
         <table id="custom_user_field_table" class="form-table">
             <tr id="simpleshop__groups">
                 <th>
@@ -191,9 +202,27 @@ class Metaboxes {
 						<?php foreach ( $groups as $group_id => $group_name ) { ?>
                             <tr>
                                 <td><?php echo $group_name; ?></td>
-                                <td><input type="checkbox" name="ssc_groups[<?php echo $group_id ?>]['is_member']" <?php checked( array_key_exists( $group_id, $membership->groups ), true ); ?>/></td>
-                                <td><input type="text" name="ssc_groups[<?php echo $group_id ?>]['subscription_date']" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true ) ?>"/></td>
-                                <td><input type="text" name="ssc_groups[<?php echo $group_id ?>]['subscription_valid_to']" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true ) ?>"/></td>
+                                <td>
+									<?php if ( $access->user_is_admin() ) { ?>
+                                        <input type="checkbox" name="ssc_groups[<?php echo $group_id ?>][is_member]" value="on" <?php checked( array_key_exists( $group_id, $membership->groups ), true ); ?>/>
+									<?php } else {
+										echo array_key_exists( $group_id, $membership->groups ) ? __( 'Yes', 'simpleshop-cz' ) : __( 'No', 'simpleshop-cz' );
+									} ?>
+                                </td>
+                                <td>
+									<?php if ( $access->user_is_admin() ) { ?>
+                                        <input type="text" name="ssc_groups[<?php echo $group_id ?>][subscription_date]" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true ) ?>"/>
+									<?php } else {
+										echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true );
+									} ?>
+                                </td>
+                                <td>
+									<?php if ( $access->user_is_admin() ) { ?>
+                                        <input type="text" name="ssc_groups[<?php echo $group_id ?>][subscription_valid_to]" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true ) ?>"/>
+									<?php } else {
+										echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true );
+									} ?>
+                                </td>
                             </tr>
 						<?php } ?>
                         </tbody>
@@ -204,7 +233,29 @@ class Metaboxes {
 		<?php
 	}
 
-	public function save_user_profile_groups(  ) {
+	/**
+	 * Save user groups to profile
+	 *
+	 * @param $user_id
+	 */
+	public function save_user_profile_groups( $user_id ) {
+		$access = $this->loader->get_access();
+		if ( ! $access->user_is_admin() ) {
+			return;
+		}
 
+		$groups = [];
+		foreach ( $_POST['ssc_groups'] as $group_id => $group ) {
+			if ( ! empty( $group['is_member'] ) && $group['is_member'] ) {
+				$groups[] = $group_id;
+				if ( empty( $group['subscription_date'] ) ) {
+					$group['subscription_date'] = date( 'Y-m-d' );
+				}
+			}
+
+			update_user_meta( $user_id, $this->prefix . 'user_groups', $groups );
+			update_user_meta( $user_id, $this->prefix . 'group_subscription_date_' . $group_id, empty( $group['subscription_date'] ) ? '' : date( 'Y-m-d', strtotime( $group['subscription_date'] ) ) );
+			update_user_meta( $user_id, $this->prefix . 'group_subscription_valid_to_' . $group_id, empty( $group['subscription_valid_to'] ) ? '' : date( 'Y-m-d', strtotime( $group['subscription_valid_to'] ) ) );
+		}
 	}
 }
