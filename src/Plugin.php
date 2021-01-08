@@ -26,6 +26,8 @@ class Plugin {
 	private $admin;
 	/** @var Group */
 	private $group;
+	/** @var Shortcodes */
+	private $shortcodes;
 	/** @var string */
 	private $pluginMainFile;
 
@@ -54,7 +56,7 @@ class Plugin {
 		new Rest( $this );
 		new Cron( $this );
 		new Metaboxes( $this );
-		new Shortcodes( $this->access, $this->settings );
+		$this->shortcodes = new Shortcodes( $this->access, $this->settings );
 		$this->init_gutenberg();
 	}
 
@@ -64,7 +66,7 @@ class Plugin {
 			return;
 		}
 
-		new Gutenberg( $this->admin, $this->group, $this->access, $this->pluginMainFile );
+		new Gutenberg( $this->admin, $this->group, $this->access, $this->pluginMainFile, $this->shortcodes );
 	}
 
 	public function generate_secure_key() {
