@@ -53,7 +53,6 @@ class Admin {
 	 * Return products. If you need force refresh products from API, call `update_simpleshop_products_cache()` before
 	 *
 	 * @return array
-	 * @throws VyfakturujAPIException
 	 */
 	public function get_simpleshop_products() {
 		$products = $this->get_simpleshop_products_cache();
@@ -91,8 +90,6 @@ class Admin {
 
 	/**
 	 * Update Products cache from Vyfakturuj API
-	 *
-	 * @throws VyfakturujAPIException
 	 */
 	public function update_simpleshop_products_cache() {
 		try {
