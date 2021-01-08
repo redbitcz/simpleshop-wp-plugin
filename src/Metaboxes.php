@@ -19,6 +19,8 @@ class Metaboxes {
 		add_action( 'cmb2_admin_init', [ $this, 'page_metaboxes' ] );
 		add_action( 'show_user_profile', [ $this, 'render_user_profile_groups' ] );
 		add_action( 'edit_user_profile', [ $this, 'render_user_profile_groups' ] );
+		add_action( 'personal_options_update', [ $this, 'save_user_profile_groups' ] );
+		add_action( 'edit_user_profile_update', [ $this, 'save_user_profile_groups' ] );
 	}
 
 	/**
@@ -200,5 +202,9 @@ class Metaboxes {
             </tr>
         </table>
 		<?php
+	}
+
+	public function save_user_profile_groups(  ) {
+
 	}
 }
