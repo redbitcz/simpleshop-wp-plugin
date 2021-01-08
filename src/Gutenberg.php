@@ -70,7 +70,7 @@ class Gutenberg {
 			'simpleshop-gutenberg-block-js',
 
 			// Block.build.js: We register the block here. Built with Webpack.
-			$this->pluginDirUrl . 'js/gutenberg/blocks.build.js',
+			$this->pluginDirUrl . 'build/ss-gutenberg.js',
 
 			// Dependencies, defined above.
 			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
