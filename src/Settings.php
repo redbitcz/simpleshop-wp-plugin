@@ -82,8 +82,8 @@ class Settings {
 		$field_type_object
 	) {
 		echo '<a href="' . admin_url( 'admin.php?page=ssc_options&disconnect_simpleshop=1' ) . '">'
-		     . _e( 'Disconnect Simple Shop', 'simpleshop-cz' )
-		     . '</a>';
+			 . _e( 'Disconnect Simple Shop', 'simpleshop-cz' )
+			 . '</a>';
 	}
 
 	/**
@@ -128,10 +128,10 @@ class Settings {
 	 */
 	public function admin_page_display() {
 		?>
-        <div class="wrap cmb2-options-page <?php echo $this->key; ?>">
-            <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+		<div class="wrap cmb2-options-page <?php echo $this->key; ?>">
+			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 			<?php cmb2_metabox_form( $this->metabox_id, $this->key ); ?>
-        </div>
+		</div>
 		<?php
 	}
 
@@ -198,13 +198,13 @@ class Settings {
 			[
 				'name'       => __( 'Email message', 'simpleshop-cz' ),
 				'desc'       => __( '<u>Povolené zástupné znaky:</u><br/>'
-				                    . '<div style="font-style:normal;"><b>{login}</b> = login<br/>'
-				                    . '<b>{password}</b> = heslo<br/>'
-				                    . '<b>{login_url}</b> = adresa, na které je možné se přihlásit<br/>'
-				                    . '<b>{pages}</b> = seznam stránek, do kterých má uživatel zakoupený přístup<br/>'
-				                    . '<b>{mail}</b> = e-mail uživatele (většinou stejný jako login)<br/>'
-				                    . '</div>'
-				                    . '', 'simpleshop-cz' ),
+									. '<div style="font-style:normal;"><b>{login}</b> = login<br/>'
+									. '<b>{password}</b> = heslo<br/>'
+									. '<b>{login_url}</b> = adresa, na které je možné se přihlásit<br/>'
+									. '<b>{pages}</b> = seznam stránek, do kterých má uživatel zakoupený přístup<br/>'
+									. '<b>{mail}</b> = e-mail uživatele (většinou stejný jako login)<br/>'
+									. '</div>'
+									. '', 'simpleshop-cz' ),
 				'id'         => 'ssc_email_text',
 				'type'       => 'wysiwyg',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],

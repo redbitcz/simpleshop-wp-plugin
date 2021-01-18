@@ -388,11 +388,11 @@ class Access {
 	 */
 	public function hide_menu_items() {
 		?>
-        <style type="text/css">
-            .ssc-hide {
-                display: none !important;
-            }
-        </style>
+		<style type="text/css">
+			.ssc-hide {
+				display: none !important;
+			}
+		</style>
 		<?php
 	}
 
