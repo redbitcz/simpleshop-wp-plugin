@@ -160,31 +160,31 @@ class Admin {
 		global $post;
 		if ( $post && $post->post_type == $mg_post_type ) {
 			echo '<style type="text/css">
-            .misc-pub-section.misc-pub-visibility,
-            .misc-pub-section.curtime
-            {
-                display:none;
-            }
-            </style>';
+			.misc-pub-section.misc-pub-visibility,
+			.misc-pub-section.curtime
+			{
+				display:none;
+			}
+			</style>';
 		} ?>
 
-        <!-- SSC TinyMCE Shortcode Plugin -->
-        <script type='text/javascript'>
-            var sscContentGroups = [];
-            sscContentGroups.push({
-                text: 'Vyberte skupinu',
-                value: ''
-            });
+		<!-- SSC TinyMCE Shortcode Plugin -->
+		<script type='text/javascript'>
+			var sscContentGroups = [];
+			sscContentGroups.push({
+				text: 'Vyberte skupinu',
+				value: ''
+			});
 			<?php
 			$group = new Group();
 			$groups = $group->get_groups();
 			foreach ($groups as $key => $group) { ?>
-            sscContentGroups.push({
-                text: '<?php echo $group; ?>',
-                value: '<?php echo $key; ?>'
-            });
+			sscContentGroups.push({
+				text: '<?php echo $group; ?>',
+				value: '<?php echo $key; ?>'
+			});
 			<?php }  ?>
-        </script>
+		</script>
 
 		<?php
 
