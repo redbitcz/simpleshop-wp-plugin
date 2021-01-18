@@ -13,15 +13,13 @@ class Gutenberg {
 	private $pluginDirUrl;
 	/** @var string */
 	private $pluginDirPath;
-	/**
-	 * @var Shortcodes
-	 */
+	/** @var Shortcodes */
 	private $shortcodes;
 
 	public function __construct( Admin $admin, Group $group, Access $access, $pluginMainFile, Shortcodes $shortcodes ) {
-		add_action( 'init', array( $this, 'load_block_assets' ) );
-		add_action( 'admin_init', array( $this, 'load_products' ) );
-		add_filter( 'render_block', array( $this, 'maybe_hide_block' ), 10, 2 );
+		add_action( 'init', [ $this, 'load_block_assets' ] );
+		add_action( 'admin_init', [ $this, 'load_products' ] );
+		add_filter( 'render_block', [ $this, 'maybe_hide_block' ], 10, 2 );
 
 		$this->admin         = $admin;
 		$this->group         = $group;
@@ -41,7 +39,7 @@ class Gutenberg {
 		wp_register_script(
 			'simpleshop-gutenberg-block-js',
 			$this->pluginDirUrl . 'build/ss-gutenberg.js',
-			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
+			[ 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ],
 			null,
 			true
 		);
@@ -58,7 +56,7 @@ class Gutenberg {
 		wp_register_style(
 			'simpleshop-gutenberg-block-editor-css', // Handle.
 			$this->pluginDirUrl . 'js/gutenberg/blocks.editor.build.css', // Block editor CSS.
-			array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
+			[ 'wp-edit-blocks' ], // Dependency to include the CSS after it.
 			null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
 		);
 
@@ -72,11 +70,11 @@ class Gutenberg {
 		 */
 		register_block_type(
 			'simpleshop/simpleshop-form',
-			array(
+			[
 				'editor_script'   => 'simpleshop-gutenberg-block-js',
 				'editor_style'    => 'simpleshop-gutenberg-block-editor-css',
 				'render_callback' => [ $this, 'render_form' ],
-			)
+			]
 		);
 	}
 
