@@ -48,8 +48,6 @@ class Gutenberg {
 				'groups'   => $this->group->get_groups(),
 			]
 		);
-		
-		wp_set_script_translations( 'simpleshop-gutenberg-block-js', 'simpleshop-cz', $this->pluginDirUrl . 'languages' );
 
 		// Register block editor styles for backend.
 		wp_register_style(
@@ -75,6 +73,8 @@ class Gutenberg {
 				'render_callback' => [ $this, 'render_form' ],
 			]
 		);
+
+		wp_set_script_translations( 'simpleshop-gutenberg-block-js', 'simpleshop-cz', $this->pluginDirUrl . 'languages' );
 	}
 
 	/**
