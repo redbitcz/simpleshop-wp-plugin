@@ -135,8 +135,8 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                                 });
                             }}
                         />
+                        <h4>{__('From date', 'ss')}</h4>
                         <DateTimePicker
-                            label={__('From date', 'ss')}
                             currentDate={simpleShopSpecificDateFrom}
                             value={simpleShopSpecificDateFrom}
                             onChange={(selectedSpacingOption) => {
@@ -146,8 +146,8 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                             }}
                             is12Hour={is12HourTime}
                         />
+                        <h4>{__('To date', 'ss')}</h4>
                         <DateTimePicker
-                            label={__('To date', 'ss')}
                             currentDate={simpleShopSpecificDateTo}
                             value={simpleShopSpecificDateTo}
                             onChange={(selectedSpacingOption) => {
