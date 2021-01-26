@@ -77,7 +77,7 @@ class Gutenberg {
 			]
 		);
 
-		wp_set_script_translations( 'simpleshop-gutenberg-block-js', 'simpleshop-cz', $this->pluginDirPath . 'languages' );
+		wp_set_script_translations( 'simpleshop-gutenberg-block-js', 'simpleshop-cz' );
 	}
 
 	/**

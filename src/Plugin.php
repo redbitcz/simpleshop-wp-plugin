@@ -38,7 +38,6 @@ class Plugin {
 		$this->pluginMainFile = $mainFile;
 
 		$this->init();
-		$this->init_i18n();
 
 		$this->secure_key = $this->load_api_key();
 		$this->email      = $this->load_email();
@@ -135,19 +134,6 @@ class Plugin {
 		// Generate and save the secure key
 		$key = $this->generate_secure_key();
 		$this->save_secure_key( $key );
-	}
-
-	public function init_i18n() {
-		add_action( 'plugins_loaded', [ $this, 'load_textdomain_i18n' ] );
-	}
-
-	public function load_textdomain_i18n() {
-		$plugin_rel_path = str_replace(
-			WP_PLUGIN_DIR . '/',
-			'',
-			plugin_dir_path( $this->pluginMainFile ) . 'languages/'
-		);
-		load_plugin_textdomain( 'simpleshop-cz', false, $plugin_rel_path );
 	}
 
 	public function get_plugin_main_file() {
