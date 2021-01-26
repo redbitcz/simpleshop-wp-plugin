@@ -189,8 +189,10 @@ class Admin {
 	 * Add a new TinyMCE button
 	 */
 	public function tiny_mce_new_buttons() {
-		add_filter( 'mce_external_plugins', [ $this, 'tiny_mce_add_buttons' ] );
-		add_filter( 'mce_buttons', [ $this, 'tiny_mce_register_buttons' ] );
+	    if ( ! $this->loader->get_settings()->is_settings_page() ) {
+		    add_filter( 'mce_external_plugins', [ $this, 'tiny_mce_add_buttons' ] );
+		    add_filter( 'mce_buttons', [ $this, 'tiny_mce_register_buttons' ] );
+	    }
 	}
 
 	/**
@@ -201,7 +203,9 @@ class Admin {
 	 * @return mixed
 	 */
 	public function tiny_mce_add_buttons( $plugins ) {
-		$plugins['ssctinymceplugin'] = $this->pluginDirUrl . 'js/tiny-mce/tiny-mce.js';
+		if ( ! $this->loader->get_settings()->is_settings_page() ) {
+			$plugins['ssctinymceplugin'] = $this->pluginDirUrl . 'js/tiny-mce/tiny-mce.js';
+		}
 
 		return $plugins;
 	}
