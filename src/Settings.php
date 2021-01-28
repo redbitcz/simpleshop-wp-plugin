@@ -9,6 +9,7 @@
 namespace Redbit\SimpleShop\WpPlugin;
 
 use Exception;
+use VyfakturujAPIException;
 
 /**
  * CMB2 Theme Options
@@ -378,11 +379,19 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 		}
 
 		$vyfakturuj_api = $this->loader->get_api_client( $api_email, $api_key );
-		$result         = $vyfakturuj_api->initWPPlugin( site_url() );
-		if ( isset( $result['status'] ) && $result['status'] == 'success' ) {
-			update_option( 'ssc_valid_api_keys', 1 );
-		} else {
+		try {
+			$result = $vyfakturuj_api->initWPPlugin( site_url() );
+			if ( isset( $result['status'] ) && $result['status'] == 'success' ) {
+				update_option( 'ssc_valid_api_keys', 1 );
+			} else {
+				update_option( 'ssc_valid_api_keys', 0 );
+			}
+		} catch ( VyfakturujAPIException $e ) {
 			update_option( 'ssc_valid_api_keys', 0 );
+
+			add_settings_error( $this->key . '-error', '', __( 'Error during communication with SimpleShop API, please try it later', 'simpleshop-cz' ), 'error' );
+			settings_errors( $this->key . '-error' );
+			return;
 		}
 
 

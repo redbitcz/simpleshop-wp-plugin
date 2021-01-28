@@ -41,6 +41,7 @@ class Admin {
 
 	/**
 	 * Get products from simple shop via API
+	 * TODO: Show message if loading pf products failed
 	 */
 	public function wp_ajax_load_simple_shop_products() {
 		$this->update_simpleshop_products_cache();
@@ -52,7 +53,6 @@ class Admin {
 	 * Return products. If you need force refresh products from API, call `update_simpleshop_products_cache()` before
 	 *
 	 * @return array
-	 * @throws VyfakturujAPIException
 	 */
 	public function get_simpleshop_products() {
 		$products = $this->get_simpleshop_products_cache();
@@ -90,23 +90,24 @@ class Admin {
 
 	/**
 	 * Update Products cache from Vyfakturuj API
-	 *
-	 * @throws VyfakturujAPIException
 	 */
 	public function update_simpleshop_products_cache() {
-		$products = $this->load_simpleshop_products();
+		try {
+			$products   = $this->load_simpleshop_products();
+			$cacheKey   = $this->loader->get_cache_user_key();
+			$cachedTime = time();
 
-		$cacheKey   = $this->loader->get_cache_user_key();
-		$cachedTime = time();
+			$cache = [
+				$cacheKey => array_merge(
+					$products,
+					[ self::PRODUCTS_CACHE_FIELD => $cachedTime ]
+				)
+			];
 
-		$cache = [
-			$cacheKey => array_merge(
-				$products,
-				[ self::PRODUCTS_CACHE_FIELD => $cachedTime ]
-			)
-		];
-
-		update_option( 'ssc_cache_products', $cache );
+			return update_option( 'ssc_cache_products', $cache );
+		} catch ( VyfakturujAPIException $e ) {
+			return new \WP_Error( 'api-error', $e->getMessage() );
+		}
 	}
 
 

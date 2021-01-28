@@ -43,6 +43,15 @@ class Access {
 	 * @return mixed
 	 */
 	public function login_redirect( $redirect, $request, $user ) {
+		if ( ! $user || is_wp_error( $user ) ) {
+			return $redirect;
+		}
+
+		if ( isset( $user->roles ) && is_array( $user->roles ) && in_array( 'administrator', $user->roles ) ) {
+			// redirect admins to the default place
+			return $redirect;
+		}
+
 		$redirect_url = $this->settings->ssc_get_option( 'ssc_redirect_url' );
 		if ( $redirect_url ) {
 			$redirect = remove_query_arg( [ 'redirect_to' ], $redirect_url );
@@ -66,6 +75,7 @@ class Access {
 
 		// If the post is protected and user is not logged in, redirect him to login
 		if ( $post_groups && ! is_user_logged_in() ) {
+			nocache_headers();
 			wp_safe_redirect( wp_login_url( site_url( $_SERVER['REQUEST_URI'] ) ) );
 			exit();
 		}
@@ -76,6 +86,7 @@ class Access {
 
 			$main_redirect_url = is_user_logged_in() ? site_url() : wp_login_url();
 			$url               = $no_access_url ?: $main_redirect_url;
+			nocache_headers();
 			wp_redirect( $url );
 			exit();
 		}
