@@ -93,5 +93,32 @@ class Membership {
 	public function get_valid_to( $group_id ) {
 		return get_user_meta( $this->user_id, '_ssc_group_subscription_valid_to_' . $group_id, true );
 	}
+
+	/**
+	 * Check if the membership is valid for specific group
+	 *
+	 * @param $group_id
+	 *
+	 * @return bool
+	 */
+	public function is_valid_for_group( $group_id ) {
+		foreach ( $this->groups as $group ) {
+			if ( $group['group_id'] != $group_id ) {
+				continue;
+			}
+
+			if ( ! empty( $group['subscription_date'] ) && $group['subscription_date'] >= date( 'Y-m-d' ) ) {
+				return false;
+			}
+
+			if ( ! empty( $group['valid_to'] ) && $group['valid_to'] <= date( 'Y-m-d' ) ) {
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
 }
 
