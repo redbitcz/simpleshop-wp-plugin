@@ -326,7 +326,14 @@ class Access {
 //		}
 
 
-		$group = new Group( $group_id );
+		$group      = new Group( $group_id );
+		$membership = new Membership( get_current_user_id() );
+
+		if ( $group_id ) {
+			if ( ! is_user_logged_in() || ! $membership->is_valid_for_group( $group_id ) ) {
+				return false;
+			}
+		}
 
 		if ( $is_member == 'yes' ) {
 			// Check, if the user is logged in and is member of the group, if not, bail
@@ -354,7 +361,6 @@ class Access {
 		// Group check done, check if there are some days set and if is_member is yes
 		// it doesn't make sense to check days condition for users who should NOT be members of a group
 		if ( ! empty( $days_to_view ) && $is_member == 'yes' ) {
-			$membership        = new Membership( get_current_user_id() );
 			$subscription_date = $membership->groups[ $group_id ]['subscription_date'];
 			// Compare against today's date
 			if ( date( 'Y-m-d' ) < date( 'Y-m-d', strtotime( "$subscription_date + $days_to_view days" ) ) ) {
@@ -373,7 +379,6 @@ class Access {
 	 * @return mixed
 	 */
 	public function setup_nav_menu_item( $item ) {
-
 		if ( ! $this->user_can_view_post( $item->object_id ) ) {
 			$item->classes[] = 'ssc-hide';
 			$item->title     = '';
