@@ -80,7 +80,7 @@ class Group {
 			$user_id = get_current_user_id();
 		}
 
-		return get_user_meta( $user_id, '_ssc_user_groups', true );
+		return get_user_meta( $user_id, '_ssc_user_groups', true ) ?: [];
 	}
 
 	/**
