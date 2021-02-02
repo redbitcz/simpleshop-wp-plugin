@@ -69,18 +69,18 @@ class Group {
 	}
 
 	/**
-	 * Get groups the user belongs to
+	 * Get groups ids the user belongs to
 	 *
 	 * @param string $user_id
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public function get_user_groups( $user_id = '' ) {
 		if ( ! $user_id ) {
 			$user_id = get_current_user_id();
 		}
 
-		return get_user_meta( $user_id, '_ssc_user_groups', true );
+		return get_user_meta( $user_id, '_ssc_user_groups', true ) ?: [];
 	}
 
 	/**
@@ -90,10 +90,6 @@ class Group {
 	 */
 	public function add_user_to_group( $user_id ) {
 		$groups = $this->get_user_groups( $user_id );
-
-		if ( ! $groups ) {
-			$groups = [];
-		}
 
 		if ( ! in_array( $this->id, $groups ) ) {
 			$groups[] = $this->id;
@@ -118,10 +114,6 @@ class Group {
 		}
 
 		$groups = $this->get_user_groups( $user_id );
-
-		if ( ! is_array( $groups ) ) {
-			return false;
-		}
 
 		return in_array( $this->id, $groups ) ? true : false;
 	}
