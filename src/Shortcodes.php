@@ -29,15 +29,30 @@ class Shortcodes {
 
 
 	public function simple_shop_form( $atts ) {
-		$formUrl = $this->settings->ssc_get_option( 'ssc_ss_form_url' );
-		$query   = http_build_query( [ 'id' => $atts['id'] ] );
-		$url     = sprintf(
-			"%s/iframe/js/?%s",
-			empty( $formUrl ) ? 'https://form.simpleshop.cz' : $formUrl,
-			$query
-		);
+		/**
+		 * @noinspection BadExpressionStatementJS
+		 * @noinspection JSUnresolvedFunction
+		 * @noinspection JSUnnecessarySemicolon
+		 * @noinspection CommaExpressionJS
+		 */
+		$template =
+			'<script>(function(i,s,o,g,r,a,m){i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},'
+			. 'i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.src=g;'
+			. 'm.parentNode.insertBefore(a,m)})(window,document,"script",%s,"sss");'
+			. 'sss("createForm",%s)</script>' . PHP_EOL
+			. '<div data-SimpleShopForm="%s"><div>Prodejní formulář je vytvořen v systému '
+			. '<a href="https://www.simpleshop.cz/" target="_blank">SimpleShop.cz</a>.'
+			. '</div></div>';
 
-		return '<script type="text/javascript" src="' . htmlspecialchars( $url ) . '"></script>';
+		$formUrl   = rtrim( $this->settings->ssc_get_option( 'ssc_ss_form_url', 'https://form.simpleshop.cz' ), '/' );
+		$scriptUrl = $formUrl . '/prj/js/SimpleShopService.js';
+		$formKey   = $atts['id'];
+
+		return sprintf( $template,
+			json_encode( $scriptUrl ),
+			json_encode( $formKey ),
+			htmlspecialchars( $formKey, ENT_QUOTES )
+		);
 	}
 
 	public function simple_shop_content( $atts, $content = '' ) {
