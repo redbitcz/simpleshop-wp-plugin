@@ -82,9 +82,7 @@ class Settings {
 		$object_type,
 		$field_type_object
 	) {
-		echo '<a href="' . admin_url( 'admin.php?page=ssc_options&disconnect_simpleshop=1' ) . '">'
-		     . _e( 'Disconnect Simple Shop', 'simpleshop-cz' )
-		     . '</a>';
+		printf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=ssc_options&disconnect_simpleshop=1' ), __( 'Disconnect Simple Shop', 'simpleshop-cz' ) );
 	}
 
 	/**
