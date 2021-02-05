@@ -329,7 +329,7 @@ class Access {
 		$group      = new Group( $group_id );
 		$membership = new Membership( get_current_user_id() );
 
-		if ( $group_id ) {
+		if ( $group_id && $is_member === 'yes' ) {
 			if ( ! is_user_logged_in() || ! $membership->is_valid_for_group( $group_id ) ) {
 				return false;
 			}
