@@ -16,6 +16,7 @@
   },
   "require": {
     "php": ">=5.6.20",
+    "ext-json": "*",
     "cmb2/cmb2": "dev-master",
     "webdevstudios/cmb2-post-search-field": "dev-master",
     "vyfakturuj/vyfakturuj-api-php": "^2.5"
