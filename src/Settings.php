@@ -82,7 +82,11 @@ class Settings {
 		$object_type,
 		$field_type_object
 	) {
-		printf( '<a href="%s">%s</a>', admin_url( 'admin.php?page=ssc_options&disconnect_simpleshop=1' ), __( 'Disconnect Simple Shop', 'simpleshop-cz' ) );
+		printf(
+			'<a href="%s">%s</a>',
+			htmlspecialchars( admin_url( 'admin.php?page=ssc_options&disconnect_simpleshop=1' ) , ENT_QUOTES),
+			__( 'Disconnect Simple Shop', 'simpleshop-cz' )
+		);
 	}
 
 	/**
@@ -389,6 +393,7 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 
 			add_settings_error( $this->key . '-error', '', __( 'Error during communication with SimpleShop API, please try it later', 'simpleshop-cz' ), 'error' );
 			settings_errors( $this->key . '-error' );
+
 			return;
 		}
 
