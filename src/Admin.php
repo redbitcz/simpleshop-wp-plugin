@@ -51,7 +51,6 @@ class Admin {
 
 	/**
 	 * Return products. If you need force refresh products from API, call `update_simpleshop_products_cache()` before
-	 *
 	 * @return array
 	 */
 	public function get_simpleshop_products() {
@@ -67,7 +66,6 @@ class Admin {
 
 	/**
 	 * Returns current and valid products from cache or null if valid cache unavailable
-	 *
 	 * @return array|null
 	 */
 	protected function get_simpleshop_products_cache() {
@@ -101,7 +99,7 @@ class Admin {
 				$cacheKey => array_merge(
 					$products,
 					[ self::PRODUCTS_CACHE_FIELD => $cachedTime ]
-				)
+				),
 			];
 
 			return update_option( 'ssc_cache_products', $cache );
@@ -113,7 +111,6 @@ class Admin {
 
 	/**
 	 * Load products from Vyfakturuj API. Don't call method directly, use `get_simpleshop_products()` to use cache
-	 *
 	 * @return array
 	 * @throws VyfakturujAPIException
 	 */
@@ -145,7 +142,6 @@ class Admin {
 	 */
 	public function remove_quick_edit( $actions, $post ) {
 		if ( $post->post_type == 'ssc_group' ) {
-
 			unset( $actions['inline hide-if-no-js'] );
 		}
 
@@ -168,26 +164,25 @@ class Admin {
 			</style>';
 		} ?>
 
-		<!-- SSC TinyMCE Shortcode Plugin -->
-		<script type='text/javascript'>
-			var sscContentGroups = [];
-			sscContentGroups.push({
-				text: 'Vyberte skupinu',
-				value: ''
-			});
+        <!-- SSC TinyMCE Shortcode Plugin -->
+        <script type='text/javascript'>
+            var sscContentGroups = [];
+            sscContentGroups.push({
+                text: 'Vyberte skupinu',
+                value: ''
+            });
 			<?php
 			$group = new Group();
 			$groups = $group->get_groups();
 			foreach ($groups as $key => $group) { ?>
-			sscContentGroups.push({
-				text: '<?php echo $group; ?>',
-				value: '<?php echo $key; ?>'
-			});
+            sscContentGroups.push({
+                text: '<?php echo $group; ?>',
+                value: '<?php echo $key; ?>'
+            });
 			<?php }  ?>
-		</script>
+        </script>
 
 		<?php
-
 	}
 
 	/**
@@ -314,8 +309,14 @@ class Admin {
 	 * Enqueue admin scripts
 	 */
 	public function enqueue_admin_scripts() {
+		global $current_screen;
+
 		wp_enqueue_style( 'ssc', $this->pluginDirUrl . 'css/ssc.css' );
 		wp_register_style( 'jquery-ui', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
 		wp_enqueue_style( 'jquery-ui' );
+
+		if ( $current_screen && 'profile' === $current_screen->id ) {
+			wp_enqueue_script( 'jquery-ui-datepicker' );
+		}
 	}
 }

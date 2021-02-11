@@ -177,12 +177,22 @@ class Metaboxes {
 		$groups     = $ssc_group->get_groups();
 		$membership = new Membership( $user->ID );
 		$access     = $this->loader->get_access(); ?>
+
 		<style type="text/css">
 			#simpleshop__groups th {
 				padding: 15px 10px;
 			}
 		</style>
-		<table id="custom_user_field_table" class="form-table">
+        <script type="text/javascript">
+            jQuery(document).ready(function ($) {
+                $(".datepicker").datepicker(
+                    {
+                        dateFormat: 'yy-mm-dd'
+                    }
+                );
+            });
+        </script>
+        <table id="custom_user_field_table" class="form-table">
 			<tr id="simpleshop__groups">
 				<th>
 					<label for="custom_field"><?php _e( 'Simpleshop Groups', 'simpleshop-cz' ); ?></label>
@@ -211,14 +221,14 @@ class Metaboxes {
 								</td>
 								<td>
 									<?php if ( $access->user_is_admin() ) { ?>
-										<input type="text" name="ssc_groups[<?php echo $group_id ?>][subscription_date]" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true ) ?>"/>
+										<input type="text" class="datepicker" name="ssc_groups[<?php echo $group_id ?>][subscription_date]" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true ) ?>"/>
 									<?php } else {
 										echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true );
 									} ?>
 								</td>
 								<td>
 									<?php if ( $access->user_is_admin() ) { ?>
-										<input type="text" name="ssc_groups[<?php echo $group_id ?>][subscription_valid_to]" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true ) ?>"/>
+										<input type="text" class="datepicker" name="ssc_groups[<?php echo $group_id ?>][subscription_valid_to]" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true ) ?>"/>
 									<?php } else {
 										echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true );
 									} ?>
