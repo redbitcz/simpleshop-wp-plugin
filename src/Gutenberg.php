@@ -48,7 +48,7 @@ class Gutenberg {
 			'simpleshop-gutenberg-block-js',
 			'ssGutenbergVariables',
 			[
-				'groups'   => $this->group->get_groups(),
+				'groups' => $this->group->get_groups(),
 			]
 		);
 
@@ -74,6 +74,12 @@ class Gutenberg {
 				'editor_script'   => 'simpleshop-gutenberg-block-js',
 				'editor_style'    => 'simpleshop-gutenberg-block-editor-css',
 				'render_callback' => [ $this, 'render_form' ],
+				'attributes'      => [
+					'ssFormId' => [
+						'type'    => 'string',
+						'default' => __( 'Choose form', 'simpleshop-cz' ),
+					],
+				],
 			]
 		);
 
@@ -107,6 +113,7 @@ class Gutenberg {
 
 	/**
 	 * Render form from Gutenberg Block
+	 *
 	 * @param $attributes
 	 *
 	 * @return string

@@ -276,12 +276,6 @@ registerBlockType('simpleshop/simpleshop-form', {
         __('SimpleShop'),
         __('form'),
     ],
-    attributes: {
-        ssFormId: {
-            type: 'string',
-            default: 'Choose form'
-        }
-    },
     edit: EditSimpleShop,
     save: SaveSimpleShop,
 });
