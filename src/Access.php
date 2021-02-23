@@ -71,6 +71,10 @@ class Access {
 	 * Check if the page is protected and the user has access to the page
 	 */
 	public function check_access() {
+		if ( ! is_singular() ) {
+			return;
+		}
+
 		$post_groups = $this->get_post_groups();
 
 		// If the post is protected and user is not logged in, redirect him to login
