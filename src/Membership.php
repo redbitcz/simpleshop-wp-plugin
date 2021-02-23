@@ -107,7 +107,7 @@ class Membership {
 				continue;
 			}
 
-			if ( ! empty( $group['subscription_date'] ) && $group['subscription_date'] >= date( 'Y-m-d' ) ) {
+			if ( ! empty( $group['subscription_date'] ) && $group['subscription_date'] > date( 'Y-m-d' ) ) {
 				return false;
 			}
 

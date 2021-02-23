@@ -345,8 +345,8 @@ class Access {
 				return false;
 			}
 		} elseif ( $is_member == 'no' ) {
-			// Check, if the user is NOT a member of specific group. This includes non-logged-in users
-			if ( is_user_logged_in() && $group->user_is_member_of_group( get_current_user_id() ) ) {
+			// Check, if the user does NOT have valid membership for specific group. This includes non-logged-in users
+			if ( is_user_logged_in() && $membership->is_valid_for_group( $group_id ) ) {
 				return false;
 			}
 		} else {
