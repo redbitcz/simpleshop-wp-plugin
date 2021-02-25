@@ -4,6 +4,7 @@ import {registerBlockType} from '@wordpress/blocks';
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import {PanelBody, SelectControl, TextControl, DateTimePicker, Button, ToggleControl} from '@wordpress/components';
+import v1 from './v1';
 
 const {__experimentalGetSettings} = wp.date;
 const {addFilter} = wp.hooks;
@@ -278,4 +279,5 @@ registerBlockType('simpleshop/simpleshop-form', {
     ],
     edit: EditSimpleShop,
     save: SaveSimpleShop,
+    deprecated: [v1],
 });
