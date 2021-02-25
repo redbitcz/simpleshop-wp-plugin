@@ -178,11 +178,11 @@ class Metaboxes {
 		$membership = new Membership( $user->ID );
 		$access     = $this->loader->get_access(); ?>
 
-		<style type="text/css">
-			#simpleshop__groups th {
-				padding: 15px 10px;
-			}
-		</style>
+        <style type="text/css">
+            #simpleshop__groups th {
+                padding: 15px 10px;
+            }
+        </style>
         <script type="text/javascript">
             jQuery(document).ready(function ($) {
                 $(".datepicker").datepicker(
@@ -193,53 +193,55 @@ class Metaboxes {
             });
         </script>
         <table id="custom_user_field_table" class="form-table">
-			<tr id="simpleshop__groups">
-				<th>
-					<label for="custom_field"><?php _e( 'Simpleshop Groups', 'simpleshop-cz' ); ?></label>
-				</th>
-				<td>
-					<table>
-						<thead>
-						<tr>
-							<th><?php _e( 'Group name', 'simpleshop-cz' ); ?></th>
-							<th><?php _e( 'Is member', 'simpleshop-cz' ); ?></th>
-							<th><?php _e( 'Membership from', 'simpleshop-cz' ); ?></th>
-							<th><?php _e( 'Membership to', 'simpleshop-cz' ); ?></th>
+            <tr id="simpleshop__groups">
+                <th>
+                    <label for="custom_field"><?php _e( 'Simpleshop Groups', 'simpleshop-cz' ); ?></label>
+                </th>
+                <td>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th><?php _e( 'Group name', 'simpleshop-cz' ); ?></th>
+                            <th><?php _e( 'Is member', 'simpleshop-cz' ); ?></th>
+                            <th><?php _e( 'Membership from', 'simpleshop-cz' ); ?></th>
+                            <th><?php _e( 'Membership to', 'simpleshop-cz' ); ?></th>
 
-						</tr>
-						</thead>
-						<tbody>
+                        </tr>
+                        </thead>
+                        <tbody>
 						<?php foreach ( $groups as $group_id => $group_name ) { ?>
-							<tr>
-								<td><?php echo $group_name; ?></td>
-								<td>
+                            <tr>
+                                <td><?php echo $group_name; ?></td>
+                                <td>
 									<?php if ( $access->user_is_admin() ) { ?>
-										<input type="checkbox" name="ssc_groups[<?php echo $group_id ?>][is_member]" value="on" <?php checked( array_key_exists( $group_id, $membership->groups ), true ); ?>/>
+                                        <input type="checkbox" name="ssc_groups[<?php echo $group_id ?>][is_member]" value="on" <?php checked( array_key_exists( $group_id, $membership->groups ), true ); ?>/>
 									<?php } else {
 										echo array_key_exists( $group_id, $membership->groups ) ? __( 'Yes', 'simpleshop-cz' ) : __( 'No', 'simpleshop-cz' );
 									} ?>
-								</td>
-								<td>
+                                </td>
+                                <td>
 									<?php if ( $access->user_is_admin() ) { ?>
-										<input type="text" class="datepicker" name="ssc_groups[<?php echo $group_id ?>][subscription_date]" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true ) ?>"/>
+                                        <input type="text" class="datepicker" name="ssc_groups[<?php echo $group_id ?>][subscription_date]"
+                                               value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true ) ?>"/>
 									<?php } else {
 										echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true );
 									} ?>
-								</td>
-								<td>
+                                </td>
+                                <td>
 									<?php if ( $access->user_is_admin() ) { ?>
-										<input type="text" class="datepicker" name="ssc_groups[<?php echo $group_id ?>][subscription_valid_to]" value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true ) ?>"/>
+                                        <input type="text" class="datepicker" name="ssc_groups[<?php echo $group_id ?>][subscription_valid_to]"
+                                               value="<?php echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true ) ?>"/>
 									<?php } else {
 										echo get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true );
 									} ?>
-								</td>
-							</tr>
+                                </td>
+                            </tr>
 						<?php } ?>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-		</table>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </table>
 		<?php
 	}
 
@@ -254,8 +256,14 @@ class Metaboxes {
 			return;
 		}
 
+		$ssc_groups      = new Group();
+		$existing_groups = $ssc_groups->get_user_groups( $user_id ) ?: [];
+
 		$groups = [];
 		foreach ( $_POST['ssc_groups'] as $group_id => $group ) {
+			if ( ! in_array( $group_id, $existing_groups ) && $group['subscription_date'] && $group['subscription_date'] < date( 'Y-m-d' ) ) {
+				// TODO: send added to group email
+			}
 			if ( ! empty( $group['is_member'] ) && $group['is_member'] ) {
 				$groups[] = $group_id;
 				if ( empty( $group['subscription_date'] ) ) {
