@@ -14,7 +14,6 @@
  * Author URI: https://www.redbit.cz
  * Version: dev-master
  * Text Domain: simpleshop-cz
- * Domain Path: /languages
  * Requires at least: 4.6
  */
 
