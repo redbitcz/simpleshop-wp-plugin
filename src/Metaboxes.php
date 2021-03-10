@@ -262,7 +262,7 @@ class Metaboxes {
 		$groups = [];
 		foreach ( $_POST['ssc_groups'] as $group_id => $group ) {
 			if ( ! in_array( $group_id, $existing_groups ) && $group['subscription_date'] && $group['subscription_date'] < date( 'Y-m-d' ) ) {
-				// TODO: send added to group email
+				$this->loader->get_access()->send_welcome_email( $user_id );
 			}
 			if ( ! empty( $group['is_member'] ) && $group['is_member'] ) {
 				$groups[] = $group_id;
