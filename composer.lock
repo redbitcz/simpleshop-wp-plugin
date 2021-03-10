@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffae19615acd8d31c98d4264c38ef6db",
+    "content-hash": "da5519615e1eb99622f6ec76ab27633d",
     "packages": [
         {
             "name": "cmb2/cmb2",
@@ -62,65 +62,6 @@
                 "source": "http://wordpress.org/support/plugin/cmb2"
             },
             "time": "2020-08-03T14:43:02+00:00"
-        },
-        {
-            "name": "tgmpa/tgm-plugin-activation",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/TGMPA/TGM-Plugin-Activation.git",
-                "reference": "c626d0d91fc8ef24916e809c7b79eeafab1c1cac"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/TGMPA/TGM-Plugin-Activation/zipball/c626d0d91fc8ef24916e809c7b79eeafab1c1cac",
-                "reference": "c626d0d91fc8ef24916e809c7b79eeafab1c1cac",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "class-tgm-plugin-activation.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Thomas Griffin",
-                    "homepage": "http://thomasgriffinmedia.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Gary Jones",
-                    "homepage": "https://github.com/GaryJones",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Juliette Reinders Folmer",
-                    "homepage": "https://github.com/jrfnl",
-                    "role": "Developer"
-                }
-            ],
-            "description": "TGM Plugin Activation is a PHP library that allows you to easily require or recommend plugins for your WordPress themes (and plugins).",
-            "homepage": "http://tgmpluginactivation.com",
-            "keywords": [
-                "activation",
-                "library",
-                "plugins",
-                "theme",
-                "wordpress"
-            ],
-            "support": {
-                "issues": "https://github.com/TGMPA/TGM-Plugin-Activation/issues",
-                "source": "https://github.com/TGMPA/TGM-Plugin-Activation"
-            },
-            "time": "2016-05-19T15:46:51+00:00"
         },
         {
             "name": "vyfakturuj/vyfakturuj-api-php",
@@ -235,7 +176,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "cmb2/cmb2": 20,
-        "tgmpa/tgm-plugin-activation": 20,
         "webdevstudios/cmb2-post-search-field": 20
     },
     "prefer-stable": false,
