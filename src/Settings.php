@@ -478,5 +478,8 @@ SimpleShop.cz - <i>S námi zvládne prodávat každý</i>',
 		return $val;
 	}
 
+	public function is_settings_page(  ) {
+        return is_admin() && !empty($_GET['page']) && 'ssc_options' === $_GET['page'];
+	}
 
 }

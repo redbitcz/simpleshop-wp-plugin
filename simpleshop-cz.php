@@ -15,6 +15,7 @@
  * Version: dev-master
  * Text Domain: simpleshop-cz
  * Domain Path: /languages
+ * Requires at least: 4.6
  */
 
 namespace Redbit\SimpleShop\WpPlugin;

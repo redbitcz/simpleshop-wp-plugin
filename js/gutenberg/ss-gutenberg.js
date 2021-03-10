@@ -3,7 +3,9 @@ import React, {useState} from 'react';
 import {registerBlockType} from '@wordpress/blocks';
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import {PanelBody, SelectControl, TextControl, DateTimePicker, Button} from '@wordpress/components';
+import {PanelBody, SelectControl, TextControl, DateTimePicker, Button, ToggleControl} from '@wordpress/components';
+import v1 from './v1';
+
 const {__experimentalGetSettings} = wp.date;
 const {addFilter} = wp.hooks;
 const {createHigherOrderComponent} = wp.compose;
@@ -26,6 +28,9 @@ const addSimpleShopAttributes = (settings, name) => {
         },
         simpleShopIsLoggedIn: {
             type: 'string'
+        },
+        simpleShopIgnoreDates: {
+            type: 'bool'
         },
         simpleShopDaysToView: {
             type: 'string'
@@ -65,6 +70,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
             simpleShopGroup,
             simpleShopIsMember,
             simpleShopIsLoggedIn,
+            simpleShopIgnoreDates,
             simpleShopDaysToView,
             simpleShopSpecificDateFrom,
             simpleShopSpecificDateTo
@@ -96,8 +102,9 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                         title={__('Simpleshop Settings')}
                         initialOpen={true}
                     >
+                        <p><a href="https://podpora.redbit.cz/stitek/wp-plugin/">{__('Help - SimpleShop plugin','simpleshop-cz')}</a></p>
                         <SelectControl
-                            label={__('Group', 'ss')}
+                            label={__('Group', 'simpleshop-cz')}
                             value={simpleShopGroup}
                             options={simpleShopGroups}
                             onChange={(selectedSpacingOption) => {
@@ -107,7 +114,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                             }}
                         />
                         <SelectControl
-                            label={__('Is member', 'ss')}
+                            label={__('Is member', 'simpleshop-cz')}
                             value={simpleShopIsMember}
                             options={simpleShopYesNoSelect}
                             onChange={(selectedSpacingOption) => {
@@ -117,7 +124,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                             }}
                         />
                         <SelectControl
-                            label={__('Is logged in', 'ss')}
+                            label={__('Is logged in', 'simpleshop-cz')}
                             value={simpleShopIsLoggedIn}
                             options={simpleShopYesNoSelect}
                             onChange={(selectedSpacingOption) => {
@@ -127,7 +134,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                             }}
                         />
                         <TextControl
-                            label={__('Days to view', 'ss')}
+                            label={__('Days to view', 'simpleshop-cz')}
                             value={simpleShopDaysToView}
                             onChange={(selectedSpacingOption) => {
                                 props.setAttributes({
@@ -135,28 +142,49 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                                 });
                             }}
                         />
-                        <DateTimePicker
-                            label={__('From date', 'ss')}
-                            currentDate={simpleShopSpecificDateFrom}
-                            value={simpleShopSpecificDateFrom}
+                        <TextControl
+                            label={__('Days to view', 'simpleshop-cz')}
+                            value={simpleShopDaysToView}
                             onChange={(selectedSpacingOption) => {
                                 props.setAttributes({
-                                    simpleShopSpecificDateFrom: selectedSpacingOption
+                                    simpleShopDaysToView: selectedSpacingOption
                                 });
                             }}
-                            is12Hour={is12HourTime}
                         />
-                        <DateTimePicker
-                            label={__('To date', 'ss')}
-                            currentDate={simpleShopSpecificDateTo}
-                            value={simpleShopSpecificDateTo}
-                            onChange={(selectedSpacingOption) => {
-                                props.setAttributes({
-                                    simpleShopSpecificDateTo: selectedSpacingOption
-                                });
-                            }}
-                            is12Hour={is12HourTime}
+                        <ToggleControl
+                            label={__('Ignore date limits', 'simpleshop-cz')}
+                            help={__('Check to completely disable limiting post access by date', 'simpleshop-cz')}
+                            checked={simpleShopIgnoreDates}
+                            onChange={() => props.setAttributes({simpleShopIgnoreDates: !simpleShopIgnoreDates})}
                         />
+                        {!simpleShopIgnoreDates &&
+                        <>
+                            <h4>{__('From date', 'simpleshop-cz')}</h4>
+                            <DateTimePicker
+                                label={__('From date', 'simpleshop-cz')}
+                                currentDate={simpleShopSpecificDateFrom}
+                                value={simpleShopSpecificDateFrom}
+                                onChange={(selectedSpacingOption) => {
+                                    props.setAttributes({
+                                        simpleShopSpecificDateFrom: selectedSpacingOption
+                                    });
+                                }}
+                                is12Hour={is12HourTime}
+                            />
+                            <h4>{__('To date', 'simpleshop-cz')}</h4>
+                            <DateTimePicker
+                                label={__('To date', 'simpleshop-cz')}
+                                currentDate={simpleShopSpecificDateTo}
+                                value={simpleShopSpecificDateTo}
+                                onChange={(selectedSpacingOption) => {
+                                    props.setAttributes({
+                                        simpleShopSpecificDateTo: selectedSpacingOption
+                                    });
+                                }}
+                                is12Hour={is12HourTime}
+                            />
+                        </>
+                        }
                     </PanelBody>
                 </InspectorControls>
             </>
@@ -249,12 +277,7 @@ registerBlockType('simpleshop/simpleshop-form', {
         __('SimpleShop'),
         __('form'),
     ],
-    attributes: {
-        ssFormId: {
-            type: 'string',
-            default: 'Choose form'
-        }
-    },
     edit: EditSimpleShop,
     save: SaveSimpleShop,
+    deprecated: [v1],
 });

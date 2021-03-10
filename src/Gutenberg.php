@@ -11,6 +11,8 @@ class Gutenberg {
 	private $access;
 	/** @var string */
 	private $pluginDirUrl;
+	/** @var string */
+	private $pluginDirPath;
 	/** @var Shortcodes */
 	private $shortcodes;
 
@@ -23,6 +25,7 @@ class Gutenberg {
 		$this->group         = $group;
 		$this->access        = $access;
 		$this->pluginDirUrl  = plugin_dir_url( $pluginMainFile );
+		$this->pluginDirPath = plugin_dir_path( $pluginMainFile );
 		$this->shortcodes    = $shortcodes;
 	}
 
@@ -45,7 +48,7 @@ class Gutenberg {
 			'simpleshop-gutenberg-block-js',
 			'ssGutenbergVariables',
 			[
-				'groups'   => $this->group->get_groups(),
+				'groups' => $this->group->get_groups(),
 			]
 		);
 
@@ -71,8 +74,16 @@ class Gutenberg {
 				'editor_script'   => 'simpleshop-gutenberg-block-js',
 				'editor_style'    => 'simpleshop-gutenberg-block-editor-css',
 				'render_callback' => [ $this, 'render_form' ],
+				'attributes'      => [
+					'ssFormId' => [
+						'type'    => 'string',
+						'default' => __( 'Choose form', 'simpleshop-cz' ),
+					],
+				],
 			]
 		);
+
+		wp_set_script_translations( 'simpleshop-gutenberg-block-js', 'simpleshop-cz' );
 	}
 
 	/**
@@ -102,6 +113,7 @@ class Gutenberg {
 
 	/**
 	 * Render form from Gutenberg Block
+	 *
 	 * @param $attributes
 	 *
 	 * @return string
