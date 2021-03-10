@@ -8,7 +8,7 @@ Stable tag: trunk
 License: MIT
 License URI: https://github.com/redbitcz/simpleshop-wp-plugin/blob/master/LICENSE
 
-Plugin pro propojení Wordpress a SimpleShop.cz
+Plugin pro propojení WordPress a SimpleShop.cz
 
 == Screenshots ==
 1. Rozšířený editor
