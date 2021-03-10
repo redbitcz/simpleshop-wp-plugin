@@ -95,14 +95,23 @@ class Gutenberg {
 	 * @return string
 	 */
 	public function maybe_hide_block( $content, $block ) {
-		$ignore_dates = isset( $block['attrs']['simpleShopIgnoreDates'] ) ? $block['attrs']['simpleShopIgnoreDates'] : false;
-		$args         = [
+		$ignore_dates = isset( $block['attrs']['simpleShopIgnoreDates'] )
+			? (bool) $block['attrs']['simpleShopIgnoreDates']
+			: false;
+
+		$use_dates = $ignore_dates === false;
+
+		$args = [
 			'group_id'           => isset( $block['attrs']['simpleShopGroup'] ) ? $block['attrs']['simpleShopGroup'] : '',
 			'is_member'          => isset( $block['attrs']['simpleShopIsMember'] ) ? $block['attrs']['simpleShopIsMember'] : '',
 			'is_logged_in'       => isset( $block['attrs']['simpleShopIsLoggedIn'] ) ? $block['attrs']['simpleShopIsLoggedIn'] : '',
 			'days_to_view'       => isset( $block['attrs']['simpleShopDaysToView'] ) ? $block['attrs']['simpleShopDaysToView'] : '',
-			'specific_date_from' => isset( $block['attrs']['simpleShopSpecificDateFrom'] ) && ! $ignore_dates ? date( 'Y-m-d H:i:s', strtotime( $block['attrs']['simpleShopSpecificDateFrom'] ) ) : '',
-			'specific_date_to'   => isset( $block['attrs']['simpleShopSpecificDateTo'] ) && ! $ignore_dates ? date( 'Y-m-d H:i:s', strtotime( $block['attrs']['simpleShopSpecificDateTo'] ) ) : '',
+			'specific_date_from' => ( $use_dates && isset( $block['attrs']['simpleShopSpecificDateFrom'] ) )
+				? iso8601_to_datetime( $block['attrs']['simpleShopSpecificDateFrom'] )
+				: '',
+			'specific_date_to'   => ( $use_dates && isset( $block['attrs']['simpleShopSpecificDateTo'] ) )
+				? iso8601_to_datetime( $block['attrs']['simpleShopSpecificDateTo'] )
+				: '',
 		];
 
 		if ( ! $this->access->user_can_view_content( $args ) ) {
