@@ -143,7 +143,7 @@ class Rest extends WP_REST_Controller {
 			add_user_to_blog( get_current_blog_id(), $user_id, 'subscriber' );
 		}
 
-		$this->loader->get_access()->send_welcome_email( $user_id );
+		$this->loader->get_access()->send_welcome_email( $user_id, $_password );
 
 		return new WP_REST_Response( [ 'status' => 'success', 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ], 200 );
 	}
