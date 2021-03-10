@@ -312,14 +312,14 @@ class Access {
 
 		if ( ! empty( $specific_date_from ) ) {
 			// Check against the from date, this has nothing to do with groups or other settings
-			if ( date( 'Y-m-d' ) < $specific_date_from ) {
+			if ( date( 'Y-m-d H:i:s' ) < $specific_date_from ) {
 				return false;
 			}
 		}
 
 		if ( ! empty( $specific_date_to ) ) {
 			// Check against the to date, this has nothing to do with groups or other settings
-			if ( date( 'Y-m-d' ) > $specific_date_to ) {
+			if ( date( 'Y-m-d H:i:s' ) > $specific_date_to ) {
 				return false;
 			}
 		}

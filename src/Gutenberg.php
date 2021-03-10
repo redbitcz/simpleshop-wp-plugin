@@ -100,8 +100,8 @@ class Gutenberg {
 			'is_member'          => isset( $block['attrs']['simpleShopIsMember'] ) ? $block['attrs']['simpleShopIsMember'] : '',
 			'is_logged_in'       => isset( $block['attrs']['simpleShopIsLoggedIn'] ) ? $block['attrs']['simpleShopIsLoggedIn'] : '',
 			'days_to_view'       => isset( $block['attrs']['simpleShopDaysToView'] ) ? $block['attrs']['simpleShopDaysToView'] : '',
-			'specific_date_from' => isset( $block['attrs']['simpleShopSpecificDateFrom'] ) ? $block['attrs']['simpleShopSpecificDateFrom'] : '',
-			'specific_date_to'   => isset( $block['attrs']['simpleShopSpecificDateTo'] ) ? $block['attrs']['simpleShopSpecificDateTo'] : '',
+			'specific_date_from' => isset( $block['attrs']['simpleShopSpecificDateFrom'] ) ? date('Y-m-d H:i:s',strtotime($block['attrs']['simpleShopSpecificDateFrom'])) : '',
+			'specific_date_to'   => isset( $block['attrs']['simpleShopSpecificDateTo'] ) ? date('Y-m-d H:i:s',strtotime($block['attrs']['simpleShopSpecificDateTo'])) : '',
 		];
 
 		if ( ! $this->access->user_can_view_content( $args ) ) {
