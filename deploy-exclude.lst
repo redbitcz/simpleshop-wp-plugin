@@ -1,9 +1,9 @@
 *.git*
 *.gitignore*
 *.idea*
-*nbproject*
 *assets*
 *dist*
+*node_modules*
 *tools*
 *wordpress*
 *.DS_Store
@@ -11,3 +11,6 @@ composer.json
 composer.lock
 deploy-exclude.lst
 deploy.php
+package.json
+package-lock.json
+webpack.config.js
