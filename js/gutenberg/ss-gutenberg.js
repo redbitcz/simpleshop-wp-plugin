@@ -142,15 +142,6 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                                 });
                             }}
                         />
-                        <TextControl
-                            label={__('Days to view', 'simpleshop-cz')}
-                            value={simpleShopDaysToView}
-                            onChange={(selectedSpacingOption) => {
-                                props.setAttributes({
-                                    simpleShopDaysToView: selectedSpacingOption
-                                });
-                            }}
-                        />
                         <ToggleControl
                             label={__('Ignore date limits', 'simpleshop-cz')}
                             help={__('Check to completely disable limiting post access by date', 'simpleshop-cz')}
