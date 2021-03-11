@@ -115,6 +115,6 @@ class Group {
 
 		$groups = $this->get_user_groups( $user_id );
 
-		return in_array( $this->id, $groups ) ? true : false;
+		return in_array( $this->id, $groups );
 	}
 }

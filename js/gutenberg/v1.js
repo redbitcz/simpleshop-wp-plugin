@@ -2,7 +2,7 @@ export default {
   attributes: {
     ssFormId: {
       type: 'string',
-      default: 'Choose form'
+      default: __('Choose form', 'simpleshop-cz')
     },
   },
   save: function ({ attributes, className }) {

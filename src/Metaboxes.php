@@ -95,13 +95,6 @@ class Metaboxes {
 				]
 			);
 
-//            $cmb->add_field(array(
-//                'name' => __('Přesměrovat na přihlášení', 'ssc'),
-//                'desc' => __('Zaškrtněte, pokud chcete uživatele přesměrovat na přihlašovací formulář. Po přihlášení bude uživatel přesměrován zpět na tuto stránku.', 'ssc'),
-//                'id' => $this->prefix . 'no_access_redirect_to_login_form',
-//                'type' => 'checkbox'
-//            ));
-
 
 			$cmb->add_field(
 				[
@@ -195,7 +188,7 @@ class Metaboxes {
         <table id="custom_user_field_table" class="form-table">
             <tr id="simpleshop__groups">
                 <th>
-                    <label for="custom_field"><?php _e( 'Simpleshop Groups', 'simpleshop-cz' ); ?></label>
+                    <label for="custom_field"><?php _e( 'SimpleShop Groups', 'simpleshop-cz' ); ?></label>
                 </th>
                 <td>
                     <table>
