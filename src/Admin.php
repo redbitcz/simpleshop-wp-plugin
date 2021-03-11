@@ -40,7 +40,7 @@ class Admin {
 	}
 
 	/**
-	 * Get products from simple shop via API
+	 * Get products from SimpleShop via API
 	 * TODO: Show message if loading pf products failed
 	 */
 	public function wp_ajax_load_simple_shop_products() {

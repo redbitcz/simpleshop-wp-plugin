@@ -51,15 +51,15 @@ addFilter('blocks.registerBlockType', 'simpleshop/attributes/custom', addSimpleS
 
 const simpleShopYesNoSelect = [
     {
-        label: 'Choose',
+        label: __('Choose', 'simpleshop-cz'),
         value: ''
     },
     {
-        label: 'Yes',
+        label: __('Yes', 'simpleshop-cz'),
         value: 'yes'
     },
     {
-        label: 'No',
+        label: __('No', 'simpleshop-cz'),
         value: 'no'
     }
 ];
@@ -99,7 +99,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                 <BlockEdit {...props} />
                 <InspectorControls>
                     <PanelBody
-                        title={__('Simpleshop Settings')}
+                        title={__('SimpleShop Settings', 'simpleshop-cz')}
                         initialOpen={true}
                     >
                         <p><a href="https://podpora.redbit.cz/stitek/wp-plugin/">{__('Help - SimpleShop plugin','simpleshop-cz')}</a></p>
@@ -130,15 +130,6 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                             onChange={(selectedSpacingOption) => {
                                 props.setAttributes({
                                     simpleShopIsLoggedIn: selectedSpacingOption
-                                });
-                            }}
-                        />
-                        <TextControl
-                            label={__('Days to view', 'simpleshop-cz')}
-                            value={simpleShopDaysToView}
-                            onChange={(selectedSpacingOption) => {
-                                props.setAttributes({
-                                    simpleShopDaysToView: selectedSpacingOption
                                 });
                             }}
                         />
@@ -249,14 +240,14 @@ const EditSimpleShop = (props) => {
                         <>
                             <SelectControl
                                 className={'simpleshop-form-select'}
-                                label={__('Form')}
-                                description={__('Select the SimpleShop Form')}
+                                label={__('Form', 'simpleshop-cz')}
+                                description={__('Select the SimpleShop Form', 'simpleshop-cz')}
                                 options={products}
                                 value={attributes.ssFormId}
                                 onChange={(ssFormId) => setAttributes({ssFormId})}
                             />
                             <Button onClick={() => reloadProducts()}>
-                                {__('Reload forms')}
+                                {__('Reload forms', 'simpleshop-cz')}
                             </Button>
                         </> : <>Loading</>
                     }
@@ -270,12 +261,12 @@ const SaveSimpleShop = () => null;
 
 
 registerBlockType('simpleshop/simpleshop-form', {
-    title: __('SimpleShop Form'),
+    title: __('SimpleShop Form', 'simpleshop-cz'),
     icon: 'shield',
     category: 'common',
     keywords: [
-        __('SimpleShop'),
-        __('form'),
+        __('SimpleShop', 'simpleshop-cz'),
+        __('Form', 'simpleshop-cz'),
     ],
     edit: EditSimpleShop,
     save: SaveSimpleShop,
