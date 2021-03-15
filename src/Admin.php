@@ -40,7 +40,7 @@ class Admin {
 	}
 
 	/**
-	 * Get products from simple shop via API
+	 * Get products from SimpleShop via API
 	 * TODO: Show message if loading pf products failed
 	 */
 	public function wp_ajax_load_simple_shop_products() {
@@ -51,7 +51,6 @@ class Admin {
 
 	/**
 	 * Return products. If you need force refresh products from API, call `update_simpleshop_products_cache()` before
-	 *
 	 * @return array
 	 */
 	public function get_simpleshop_products() {
@@ -67,7 +66,6 @@ class Admin {
 
 	/**
 	 * Returns current and valid products from cache or null if valid cache unavailable
-	 *
 	 * @return array|null
 	 */
 	protected function get_simpleshop_products_cache() {
@@ -101,7 +99,7 @@ class Admin {
 				$cacheKey => array_merge(
 					$products,
 					[ self::PRODUCTS_CACHE_FIELD => $cachedTime ]
-				)
+				),
 			];
 
 			return update_option( 'ssc_cache_products', $cache );
@@ -113,7 +111,6 @@ class Admin {
 
 	/**
 	 * Load products from Vyfakturuj API. Don't call method directly, use `get_simpleshop_products()` to use cache
-	 *
 	 * @return array
 	 * @throws VyfakturujAPIException
 	 */
@@ -145,7 +142,6 @@ class Admin {
 	 */
 	public function remove_quick_edit( $actions, $post ) {
 		if ( $post->post_type == 'ssc_group' ) {
-
 			unset( $actions['inline hide-if-no-js'] );
 		}
 
@@ -160,19 +156,19 @@ class Admin {
 		global $post;
 		if ( $post && $post->post_type == $mg_post_type ) {
 			echo '<style type="text/css">
-            .misc-pub-section.misc-pub-visibility,
-            .misc-pub-section.curtime
-            {
-                display:none;
-            }
-            </style>';
+			.misc-pub-section.misc-pub-visibility,
+			.misc-pub-section.curtime
+			{
+				display:none;
+			}
+			</style>';
 		} ?>
 
         <!-- SSC TinyMCE Shortcode Plugin -->
         <script type='text/javascript'>
             var sscContentGroups = [];
             sscContentGroups.push({
-                text: 'Vyberte skupinu',
+                text: '<?= esc_js( __( 'Doesn\'t matter', 'simpleshop-cz' ) )?>',
                 value: ''
             });
 			<?php
@@ -180,22 +176,23 @@ class Admin {
 			$groups = $group->get_groups();
 			foreach ($groups as $key => $group) { ?>
             sscContentGroups.push({
-                text: '<?php echo $group; ?>',
-                value: '<?php echo $key; ?>'
+                text: '<?= esc_js( $group ) ?>',
+                value: '<?= esc_js( $key ) ?>'
             });
 			<?php }  ?>
         </script>
 
 		<?php
-
 	}
 
 	/**
 	 * Add a new TinyMCE button
 	 */
 	public function tiny_mce_new_buttons() {
-		add_filter( 'mce_external_plugins', [ $this, 'tiny_mce_add_buttons' ] );
-		add_filter( 'mce_buttons', [ $this, 'tiny_mce_register_buttons' ] );
+		if ( ! $this->loader->get_settings()->is_settings_page() ) {
+			add_filter( 'mce_external_plugins', [ $this, 'tiny_mce_add_buttons' ] );
+			add_filter( 'mce_buttons', [ $this, 'tiny_mce_register_buttons' ] );
+		}
 	}
 
 	/**
@@ -206,7 +203,9 @@ class Admin {
 	 * @return mixed
 	 */
 	public function tiny_mce_add_buttons( $plugins ) {
-		$plugins['ssctinymceplugin'] = $this->pluginDirUrl . 'js/tiny-mce/tiny-mce.js';
+		if ( ! $this->loader->get_settings()->is_settings_page() ) {
+			$plugins['ssctinymceplugin'] = $this->pluginDirUrl . 'js/tiny-mce/tiny-mce.js';
+		}
 
 		return $plugins;
 	}
@@ -314,8 +313,14 @@ class Admin {
 	 * Enqueue admin scripts
 	 */
 	public function enqueue_admin_scripts() {
+		global $current_screen;
+
 		wp_enqueue_style( 'ssc', $this->pluginDirUrl . 'css/ssc.css' );
 		wp_register_style( 'jquery-ui', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
 		wp_enqueue_style( 'jquery-ui' );
+
+		if ( $current_screen && 'profile' === $current_screen->id ) {
+			wp_enqueue_script( 'jquery-ui-datepicker' );
+		}
 	}
 }

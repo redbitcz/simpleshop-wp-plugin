@@ -2,12 +2,12 @@
     tinymce.create('tinymce.plugins.SSCTinyMCePlugin', {
         init: function (ed, url) {
             ed.addButton('sscaddformbutton', {
-                title: 'SimpleShop Produkty',
+                title: 'Vložit prodejní formulář SimpleShop',
                 cmd: 'sscaddformbuttonCmd',
                 image: url + '/img/ssc-logo.png'
             });
             ed.addButton('ssccontentbutton', {
-                title: 'SimpleShop Sekce',
+                title: 'Nastavit zobrazení členské sekce SimpleShop',
                 cmd: 'ssccontentbuttonCMD',
                 image: url + '/img/ssc-logo.png'
             });

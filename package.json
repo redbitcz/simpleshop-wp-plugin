@@ -1,0 +1,25 @@
+{
+  "name": "simpleshop-cz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "wp-scripts build --config webpack.config.js",
+    "start": "wp-scripts start --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redbitcz/simpleshop-wp-plugin.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/redbitcz/simpleshop-wp-plugin/issues"
+  },
+  "homepage": "https://github.com/redbitcz/simpleshop-wp-plugin#readme",
+  "devDependencies": {
+    "@wordpress/scripts": "^12.6.0",
+    "lodash.assign": "^4.2.0",
+    "webpack-merge": "^5.7.2"
+  }
+}

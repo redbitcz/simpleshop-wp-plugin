@@ -19,7 +19,6 @@ try {
 }
 
 
-
 class DeployScript {
 	/** @var string */
 	public $distDir = '';
@@ -52,11 +51,15 @@ class DeployScript {
 
 		$this->validateVersion( $this->version );
 
-		// Update deps
-		echo "Updating dependencies...\n";
+		// Update Composer deps
+		echo "Updating Composer dependencies...\n";
 		$this->updateComposer();
-		echo "Updating dependencides done OK.\n\n";
+		echo "Updating Composer dependencides done OK.\n\n";
 
+		// Update NPM deps
+		echo "Building Gutenberg blocks...\n";
+		$this->buildBlock();
+		echo "Building Gutenberg blocks done OK.\n\n";
 
 		// Building package
 		echo sprintf( 'Building package for version %s... ', $this->version );
@@ -178,7 +181,7 @@ class DeployScript {
 
 	private function updateComposer( $baseDir = __DIR__ ) {
 		$prevDir = getcwd();
-		$cmd     = 'composer install --ignore-platform-reqs';
+		$cmd     = 'composer install --ignore-platform-reqs && composer status --verbose';
 
 		chdir( $baseDir );
 		passthru( $cmd, $return_var );
@@ -187,6 +190,20 @@ class DeployScript {
 		if ( $return_var !== 0 ) {
 			throw new \RuntimeException( sprintf( 'Composer command failed, command was: "%s"', $cmd ) );
 		}
+	}
+
+	private function buildBlock( $baseDir = __DIR__ ) {
+		$prevDir = getcwd();
+		$cmd     = 'npm install && npm run build';
+
+		chdir( $baseDir );
+		passthru( $cmd, $return_var );
+		chdir( $prevDir );
+
+		if ( $return_var !== 0 ) {
+			throw new \RuntimeException( sprintf( 'NPM command failed, command was: "%s"', $cmd ) );
+		}
+
 	}
 
 	/**

@@ -312,14 +312,14 @@ class Access {
 
 		if ( ! empty( $specific_date_from ) ) {
 			// Check against the from date, this has nothing to do with groups or other settings
-			if ( date( 'Y-m-d' ) < $specific_date_from ) {
+			if ( date( 'Y-m-d H:i:s' ) < $specific_date_from ) {
 				return false;
 			}
 		}
 
 		if ( ! empty( $specific_date_to ) ) {
 			// Check against the to date, this has nothing to do with groups or other settings
-			if ( date( 'Y-m-d' ) > $specific_date_to ) {
+			if ( date( 'Y-m-d H:i:s' ) > $specific_date_to ) {
 				return false;
 			}
 		}
@@ -428,5 +428,88 @@ class Access {
 		}
 
 		return $query;
+	}
+
+	public function send_welcome_email( $user_id, $password = '' ) {
+		// Get the posts that have some group assigned
+		$args = [
+			'posts_status' => [ 'published', 'draft' ],
+			'meta_query'   => [
+				[
+					'key'     => '_ssc_groups',
+					'compare' => 'EXISTS',
+				],
+			],
+			'post_type'    => 'any',
+		];
+
+		$posts = get_posts( $args );
+
+		// Get the post details
+		$links = [];
+		$i     = 0;
+
+		// For each group from request
+		// foreach($request->get_param('user_group') as $group){
+		// Foreach each group
+		$SSC_group = new Group();
+		foreach ( $SSC_group->get_user_groups( $user_id ) as $group ) {
+			// Scrub through posts and check, if some of the posts has that group assigned
+			foreach ( $posts as $post ) {
+				/** @var \WP_Post $post */
+				$groups = $this->get_post_groups( $post->ID );
+
+				if ( in_array( $group, $groups ) ) {
+					// Check if the post can be accessed already, if not, continue
+					$specific_date  = $this->get_post_date_to_access( $post->ID );
+					$days_to_access = $this->get_post_days_to_access( $post->ID );
+
+					if ( $specific_date && date( 'Y-m-d' ) < $specific_date ) {
+						continue;
+					}
+
+					if ( $days_to_access && $days_to_access > 0 ) {
+						continue;
+					}
+
+					// If so, get the post details and add it to the links array
+					$links[ $group ][ $i ]['title'] = $post->post_title;
+					$links[ $group ][ $i ]['url']   = get_permalink( $post->ID );
+					$i ++;
+				}
+			}
+		}
+
+		$email_enable = nl2br( $this->settings->ssc_get_option( 'ssc_email_enable' ) );
+
+		// It doesn't seem to make sense to send email without the links, so check first
+		if ( ( (string) $email_enable ) != '2' ) { // pokud nemame zakazano posilat mail novym clenum
+			$email_body    = nl2br( $this->settings->ssc_get_option( 'ssc_email_text' ) );
+			$email_subject = nl2br( $this->settings->ssc_get_option( 'ssc_email_subject' ) );
+			$pages         = '';
+			$user          = get_user_by( 'ID', $user_id );
+			foreach ( $links as $group_id => $linksInGroup ) {
+				$post_details = get_post( $group_id );
+				$pages        .= '<div><b>' . $post_details->post_title . '</b></div>'
+								 . '<ul>';
+				foreach ( $linksInGroup as $link ) {
+					$pages .= '<li><a href="' . $link['url'] . '">' . $link['title'] . '</a></li>';
+				}
+				$pages .= '</ul>';
+			}
+
+			$replaceArray = [ // pole ktera je mozne nahradit
+				'{pages}'     => $pages, // zpetna kompatibilita s v1.1
+				'{mail}'      => $user->user_email, // zpetna kompatibilita s v1.1
+				'{login}'     => $user->user_login,
+				'{password}'  => $password,
+				'{login_url}' => wp_login_url(),
+			];
+			$email_body   = str_replace( array_keys( $replaceArray ), array_values( $replaceArray ), $email_body );
+			$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
+
+			// Send the email
+			wp_mail( $user->user_email, $email_subject, $email_body, $headers );
+		}
 	}
 }
