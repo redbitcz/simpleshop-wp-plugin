@@ -168,7 +168,7 @@ class Admin {
         <script type='text/javascript'>
             var sscContentGroups = [];
             sscContentGroups.push({
-                text: '<?= __( 'Doesn\'t matter', 'simpleshop-cz' ) ?>',
+                text: '<?= esc_js( __( 'Doesn\'t matter', 'simpleshop-cz' ) )?>',
                 value: ''
             });
 			<?php
@@ -176,8 +176,8 @@ class Admin {
 			$groups = $group->get_groups();
 			foreach ($groups as $key => $group) { ?>
             sscContentGroups.push({
-                text: '<?php echo $group; ?>',
-                value: '<?php echo $key; ?>'
+                text: '<?= esc_js( $group ) ?>',
+                value: '<?= esc_js( $key ) ?>'
             });
 			<?php }  ?>
         </script>
