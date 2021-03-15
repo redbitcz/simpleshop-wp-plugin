@@ -168,7 +168,7 @@ class Admin {
         <script type='text/javascript'>
             var sscContentGroups = [];
             sscContentGroups.push({
-                text: 'Vyberte skupinu',
+                text: <?= __( 'Choose a Group', 'simpleshop-cz' ) ?>,
                 value: ''
             });
 			<?php
