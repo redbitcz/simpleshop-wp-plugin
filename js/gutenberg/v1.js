@@ -1,8 +1,10 @@
+import {__} from '@wordpress/i18n';
+
 export default {
   attributes: {
     ssFormId: {
       type: 'string',
-      default: __('Choose form', 'simpleshop-cz')
+      default: '(' + __('Choose the Product at the right panel', 'simpleshop-cz') + ')'
     },
   },
   save: function ({ attributes, className }) {

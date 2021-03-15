@@ -89,7 +89,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
 
 
         let simpleShopGroupsData = ssGutenbergVariables.groups;
-        let simpleShopGroups = [{label: 'None', value: ''}];
+        let simpleShopGroups = [{label: __('Doesn\'t matter', 'simpleshop-cz'), value: ''}];
         for (let item in simpleShopGroupsData) {
             simpleShopGroups.push({label: simpleShopGroupsData[item], value: item});
         }
@@ -208,7 +208,7 @@ const EditSimpleShop = (props) => {
                 return response.json();
             })
             .then(function (json) {
-                let select = [{label: __('Select product', 'simpleshop-cz'), value: ''}];
+                let select = [{label: __('Choose the Product', 'simpleshop-cz'), value: ''}];
 
                 Object.keys(json).forEach(function (key) {
                     select.push(
@@ -240,7 +240,7 @@ const EditSimpleShop = (props) => {
                         <>
                             <SelectControl
                                 className={'simpleshop-form-select'}
-                                label={__('Form', 'simpleshop-cz')}
+                                label={__('SimpleShop Form', 'simpleshop-cz')}
                                 description={__('Select the SimpleShop Form', 'simpleshop-cz')}
                                 options={products}
                                 value={attributes.ssFormId}

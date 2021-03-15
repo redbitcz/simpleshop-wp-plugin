@@ -8,7 +8,7 @@
 
 /*
  * Plugin Name: SimpleShop.cz
- * Plugin URI: https://www.simpleshop.cz/category/wordpress-plugin/
+ * Plugin URI: https://podpora.redbit.cz/stitek/wp-plugin/
  * Description: Plugin implement SimpleShop.cz into WordPress
  * Author:  Redbit s.r.o.
  * Author URI: https://www.redbit.cz

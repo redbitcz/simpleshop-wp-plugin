@@ -58,7 +58,7 @@ class Settings {
 	 */
 	public function __construct( Plugin $loader ) {
 		// Set our title
-		$this->title = 'Settings';
+		$this->title = __( 'Settings', 'simpleshop-cz' );
 		$this->register_hooks();
 		$this->loader = $loader;
 	}
@@ -102,7 +102,7 @@ class Settings {
 	 * @since 0.1.0
 	 */
 	public function add_options_page() {
-		$translatedTitle = __( $this->title, 'simpleshop-cz' );
+		$translatedTitle = $this->title;
 
 		add_submenu_page(
 			'simple_shop_settings',
