@@ -168,7 +168,7 @@ class Admin {
         <script type='text/javascript'>
             var sscContentGroups = [];
             sscContentGroups.push({
-                text: <?= __( 'Choose a Group', 'simpleshop-cz' ) ?>,
+                text: '<?= __( 'Doesn\'t matter', 'simpleshop-cz' ) ?>',
                 value: ''
             });
 			<?php
@@ -189,10 +189,10 @@ class Admin {
 	 * Add a new TinyMCE button
 	 */
 	public function tiny_mce_new_buttons() {
-	    if ( ! $this->loader->get_settings()->is_settings_page() ) {
-		    add_filter( 'mce_external_plugins', [ $this, 'tiny_mce_add_buttons' ] );
-		    add_filter( 'mce_buttons', [ $this, 'tiny_mce_register_buttons' ] );
-	    }
+		if ( ! $this->loader->get_settings()->is_settings_page() ) {
+			add_filter( 'mce_external_plugins', [ $this, 'tiny_mce_add_buttons' ] );
+			add_filter( 'mce_buttons', [ $this, 'tiny_mce_register_buttons' ] );
+		}
 	}
 
 	/**

@@ -77,7 +77,7 @@ class Gutenberg {
 				'attributes'      => [
 					'ssFormId' => [
 						'type'    => 'string',
-						'default' => __( 'Choose form', 'simpleshop-cz' ),
+						'default' => '(' . __( 'Choose the Product at the right panel', 'simpleshop-cz' ) . ')',
 					],
 				],
 			]
