@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {registerBlockType} from '@wordpress/blocks';
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
-import {PanelBody, SelectControl, TextControl, DateTimePicker, Button, ToggleControl} from '@wordpress/components';
+import {Button, DateTimePicker, PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import v1 from './v1';
 
 const {__experimentalGetSettings} = wp.date;
@@ -102,7 +102,10 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                         title={__('SimpleShop Settings', 'simpleshop-cz')}
                         initialOpen={true}
                     >
-                        <p><a href="https://podpora.redbit.cz/stitek/wp-plugin/">{__('Help - SimpleShop plugin','simpleshop-cz')}</a></p>
+                        <p><a href="https://podpora.redbit.cz/stitek/wp-plugin/">
+                            {__('Help - SimpleShop plugin', 'simpleshop-cz')}
+                        </a>
+                        </p>
                         <SelectControl
                             label={__('Group', 'simpleshop-cz')}
                             value={simpleShopGroup}
