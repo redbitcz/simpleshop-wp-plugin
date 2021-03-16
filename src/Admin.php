@@ -319,7 +319,7 @@ class Admin {
 		wp_register_style( 'jquery-ui', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
 		wp_enqueue_style( 'jquery-ui' );
 
-		if ( $current_screen && 'profile' === $current_screen->id ) {
+		if ( 'profile' === $current_screen->id || 'user-edit' === $current_screen->id) {
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 		}
 	}
