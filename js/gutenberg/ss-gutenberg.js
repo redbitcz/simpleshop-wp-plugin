@@ -235,7 +235,7 @@ const EditSimpleShop = (props) => {
     }
     return (
         <div className={className}>
-            <div>SimpleShop Form {attributes.ssFormId}</div>
+            <div>{__('SimpleShop Form', 'simpleshop-cz')} {attributes.ssFormId}</div>
 
             <InspectorControls key="inspector">
                 <PanelBody>

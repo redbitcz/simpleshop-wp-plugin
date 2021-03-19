@@ -25,7 +25,7 @@
                     var win = ed.windowManager.open({
                         width: 600,
                         height: 300,
-                        title: 'SimpleShop Formulář',
+                        title: 'SimpleShop formulář',
                         body: [
                             {
                                 type: 'listbox',
@@ -72,21 +72,21 @@
                 var selectedText = ed.selection.getContent({format: 'html'});
 
                 var win = ed.windowManager.open({
-                    width: 600,
+                    width: 620,
                     height: 300,
                     title: 'SimpleShop zabezpečený obsah',
                     body: [
                         {
                             type: 'listbox',
                             name: 'sscContentGroupID',
-                            label: 'Skupina',
+                            label: 'Členská sekce',
                             values: sscContentGroups,
-                            value: 'test2' // Sets the default
+                            value: ''
                         },
                         {
                             type: 'listbox',
                             name: 'sscContentIsMember',
-                            label: 'Je členem skupiny?',
+                            label: 'Je členem členské sekce?',
                             values: [
                                 {
                                     text: 'Ano',
@@ -122,7 +122,7 @@
                         {
                             type: 'textbox',
                             name: 'sscContentDaysToView',
-                            label: 'Povolit přístup po X dnech od přiřazení do skupiny',
+                            label: 'Povolit přístup po X dnech od přiřazení do členské sekce',
                             minWidth: 200,
                             value: ''
                         },
