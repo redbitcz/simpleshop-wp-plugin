@@ -90,8 +90,6 @@ class Rest extends WP_REST_Controller {
 		}
 
 		// Check if user with this email exists, if not, create a new user
-		$_login    = $email;
-		$_password = '<a href="' . wp_lostpassword_url( get_bloginfo( 'url' ) ) . '">Změnit ho můžete zde</a>';
 		if ( ! email_exists( $email ) ) {
 			$_password = wp_generate_password( 8, false );
 
@@ -116,8 +114,10 @@ class Rest extends WP_REST_Controller {
 			}
 		} else {
 			// Get user_by email
-			$user    = get_user_by( 'email', $email );
-			$user_id = $user->ID;
+			$user      = get_user_by( 'email', $email );
+			$user_id   = $user->ID;
+			$key       = get_password_reset_key( $user );
+			$_password = sprintf( __( '<a href="%s">You can change the password here</a>', 'simpleshop-cz' ), network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) );
 		}
 
 		// Check if group exists
