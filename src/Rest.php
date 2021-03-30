@@ -117,7 +117,13 @@ class Rest extends WP_REST_Controller {
 			$user      = get_user_by( 'email', $email );
 			$user_id   = $user->ID;
 			$key       = get_password_reset_key( $user );
-			$_password = sprintf( __( '<a href="%s">You can change the password here</a>', 'simpleshop-cz' ), network_site_url( "wp-login.php?action=rp&key=$key&login=" . rawurlencode( $user->user_login ), 'login' ) );
+			$url       = network_site_url( "wp-login.php?" . build_query( [
+					'action' => 'rp',
+					'key'    => $key,
+					'login'  => $user->user_login
+				] ) );
+			$label     = __( 'You can change the password here', 'simpleshop-cz' );
+			$_password = sprintf( '<a href="%s">%s</a>', esc_attr( $url ), esc_html( $label ) );
 		}
 
 		// Check if group exists
