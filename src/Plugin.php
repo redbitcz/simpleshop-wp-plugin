@@ -42,7 +42,7 @@ class Plugin {
 		$this->secure_key = $this->load_api_key();
 		$this->email      = $this->load_email();
 
-		register_activation_hook( plugin_dir_path( $this->pluginMainFile ), [ $this, 'ssc_activation_hook' ] );
+		$this->reactivate_updated_plugin();
 	}
 
 	private function init() {
@@ -111,29 +111,13 @@ class Plugin {
 	public function get_access() {
 		return $this->access;
 	}
-	
+
 	public function get_post_types() {
 		$args = [
 			'public' => true
 		];
 
 		return get_post_types( $args );
-	}
-
-
-	public function ssc_activation_hook() {
-		if ( ! function_exists( 'curl_init' ) || ! function_exists( 'random_bytes' ) ) {
-			echo '<h3>' . __( 'Plugin activation failed. Please contact your provider and ask to install PHP extensions: cUrl and Mcrypt.',
-					'simpleshop-cz' ) . '</h3>';
-
-			//Adding @ before will prevent XDebug output
-			@trigger_error( __( 'Plugin activation failed. Please contact your provider and ask to install PHP extensions: cUrl and Mcrypt.',
-				'simpleshop-cz' ), E_USER_ERROR );
-		}
-
-		// Generate and save the secure key
-		$key = $this->generate_secure_key();
-		$this->save_secure_key( $key );
 	}
 
 	public function get_plugin_main_file() {
@@ -161,4 +145,39 @@ class Plugin {
 
 		return $client;
 	}
+
+	/**
+	 * Detects plugin update (compare current and last known plugin version) and re-activate it when version changed
+	 *
+	 * @link https://wordpress.stackexchange.com/a/144873
+	 */
+	public function reactivate_updated_plugin( ) {
+		$current_version = SIMPLESHOP_PLUGIN_VERSION;
+		$previous_version = get_option('ssc_plugin_version', null);
+
+		/** @noinspection TypeUnsafeComparisonInspection */
+		if( $current_version != $previous_version) {
+			update_option('ssc_plugin_version', $current_version);
+			$this->init_plugin_activation();
+		}
+	}
+
+	/**
+	 * Init plugin activation at SimpleShop API
+	 *
+	 * @param VyfakturujAPI|null $api_client
+	 *
+	 * @return array|false|mixed
+	 */
+	public function init_plugin_activation( VyfakturujAPI $api_client = null ) {
+		if($api_client === null && $this->has_credentials()) {
+			$api_client = $this->get_api_client();
+		}
+
+		if($api_client === null) {
+			return false;
+		}
+
+		return $api_client->initWPPlugin( site_url() );
+ 	}
 }
