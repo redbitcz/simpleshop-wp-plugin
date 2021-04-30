@@ -9,7 +9,6 @@
 namespace Redbit\SimpleShop\WpPlugin;
 
 use WP_Error;
-use WP_Post;
 use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -90,8 +89,6 @@ class Rest extends WP_REST_Controller {
 		}
 
 		// Check if user with this email exists, if not, create a new user
-		$_login    = $email;
-		$_password = '<a href="' . wp_lostpassword_url( get_bloginfo( 'url' ) ) . '">Změnit ho můžete zde</a>';
 		if ( ! email_exists( $email ) ) {
 			$_password = wp_generate_password( 8, false );
 
@@ -106,7 +103,6 @@ class Rest extends WP_REST_Controller {
 			$userdata = apply_filters( 'ssc_new_user_data', $userdata );
 
 			$user_id = wp_insert_user( $userdata );
-//            wp_new_user_notification($user_id,$userdata['user_pass']); // poslani notifikacniho e-mailu
 
 			do_action( 'ssc_new_user_created', $user_id );
 
@@ -115,13 +111,19 @@ class Rest extends WP_REST_Controller {
 					[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
 		} else {
+			$_password = '<i>' . sprintf(
+					__(
+						'Your current password (which you set or it sent to you in a previous email). If you lost your password, <a href="%s">you can reset it</a>.',
+						'simpleshop-cz'
+					),
+					esc_attr( wp_lostpassword_url( get_bloginfo( 'url' ) ) )
+				) . '</i>';
+
 			// Get user_by email
 			$user    = get_user_by( 'email', $email );
 			$user_id = $user->ID;
 		}
 
-		// Check if group exists
-		$user_groups = [];
 		foreach ( $request->get_param( 'user_group' ) as $group ) {
 			$ssc_group = new Group( $group );
 
@@ -133,8 +135,6 @@ class Rest extends WP_REST_Controller {
 				$membership = new Membership( $user_id );
 				$valid_to   = $request->get_param( 'valid_to' ) ?: '';
 				$membership->set_valid_to( $group, $valid_to );
-
-				$user_groups[] = $group;
 			}
 		}
 
@@ -162,7 +162,7 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Prepare the item for the REST response
 	 *
-	 * @param mixed           $item WordPress representation of the item.
+	 * @param mixed $item WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
 	 *
 	 * @return mixed
