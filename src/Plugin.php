@@ -67,14 +67,6 @@ class Plugin {
 		new Gutenberg( $this->admin, $this->group, $this->access, $this->pluginMainFile, $this->shortcodes );
 	}
 
-	public function generate_secure_key() {
-		return bin2hex( random_bytes( 22 ) );
-	}
-
-	public function save_secure_key( $key ) {
-		update_option( 'ssc_secure_key', $key );
-	}
-
 	public function has_credentials() {
 		return $this->email && $this->secure_key;
 	}
