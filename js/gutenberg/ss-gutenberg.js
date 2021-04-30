@@ -102,7 +102,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                         title={__('SimpleShop Settings', 'simpleshop-cz')}
                         initialOpen={true}
                     >
-                        <p><a href="https://podpora.redbit.cz/stitek/wp-plugin/">
+                        <p><a href="https://podpora.redbit.cz/stitek/wp-plugin/" target="_blank">
                             {__('Help - SimpleShop plugin', 'simpleshop-cz')}
                         </a>
                         </p>
@@ -235,7 +235,7 @@ const EditSimpleShop = (props) => {
     }
     return (
         <div className={className}>
-            <div>SimpleShop Form {attributes.ssFormId}</div>
+            <div>{__('SimpleShop Form', 'simpleshop-cz')} {attributes.ssFormId}</div>
 
             <InspectorControls key="inspector">
                 <PanelBody>

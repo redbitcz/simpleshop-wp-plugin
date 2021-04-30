@@ -154,34 +154,30 @@ class Admin {
 	public function publishing_actions() {
 		$mg_post_type = 'ssc_group';
 		global $post;
-		if ( $post && $post->post_type == $mg_post_type ) {
-			echo '<style type="text/css">
-			.misc-pub-section.misc-pub-visibility,
-			.misc-pub-section.curtime
-			{
-				display:none;
-			}
-			</style>';
-		} ?>
+
+		$group  = new Group();
+		$groups = $group->get_groups();
+
+		$outputGroups = [[ 'text' => __( 'Doesn\'t matter', 'simpleshop-cz' ), 'value' => '' ]];
+
+		foreach ( $groups as $value => $text ) {
+			$outputGroups[] = [ 'text' => $text, 'value' => (string)$value ];
+		}
+		?>
+
+		<?php if ( $post && $post->post_type === $mg_post_type ) : ?>
+            <style type="text/css">
+                .misc-pub-section.misc-pub-visibility,
+                .misc-pub-section.curtime {
+                    display: none;
+                }
+            </style>
+		<?php endif; ?>
 
         <!-- SSC TinyMCE Shortcode Plugin -->
         <script type='text/javascript'>
-            var sscContentGroups = [];
-            sscContentGroups.push({
-                text: '<?= esc_js( __( 'Doesn\'t matter', 'simpleshop-cz' ) )?>',
-                value: ''
-            });
-			<?php
-			$group = new Group();
-			$groups = $group->get_groups();
-			foreach ($groups as $key => $group) { ?>
-            sscContentGroups.push({
-                text: '<?= esc_js( $group ) ?>',
-                value: '<?= esc_js( $key ) ?>'
-            });
-			<?php }  ?>
+            var sscContentGroups = <?= wp_json_encode( $outputGroups ) ?>;
         </script>
-
 		<?php
 	}
 
@@ -319,7 +315,7 @@ class Admin {
 		wp_register_style( 'jquery-ui', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
 		wp_enqueue_style( 'jquery-ui' );
 
-		if ( $current_screen && 'profile' === $current_screen->id ) {
+		if ( 'profile' === $current_screen->id || 'user-edit' === $current_screen->id ) {
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 		}
 	}
