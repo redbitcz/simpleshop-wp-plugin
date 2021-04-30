@@ -122,11 +122,14 @@ class Admin {
 
 			if ( is_iterable( $ret ) ) {
 				foreach ( $ret as $product ) {
-					if ( isset( $product['code'], $product['name'] ) ) {
+					if ( isset( $product['code'], $product['name'], $product['archived'] ) && $product['archived'] === false ) {
 						$values[ $product['code'] ] = $product['name'];
 					}
 				}
 			}
+
+			// Sort by name
+			asort($values);
 		}
 
 		return $values;
@@ -158,10 +161,10 @@ class Admin {
 		$group  = new Group();
 		$groups = $group->get_groups();
 
-		$outputGroups = [[ 'text' => __( 'Doesn\'t matter', 'simpleshop-cz' ), 'value' => '' ]];
+		$outputGroups = [ [ 'text' => __( 'Doesn\'t matter', 'simpleshop-cz' ), 'value' => '' ] ];
 
 		foreach ( $groups as $value => $text ) {
-			$outputGroups[] = [ 'text' => $text, 'value' => (string)$value ];
+			$outputGroups[] = [ 'text' => $text, 'value' => (string) $value ];
 		}
 		?>
 
