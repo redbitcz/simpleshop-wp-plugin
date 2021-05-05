@@ -49,25 +49,28 @@ class Shortcodes {
 		$formKey   = $atts['id'];
 
 		return sprintf( $template,
-			json_encode( $scriptUrl ),
-			json_encode( $formKey ),
-			htmlspecialchars( $formKey, ENT_QUOTES )
+		                json_encode( $scriptUrl ),
+		                json_encode( $formKey ),
+		                htmlspecialchars( $formKey, ENT_QUOTES )
 		);
 	}
 
 	public function simple_shop_content( $atts, $content = '' ) {
-		$atts = shortcode_atts( [
-			'group_id'           => '',
-			'is_member'          => '',
-			'is_logged_in'       => '',
-			'days_to_view'       => '',
-			'specific_date_from' => '',
-			'specific_date_to'   => '',
+		$atts = shortcode_atts(
+			[
+				'group_ids'          => [],
+				'is_member'          => '',
+				'is_logged_in'       => '',
+				'days_to_view'       => '',
+				'specific_date_from' => '',
+				'specific_date_to'   => '',
 
-		], $atts, 'SimpleShop-content' );
+			],
+			$atts,
+			'SimpleShop-content' );
 
 		$args = [
-			'group_id'           => $atts['group_id'],
+			'group_ids'          => explode( ',', $atts['group_id'] ),
 			'is_member'          => $atts['is_member'],
 			'is_logged_in'       => $atts['is_logged_in'],
 			'days_to_view'       => $atts['days_to_view'],

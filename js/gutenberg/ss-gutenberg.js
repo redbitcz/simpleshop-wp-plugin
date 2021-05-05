@@ -23,6 +23,9 @@ const addSimpleShopAttributes = (settings, name) => {
         simpleShopGroup: {
             type: 'string'
         },
+        simpleShopGroups: {
+            type: 'array'
+        },
         simpleShopIsMember: {
             type: 'string'
         },
@@ -68,6 +71,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
     return (props) => {
         const {
             simpleShopGroup,
+            simpleShopGroups,
             simpleShopIsMember,
             simpleShopIsLoggedIn,
             simpleShopIgnoreDates,
@@ -89,9 +93,14 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
 
 
         let simpleShopGroupsData = ssGutenbergVariables.groups;
-        let simpleShopGroups = [{label: __('Choose group', 'simpleshop-cz'), value: ''}];
+        let groups = [{label: __('Choose group', 'simpleshop-cz'), value: ''}];
         for (let item in simpleShopGroupsData) {
-            simpleShopGroups.push({label: simpleShopGroupsData[item], value: item});
+            groups.push({label: simpleShopGroupsData[item], value: item});
+        }
+
+        let selectedGroups = simpleShopGroups;
+        if (typeof simpleShopGroups === 'undefined' && simpleShopGroup) {
+            selectedGroups = [simpleShopGroup];
         }
 
         return (
@@ -106,16 +115,31 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                             {__('Help - SimpleShop plugin', 'simpleshop-cz')}
                         </a>
                         </p>
-                        <SelectControl
-                            label={__('Group', 'simpleshop-cz')}
-                            value={simpleShopGroup}
-                            options={simpleShopGroups}
-                            onChange={(selectedSpacingOption) => {
-                                props.setAttributes({
-                                    simpleShopGroup: selectedSpacingOption
-                                });
-                            }}
-                        />
+
+                        <h4>{__('Group', 'simpleshop-cz')}</h4>
+                        {
+                            groups.map(item => (
+                                <ToggleControl
+                                    label={item.label}
+                                    checked={selectedGroups.includes(item.value)}
+                                    onChange={(checked) => {
+                                        const tempGroups = [...selectedGroups];
+                                        if (checked) {
+                                            tempGroups.push(item.value);
+                                        } else {
+                                            const index = tempGroups.indexOf(item.value);
+                                            if (index > -1) {
+                                                tempGroups.splice(index, 1);
+                                            }
+                                        }
+                                        props.setAttributes({
+                                            simpleShopGroups: tempGroups
+                                        });
+                                    }}
+                                />
+                            ))
+                        }
+
                         <SelectControl
                             label={__('Is member', 'simpleshop-cz')}
                             value={simpleShopIsMember}

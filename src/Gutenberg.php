@@ -101,8 +101,11 @@ class Gutenberg {
 
 		$use_dates = $ignore_dates === false;
 
+		if (!empty($block['attrs']['simpleShopGroup']) && !isset($block['attrs']['simpleShopGroups'])) {
+			$block['attrs']['simpleShopGroups'] = [$block['attrs']['simpleShopGroup']];
+		}
 		$args = [
-			'group_id'           => isset( $block['attrs']['simpleShopGroup'] ) ? $block['attrs']['simpleShopGroup'] : '',
+			'group_ids'           => isset( $block['attrs']['simpleShopGroups'] ) ? $block['attrs']['simpleShopGroups'] : '',
 			'is_member'          => isset( $block['attrs']['simpleShopIsMember'] ) ? $block['attrs']['simpleShopIsMember'] : '',
 			'is_logged_in'       => isset( $block['attrs']['simpleShopIsLoggedIn'] ) ? $block['attrs']['simpleShopIsLoggedIn'] : '',
 			'days_to_view'       => isset( $block['attrs']['simpleShopDaysToView'] ) ? $block['attrs']['simpleShopDaysToView'] : '',
