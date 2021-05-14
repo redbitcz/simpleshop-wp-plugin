@@ -302,7 +302,7 @@ class Access {
 		];
 
 		$args               = wp_parse_args( $args, $defaults );
-		$group_ids          = $args['group_id'];
+		$group_ids          = $args['group_ids'];
 		$is_member          = $args['is_member'];
 		$is_logged_in       = $args['is_logged_in'];
 		$specific_date_from = $args['specific_date_from'];
