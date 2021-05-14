@@ -113,7 +113,7 @@ class Rest extends WP_REST_Controller {
 		} else {
 			$_password = '<i>' . sprintf(
 					__(
-						'Your current password (which you set or it sent to you in a previous email). If you lost your password, <a href="%s">you can reset it</a>.',
+						'Your current password (which you set or we sent to you in a previous email). If you have lost your password, <a href="%s">you can reset it here</a>.',
 						'simpleshop-cz'
 					),
 					esc_attr( wp_lostpassword_url( get_bloginfo( 'url' ) ) )
