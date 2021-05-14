@@ -299,14 +299,6 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		);
 		$cmb->add_field(
 			[
-				'name'       => __( 'Redirect after login', 'simpleshop-cz' ),
-				'type'       => 'text',
-				'id'         => 'ssc_redirect_url',
-				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
-			]
-		);
-		$cmb->add_field(
-			[
 				'name'       => __( 'Remove secured items from RSS', 'simpleshop-cz' ),
 				'type'       => 'checkbox',
 				'id'         => 'ssc_hide_from_rss',
