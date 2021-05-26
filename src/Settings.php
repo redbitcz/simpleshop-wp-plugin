@@ -380,8 +380,8 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 
 		$vyfakturuj_api = $this->loader->get_api_client( $api_email, $api_key );
 		try {
-			$result = $vyfakturuj_api->initWPPlugin( site_url() );
-			if ( isset( $result['status'] ) && $result['status'] == 'success' ) {
+			$result = $this->loader->init_plugin_activation($vyfakturuj_api);
+			if ( isset( $result['status'] ) && $result['status'] === 'success' ) {
 				update_option( 'ssc_valid_api_keys', 1 );
 			} else {
 				update_option( 'ssc_valid_api_keys', 0 );
