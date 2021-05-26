@@ -122,10 +122,17 @@ class Admin {
 
 			if ( is_iterable( $ret ) ) {
 				foreach ( $ret as $product ) {
-					if ( isset( $product['code'], $product['name'] ) ) {
+					if ( isset( $product['code'], $product['name'], $product['archived'] ) && $product['archived'] === false ) {
 						$values[ $product['code'] ] = $product['name'];
 					}
 				}
+			}
+
+			// Sort by name - Collator support UTF-8, but requires `intl` extension
+			if ( class_exists( \Collator::class ) ) {
+				( new Collator( 'cz_CZ' ) )->asort( $values );
+			} else {
+				asort( $values, SORT_FLAG_CASE | SORT_NATURAL );
 			}
 		}
 
@@ -158,10 +165,10 @@ class Admin {
 		$group  = new Group();
 		$groups = $group->get_groups();
 
-		$outputGroups = [[ 'text' => __( 'Doesn\'t matter', 'simpleshop-cz' ), 'value' => '' ]];
+		$outputGroups = [ [ 'text' => __( 'Doesn\'t matter', 'simpleshop-cz' ), 'value' => '' ] ];
 
 		foreach ( $groups as $value => $text ) {
-			$outputGroups[] = [ 'text' => $text, 'value' => (string)$value ];
+			$outputGroups[] = [ 'text' => $text, 'value' => (string) $value ];
 		}
 		?>
 
