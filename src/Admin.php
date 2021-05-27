@@ -8,6 +8,7 @@
 
 namespace Redbit\SimpleShop\WpPlugin;
 
+use Collator;
 use VyfakturujAPIException;
 
 class Admin {
@@ -129,7 +130,7 @@ class Admin {
 			}
 
 			// Sort by name - Collator support UTF-8, but requires `intl` extension
-			if ( class_exists( \Collator::class ) ) {
+			if ( class_exists( Collator::class ) ) {
 				( new Collator( 'cz_CZ' ) )->asort( $values );
 			} else {
 				asort( $values, SORT_FLAG_CASE | SORT_NATURAL );
