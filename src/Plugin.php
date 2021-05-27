@@ -42,7 +42,7 @@ class Plugin {
 		$this->secure_key = $this->load_api_key();
 		$this->email      = $this->load_email();
 
-		$this->reactivate_updated_plugin();
+		add_action( 'admin_init', [ $this, 'reactivate_updated_plugin' ] );
 	}
 
 	private function init() {
