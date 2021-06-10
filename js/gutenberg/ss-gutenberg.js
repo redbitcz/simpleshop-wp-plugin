@@ -99,8 +99,12 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
         }
 
         let selectedGroups = simpleShopGroups;
-        if (typeof simpleShopGroups === 'undefined' && simpleShopGroup) {
-            selectedGroups = [simpleShopGroup];
+        if (typeof simpleShopGroups === 'undefined') {
+            if (simpleShopGroup) {
+                selectedGroups = [simpleShopGroup];
+            } else {
+                selectedGroups = [];
+            }
         }
 
         return (
