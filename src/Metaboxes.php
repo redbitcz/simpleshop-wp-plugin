@@ -253,20 +253,22 @@ class Metaboxes {
 		$existing_groups = $ssc_groups->get_user_groups( $user_id ) ?: [];
 
 		$groups = [];
-		foreach ( $_POST['ssc_groups'] as $group_id => $group ) {
-			if ( ! in_array( $group_id, $existing_groups ) && $group['subscription_date'] && $group['subscription_date'] < date( 'Y-m-d' ) ) {
-				$this->loader->get_access()->send_welcome_email( $user_id );
-			}
-			if ( ! empty( $group['is_member'] ) && $group['is_member'] ) {
-				$groups[] = $group_id;
-				if ( empty( $group['subscription_date'] ) ) {
-					$group['subscription_date'] = date( 'Y-m-d' );
+		if (!empty($_POST['ssc_groups'])) {
+			foreach ( $_POST['ssc_groups'] as $group_id => $group ) {
+				if ( ! in_array( $group_id, $existing_groups ) && $group['subscription_date'] && $group['subscription_date'] < date( 'Y-m-d' ) ) {
+					$this->loader->get_access()->send_welcome_email( $user_id );
 				}
-			}
+				if ( ! empty( $group['is_member'] ) && $group['is_member'] ) {
+					$groups[] = $group_id;
+					if ( empty( $group['subscription_date'] ) ) {
+						$group['subscription_date'] = date( 'Y-m-d' );
+					}
+				}
 
-			update_user_meta( $user_id, $this->prefix . 'user_groups', $groups );
-			update_user_meta( $user_id, $this->prefix . 'group_subscription_date_' . $group_id, empty( $group['subscription_date'] ) ? '' : date( 'Y-m-d', strtotime( $group['subscription_date'] ) ) );
-			update_user_meta( $user_id, $this->prefix . 'group_subscription_valid_to_' . $group_id, empty( $group['subscription_valid_to'] ) ? '' : date( 'Y-m-d', strtotime( $group['subscription_valid_to'] ) ) );
+				update_user_meta( $user_id, $this->prefix . 'user_groups', $groups );
+				update_user_meta( $user_id, $this->prefix . 'group_subscription_date_' . $group_id, empty( $group['subscription_date'] ) ? '' : date( 'Y-m-d', strtotime( $group['subscription_date'] ) ) );
+				update_user_meta( $user_id, $this->prefix . 'group_subscription_valid_to_' . $group_id, empty( $group['subscription_valid_to'] ) ? '' : date( 'Y-m-d', strtotime( $group['subscription_valid_to'] ) ) );
+			}
 		}
 	}
 }
