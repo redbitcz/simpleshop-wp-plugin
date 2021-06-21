@@ -133,7 +133,9 @@ class Rest extends WP_REST_Controller {
 
 				// Set the membership valid_to param
 				$membership = new Membership( $user_id );
-				$valid_to   = $request->get_param( 'valid_to' ) ?: '';
+				$valid_from = $request->get_param( 'valid_from' ) ?: date( 'Y-m-d' );
+				$membership->set_subscription_date( $group, $valid_from );
+				$valid_to = $request->get_param( 'valid_to' ) ?: '';
 				$membership->set_valid_to( $group, $valid_to );
 			}
 		}
