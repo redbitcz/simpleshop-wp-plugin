@@ -49,16 +49,16 @@ class Shortcodes {
 		$formKey   = $atts['id'];
 
 		return sprintf( $template,
-		                json_encode( $scriptUrl ),
-		                json_encode( $formKey ),
-		                htmlspecialchars( $formKey, ENT_QUOTES )
+			json_encode( $scriptUrl ),
+			json_encode( $formKey ),
+			htmlspecialchars( $formKey, ENT_QUOTES )
 		);
 	}
 
 	public function simple_shop_content( $atts, $content = '' ) {
 		$atts = shortcode_atts(
 			[
-				'group_ids'          => [],
+				'group_id'           => '',
 				'is_member'          => '',
 				'is_logged_in'       => '',
 				'days_to_view'       => '',
