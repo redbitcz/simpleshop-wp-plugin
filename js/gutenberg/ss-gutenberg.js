@@ -93,7 +93,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
 
 
         let simpleShopGroupsData = ssGutenbergVariables.groups;
-        let groups = [{label: __('Choose group', 'simpleshop-cz'), value: ''}];
+        let groups = [];
         for (let item in simpleShopGroupsData) {
             groups.push({label: simpleShopGroupsData[item], value: item});
         }
