@@ -355,7 +355,7 @@ class Access {
 				break;
 			}
 			// The user is not member of any group, return false
-			if ( $found ) {
+			if ( ! $found ) {
 				return false;
 			}
 		}
