@@ -64,12 +64,16 @@ class Membership {
 	 *
 	 * @return bool|int
 	 */
-	public function set_subscription_date( $group_id ) {
+	public function set_subscription_date( $group_id, $valid_from = null ) {
 		if ( ! $this->user_id ) {
 			return false;
 		}
 
-		return update_user_meta( $this->user_id, '_ssc_group_subscription_date_' . $group_id, date( 'Y-m-d' ) );
+		if ( $valid_from === null ) {
+			$valid_from = date( 'Y-m-d' );
+		}
+
+		return update_user_meta( $this->user_id, '_ssc_group_subscription_date_' . $group_id, $valid_from );
 	}
 
 	/**
