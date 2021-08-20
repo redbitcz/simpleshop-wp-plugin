@@ -468,6 +468,7 @@ class Access {
 				],
 			],
 			'post_type'    => 'any',
+            'posts_per_page' => -1
 		];
 
 		$posts = get_posts( $args );
