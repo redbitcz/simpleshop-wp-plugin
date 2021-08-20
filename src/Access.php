@@ -293,7 +293,7 @@ class Access {
 	 */
 	public function user_can_view_content( $args = [] ) {
 		$defaults = [
-			'group_id'           => '',
+			'group_ids'          => [],
 			'is_member'          => '',
 			'is_logged_in'       => '',
 			'specific_date_from' => '',
@@ -302,7 +302,7 @@ class Access {
 		];
 
 		$args               = wp_parse_args( $args, $defaults );
-		$group_id           = $args['group_id'];
+		$group_ids          = $args['group_ids'];
 		$is_member          = $args['is_member'];
 		$is_logged_in       = $args['is_logged_in'];
 		$specific_date_from = $args['specific_date_from'];
@@ -329,31 +329,49 @@ class Access {
 //			return false;
 //		}
 
+		if ( $is_member === 'yes' && ! empty( $group_ids ) ) {
+			// User is not logged in, so he cannot be in any group
+			if ( ! is_user_logged_in() ) {
+				return false;
+			}
 
-		$group      = new Group( $group_id );
-		$membership = new Membership( get_current_user_id() );
+			// Scrub through the groups and check if the user is member of the group and has valid membership
+			$found = false;
+			foreach ( $group_ids as $group_id ) {
+				$group      = new Group( $group_id );
+				$membership = new Membership( get_current_user_id() );
 
-		if ( $group_id && $is_member === 'yes' ) {
-			if ( ! is_user_logged_in() || ! $membership->is_valid_for_group( $group_id ) ) {
+				// If the membership is not valid, bail
+				if ( ! $membership->is_valid_for_group( $group_id ) ) {
+					continue;
+				}
+
+				// TODO: confirm if this is duplicate of the condition above
+				if ( ! $group->user_is_member_of_group( get_current_user_id() ) ) {
+					continue;
+				}
+
+				$found = true;
+				break;
+			}
+			// The user is not member of any group, return false
+			if ( ! $found ) {
 				return false;
 			}
 		}
 
-		if ( $is_member == 'yes' ) {
-			// Check, if the user is logged in and is member of the group, if not, bail
-			if ( ! is_user_logged_in() || ! $group->user_is_member_of_group( get_current_user_id() ) ) {
-				return false;
-			}
-		} elseif ( $is_member == 'no' ) {
-			// Check, if the user does NOT have valid membership for specific group. This includes non-logged-in users
-			if ( is_user_logged_in() && $membership->is_valid_for_group( $group_id ) ) {
-				return false;
-			}
-		} else {
-			// If the is_member isn't 'yes' or 'no', the parameter is wrong, so stop here
-			//return false;
-		}
+		// Check if the user is NOT member of any selected groups
+		// Obviously only logged in users can be members of a group
+		if ( $is_member === 'no' && ! empty( $group_ids ) && is_user_logged_in() ) {
+			foreach ( $group_ids as $group_id ) {
+				$membership = new Membership( get_current_user_id() );
 
+				// If the membership is valid, return false
+				if ( $membership->is_valid_for_group( $group_id ) ) {
+					return false;
+				}
+			}
+		}
 
 		// Check if we should display content for logged-in or non-logged-in user
 		if ( $is_logged_in == 'yes' && ! is_user_logged_in() ) {
@@ -364,10 +382,19 @@ class Access {
 
 		// Group check done, check if there are some days set and if is_member is yes
 		// it doesn't make sense to check days condition for users who should NOT be members of a group
-		if ( ! empty( $days_to_view ) && $is_member == 'yes' ) {
-			$subscription_date = $membership->groups[ $group_id ]['subscription_date'];
-			// Compare against today's date
-			if ( date( 'Y-m-d' ) < date( 'Y-m-d', strtotime( "$subscription_date + $days_to_view days" ) ) ) {
+		if ( ! empty( $days_to_view ) && $is_member == 'yes' && ! empty( $group_ids ) ) {
+			$found = false;
+			foreach ( $group_ids as $group_id ) {
+				$membership = new Membership( get_current_user_id() );
+				$subscription_date = $membership->groups[ $group_id ]['subscription_date'];
+				// Compare against today's date
+				if ( date( 'Y-m-d' ) < date( 'Y-m-d', strtotime( "$subscription_date + $days_to_view days" ) ) ) {
+					continue;
+				}
+				$found = true;
+				break;
+			}
+			if ( ! $found ) {
 				return false;
 			}
 		}
@@ -491,7 +518,7 @@ class Access {
 			foreach ( $links as $group_id => $linksInGroup ) {
 				$post_details = get_post( $group_id );
 				$pages        .= '<div><b>' . $post_details->post_title . '</b></div>'
-								 . '<ul>';
+				                 . '<ul>';
 				foreach ( $linksInGroup as $link ) {
 					$pages .= '<li><a href="' . $link['url'] . '">' . $link['title'] . '</a></li>';
 				}
@@ -506,7 +533,7 @@ class Access {
 				'{login_url}' => wp_login_url(),
 			];
 			$email_body   = str_replace( array_keys( $replaceArray ), array_values( $replaceArray ), $email_body );
-			$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
+			$headers      = [ 'Content-Type: text/html; charset=UTF-8' ];
 
 			// Send the email
 			wp_mail( $user->user_email, $email_subject, $email_body, $headers );
