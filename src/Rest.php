@@ -139,7 +139,7 @@ class Rest extends WP_REST_Controller {
 				$membership->set_valid_to( $group, $valid_to );
 				// Schedule the action to send out welcome email if the valid_from is in the future
 				if ( $valid_from > date( 'Y-m-d' ) ) {
-					wp_schedule_single_event( strtotime( $valid_from ), 'simpleshop_send_welcome_email', [ $user_id, $_password ] );
+					wp_schedule_single_event( strtotime( sprintf('%s 06:00:00', $valid_from) ), 'simpleshop_send_welcome_email', [ $user_id, $_password ] );
 				}
 			}
 		}
