@@ -27,11 +27,10 @@ class Group {
 	 * @return array
 	 */
 	public function get_groups() {
-
 		$args = [
 			'post_type'      => 'ssc_group',
 			'posts_per_page' => - 1,
-			'post_status'    => 'publish'
+			'post_status'    => 'publish',
 		];
 
 		$groups = [];
@@ -71,7 +70,7 @@ class Group {
 	/**
 	 * Get groups ids the user belongs to
 	 *
-	 * @param string $user_id
+	 * @param  string  $user_id
 	 *
 	 * @return array
 	 */
@@ -116,5 +115,21 @@ class Group {
 		$groups = $this->get_user_groups( $user_id );
 
 		return in_array( $this->id, $groups );
+	}
+
+	public function get_users() {
+		$args = [
+			'number'     => - 1,
+			'meta_query' => [
+				[
+					'key'     => '_ssc_user_groups',
+					'compare' => 'EXISTS',
+				],
+			],
+		];
+
+		return array_filter( get_users( $args ), function ( $item ) {
+			return $this->user_is_member_of_group( $item->ID );
+		} );
 	}
 }

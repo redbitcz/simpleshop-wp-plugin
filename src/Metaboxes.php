@@ -23,6 +23,11 @@ class Metaboxes {
 		add_action( 'edit_user_profile', [ $this, 'render_user_profile_groups' ] );
 		add_action( 'personal_options_update', [ $this, 'save_user_profile_groups' ] );
 		add_action( 'edit_user_profile_update', [ $this, 'save_user_profile_groups' ] );
+		add_action( 'add_meta_boxes', [ $this,'register_metaboxes' ]);
+	}
+
+	public function register_metaboxes(  ) {
+		add_meta_box( 'simpleshop-group-details', __( 'Group details', 'simpleshop' ), [ $this,'group_details' ], 'ssc_group' );
 	}
 
 	/**
@@ -271,4 +276,55 @@ class Metaboxes {
 			}
 		}
 	}
+
+	public function group_details(  $post ) {
+        $group = new Group($post->ID);
+        $valid = [];
+        $invalid = [];
+		foreach ( $group->get_users() as $user ) {
+			$membership = new Membership($user->ID);
+			$data = [
+				'user' =>  $user,
+				'valid_from' => $membership->get_subscription_date($group->id),
+				'valid_to' => $membership->get_valid_to($group->id),
+			];
+			if ($membership->is_valid_for_group($group->id)) {
+			    $valid[] = $data;
+			} else {
+			    $invalid[] = $data;
+			}
+        }
+
+		if (!empty($valid)) {
+			$this->group_users_table($valid, __('Active users','simpleshop'));
+		}
+		if (!empty($invalid)) {
+			$this->group_users_table($invalid, __('Inactive users','simpleshop'));
+		}
+	}
+
+	public function group_users_table( $items, $heading ) { ?>
+        <style type="text/css"></style>
+        <h3><?php echo $heading; ?></h3>
+        <table class="wp-list-table widefat fixed striped table-view-list users">
+            <thead>
+            <tr>
+                <th><?php _e('Name','simpleshop'); ?></th>
+                <th><?php _e('Email','simpleshop'); ?></th>
+                <th><?php _e('Valid from','simpleshop'); ?></th>
+                <th><?php _e('Valid to','simpleshop'); ?></th>
+            </tr>
+            </thead>
+            <tbody>
+			<?php foreach ( $items as $item ) { ?>
+                <tr>
+                    <td><a href="<?php echo get_edit_user_link($item['user']->ID)?>"><?php echo $item['user']->display_name; ?></a></td>
+                    <td><?php echo $item['user']->user_email; ?></td>
+                    <td><?php echo $item['valid_from']; ?></td>
+                    <td><?php echo $item['valid_to']; ?></td>
+			<?php } ?>
+
+            </tbody>
+        </table>
+	<?php }
 }
