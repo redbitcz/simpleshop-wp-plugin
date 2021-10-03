@@ -16,7 +16,7 @@ class Access {
 	private $settings;
 
 	/**
-	 * @param Settings $settings
+	 * @param  Settings  $settings
 	 */
 	public function __construct( Settings $settings ) {
 		$this->settings = $settings;
@@ -31,6 +31,7 @@ class Access {
 		add_action( 'init', [ $this, 'mioweb_remove_login_redirect' ] );
 		add_filter( 'login_redirect', [ $this, 'login_redirect' ], 10, 3 );
 		add_filter( 'pre_get_posts', [ $this, 'hide_protected_from_rss' ] );
+		add_action( 'simpleshop_send_welcome_email', [ $this, 'send_welcome_email' ], 10, 2 );
 	}
 
 	/**
@@ -109,8 +110,8 @@ class Access {
 	/**
 	 * Check if user has permission to view the post
 	 *
-	 * @param string $post_id
-	 * @param string $user_id
+	 * @param  string  $post_id
+	 * @param  string  $user_id
 	 *
 	 * @return bool|WP_Error
 	 */
@@ -208,7 +209,7 @@ class Access {
 	/**
 	 * Get the date to access the post
 	 *
-	 * @param string $post_id
+	 * @param  string  $post_id
 	 *
 	 * @return mixed
 	 */
@@ -225,7 +226,7 @@ class Access {
 	/**
 	 * Get the date until the access to the post is allowed
 	 *
-	 * @param string $post_id
+	 * @param  string  $post_id
 	 *
 	 * @return mixed
 	 */
@@ -242,7 +243,7 @@ class Access {
 	/**
 	 * Get the number of days the user has to be subscribed to have access to the post
 	 *
-	 * @param string $post_id
+	 * @param  string  $post_id
 	 *
 	 * @return mixed
 	 */
@@ -259,7 +260,7 @@ class Access {
 	/**
 	 * Get the URL to redirect the user if he has no access
 	 *
-	 * @param string $post_id
+	 * @param  string  $post_id
 	 *
 	 * @return mixed
 	 */
@@ -385,7 +386,7 @@ class Access {
 		if ( ! empty( $days_to_view ) && $is_member == 'yes' && ! empty( $group_ids ) ) {
 			$found = false;
 			foreach ( $group_ids as $group_id ) {
-				$membership = new Membership( get_current_user_id() );
+				$membership        = new Membership( get_current_user_id() );
 				$subscription_date = $membership->groups[ $group_id ]['subscription_date'];
 				// Compare against today's date
 				if ( date( 'Y-m-d' ) < date( 'Y-m-d', strtotime( "$subscription_date + $days_to_view days" ) ) ) {
@@ -460,15 +461,15 @@ class Access {
 	public function send_welcome_email( $user_id, $password = '' ) {
 		// Get the posts that have some group assigned
 		$args = [
-			'posts_status' => [ 'published', 'draft' ],
-			'meta_query'   => [
+			'posts_status'   => [ 'published', 'draft' ],
+			'meta_query'     => [
 				[
 					'key'     => '_ssc_groups',
 					'compare' => 'EXISTS',
 				],
 			],
-			'post_type'    => 'any',
-            'posts_per_page' => -1
+			'post_type'      => 'any',
+			'posts_per_page' => -1,
 		];
 
 		$posts = get_posts( $args );
@@ -480,8 +481,15 @@ class Access {
 		// For each group from request
 		// foreach($request->get_param('user_group') as $group){
 		// Foreach each group
-		$SSC_group = new Group();
+		$SSC_group  = new Group();
+		$membership = new Membership( $user_id );
+
 		foreach ( $SSC_group->get_user_groups( $user_id ) as $group ) {
+			// Check if the subscription start date is not in the future, if so, bail
+			if ( $membership->get_subscription_date( $group ) && $membership->get_subscription_date( $group ) > date( 'Y-m-d' ) ) {
+				continue;
+			}
+
 			// Scrub through posts and check, if some of the posts has that group assigned
 			foreach ( $posts as $post ) {
 				/** @var \WP_Post $post */

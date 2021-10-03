@@ -66,7 +66,7 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Create one item from the collection
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
+	 * @param  WP_REST_Request  $request  Full data about the request.
 	 *
 	 * @return WP_REST_Response
 	 */
@@ -76,8 +76,8 @@ class Rest extends WP_REST_Controller {
 		foreach ( $params_to_validate as $param ) {
 			if ( ! $request->get_param( $param ) ) {
 				return new WP_Error( 'required-param-missing',
-					sprintf( __( 'Required parameter %s is missing', 'simpleshop-cz' ), $param ),
-					[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
+				                     sprintf( __( 'Required parameter %s is missing', 'simpleshop-cz' ), $param ),
+				                     [ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
 		}
 
@@ -85,7 +85,7 @@ class Rest extends WP_REST_Controller {
 		$email = sanitize_email( $request->get_param( 'email' ) );
 		if ( ! is_email( $email ) ) {
 			return new WP_Error( 'wrong-email-format', __( 'The email is in wrong format', 'simpleshop-cz' ),
-				[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
+			                     [ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 		}
 
 		// Check if user with this email exists, if not, create a new user
@@ -108,7 +108,7 @@ class Rest extends WP_REST_Controller {
 
 			if ( is_wp_error( $user_id ) ) {
 				return new WP_Error( 'could-not-create-user', __( "The user couldn't be created", 'simpleshop-cz' ),
-					[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
+				                     [ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
 		} else {
 			$_password = '<i>' . sprintf(
@@ -137,6 +137,10 @@ class Rest extends WP_REST_Controller {
 				$membership->set_subscription_date( $group, $valid_from );
 				$valid_to = $request->get_param( 'valid_to' ) ?: '';
 				$membership->set_valid_to( $group, $valid_to );
+				// Schedule the action to send out welcome email if the valid_from is in the future
+				if ( $valid_from > date( 'Y-m-d' ) ) {
+					wp_schedule_single_event( strtotime( $valid_from ), 'simpleshop_send_welcome_email', [ $user_id, $_password ] );
+				}
 			}
 		}
 
@@ -153,7 +157,7 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Check if a given request has access to create items
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
+	 * @param  WP_REST_Request  $request  Full data about the request.
 	 *
 	 * @return WP_Error|bool
 	 */
@@ -164,8 +168,8 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Prepare the item for the REST response
 	 *
-	 * @param mixed $item WordPress representation of the item.
-	 * @param WP_REST_Request $request Request object.
+	 * @param  mixed  $item  WordPress representation of the item.
+	 * @param  WP_REST_Request  $request  Request object.
 	 *
 	 * @return mixed
 	 */
@@ -176,7 +180,7 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Prepare the item for create or update operation
 	 *
-	 * @param WP_REST_Request $request Request object
+	 * @param  WP_REST_Request  $request  Request object
 	 *
 	 * @return array $prepared_item
 	 */
