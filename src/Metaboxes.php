@@ -295,6 +295,30 @@ class Metaboxes {
 			}
         }
 
+		?>
+        <script type="text/javascript">
+            jQuery( document ).ready(function($) {
+                $("#ss-user-search").keyup(function () {
+                    var value = this.value.toLowerCase().trim();
+
+                    $("table tr").each(function (index) {
+                        if (!index) return;
+                        $(this).find("td").each(function () {
+                            var id = $(this).text().toLowerCase().trim();
+                            var not_found = (id.indexOf(value) == -1);
+                            $(this).closest('tr').toggle(!not_found);
+                            return not_found;
+                        });
+                    });
+                });
+
+            });
+        </script>
+            <div>
+                <label for="ss-user-search"><?php _e('Search users','simpleshop-cz'); ?></label>
+                <input type="text" name="ss-user-search" id="ss-user-search"/>
+            </div>
+        <?php
 		if (!empty($valid)) {
 			$this->group_users_table($valid, __('Active users','simpleshop-cz'));
 		}
