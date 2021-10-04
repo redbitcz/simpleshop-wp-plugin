@@ -27,7 +27,7 @@ class Metaboxes {
 	}
 
 	public function register_metaboxes(  ) {
-		add_meta_box( 'simpleshop-group-details', __( 'Group details', 'simpleshop' ), [ $this,'group_details' ], 'ssc_group' );
+		add_meta_box( 'simpleshop-group-details', __( 'Group details', 'simpleshop-cz' ), [ $this,'group_details' ], 'ssc_group' );
 	}
 
 	/**
@@ -296,10 +296,10 @@ class Metaboxes {
         }
 
 		if (!empty($valid)) {
-			$this->group_users_table($valid, __('Active users','simpleshop'));
+			$this->group_users_table($valid, __('Active users','simpleshop-cz'));
 		}
 		if (!empty($invalid)) {
-			$this->group_users_table($invalid, __('Inactive users','simpleshop'));
+			$this->group_users_table($invalid, __('Inactive users','simpleshop-cz'));
 		}
 	}
 
@@ -309,10 +309,10 @@ class Metaboxes {
         <table class="wp-list-table widefat fixed striped table-view-list users">
             <thead>
             <tr>
-                <th><?php _e('Name','simpleshop'); ?></th>
-                <th><?php _e('Email','simpleshop'); ?></th>
-                <th><?php _e('Valid from','simpleshop'); ?></th>
-                <th><?php _e('Valid to','simpleshop'); ?></th>
+                <th><?php _e('Name','simpleshop-cz'); ?></th>
+                <th><?php _e('Email','simpleshop-cz'); ?></th>
+                <th><?php _e('Valid from','simpleshop-cz'); ?></th>
+                <th><?php _e('Valid to','simpleshop-cz'); ?></th>
             </tr>
             </thead>
             <tbody>
