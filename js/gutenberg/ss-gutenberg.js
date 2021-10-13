@@ -52,20 +52,6 @@ const addSimpleShopAttributes = (settings, name) => {
 };
 addFilter('blocks.registerBlockType', 'simpleshop/attributes/custom', addSimpleShopAttributes);
 
-const simpleShopYesNoSelect = [
-    {
-        label: __('Choose', 'simpleshop-cz'),
-        value: ''
-    },
-    {
-        label: __('Yes', 'simpleshop-cz'),
-        value: 'yes'
-    },
-    {
-        label: __('No', 'simpleshop-cz'),
-        value: 'no'
-    }
-];
 
 const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
     return (props) => {
@@ -120,50 +106,88 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                         </a>
                         </p>
 
-                        <h4>{__('Group', 'simpleshop-cz')}</h4>
+                        <SelectControl
+                            label={__('The block will be visible only for:', 'simpleshop-cz')}
+                            value={simpleShopIsLoggedIn}
+                            options={[
+                                {
+                                    label: __('Choose', 'simpleshop-cz'),
+                                    value: ''
+                                },
+                                {
+                                    label: __('Logged in user', 'simpleshop-cz'),
+                                    value: 'yes'
+                                },
+                                {
+                                    label: __('Logged out user', 'simpleshop-cz'),
+                                    value: 'no'
+                                }
+                            ]}
+                            onChange={selected => {
+                                props.setAttributes({
+                                    simpleShopIsLoggedIn: selected
+                                });
+                                if (!selected || 'no' === selected) {
+                                    props.setAttributes({
+                                        simpleShopIsMember: '',
+                                        simpleShopGroups: []
+                                    });
+                                }
+
+                            }}
+                        />
                         {
-                            groups.map(item => (
-                                <ToggleControl
-                                    label={item.label}
-                                    checked={selectedGroups.includes(item.value)}
-                                    onChange={(checked) => {
-                                        const tempGroups = [...selectedGroups];
-                                        if (checked) {
-                                            tempGroups.push(item.value);
-                                        } else {
-                                            const index = tempGroups.indexOf(item.value);
-                                            if (index > -1) {
-                                                tempGroups.splice(index, 1);
-                                            }
+                            simpleShopIsLoggedIn === 'yes' &&
+                            <>
+                                <SelectControl
+                                    label={__('Membership', 'simpleshop-cz')}
+                                    value={simpleShopIsMember}
+                                    options={[
+                                        {
+                                            label: __('Choose', 'simpleshop-cz'),
+                                            value: ''
+                                        },
+                                        {
+                                            label: __('Is member of one of the following groups', 'simpleshop-cz'),
+                                            value: 'yes'
+                                        },
+                                        {
+                                            label: __('Is not of one of the following groups', 'simpleshop-cz'),
+                                            value: 'no'
                                         }
+                                    ]}
+                                    onChange={(selectedSpacingOption) => {
                                         props.setAttributes({
-                                            simpleShopGroups: tempGroups
+                                            simpleShopIsMember: selectedSpacingOption
                                         });
                                     }}
                                 />
-                            ))
+
+                                {
+                                    groups.map(item => (
+                                        <ToggleControl
+                                            label={item.label}
+                                            checked={selectedGroups.includes(item.value)}
+                                            onChange={(checked) => {
+                                                const tempGroups = [...selectedGroups];
+                                                if (checked) {
+                                                    tempGroups.push(item.value);
+                                                } else {
+                                                    const index = tempGroups.indexOf(item.value);
+                                                    if (index > -1) {
+                                                        tempGroups.splice(index, 1);
+                                                    }
+                                                }
+                                                props.setAttributes({
+                                                    simpleShopGroups: tempGroups
+                                                });
+                                            }}
+                                        />
+                                    ))
+                                }
+                            </>
                         }
 
-                        <SelectControl
-                            label={__('Is member', 'simpleshop-cz')}
-                            value={simpleShopIsMember}
-                            options={simpleShopYesNoSelect}
-                            onChange={(selectedSpacingOption) => {
-                                props.setAttributes({
-                                    simpleShopIsMember: selectedSpacingOption
-                                });
-                            }}
-                        />
-                        <SelectControl
-                            label={__('Is logged in', 'simpleshop-cz')}
-                            value={simpleShopIsLoggedIn}
-                            options={simpleShopYesNoSelect}
-                            onChange={(selectedSpacingOption) => {
-                                props.setAttributes({
-                                    simpleShopIsLoggedIn: selectedSpacingOption
-                                });
-                            }}
-                        />
                         <TextControl
                             label={__('Days to view', 'simpleshop-cz')}
                             value={simpleShopDaysToView}
