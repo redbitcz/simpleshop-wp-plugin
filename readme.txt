@@ -26,12 +26,12 @@ The SimpleShop WordPress plugin is primarily used to create and manage member se
 You can register for a SimpleShop account at: [https://app.simpleshop.cz/account/create/](https://app.simpleshop.cz/account/create/)
 
 Plugin functions relating to member sections (the instructions are in Czech):
-* creation of member sections - [instructions](https://podpora.redbit.cz/navod/jak-na-clenske-sekce-ve-wordpressu/)
-* content restriction - [instructions](https://podpora.redbit.cz/navod/nastaveni-simpleshop-pluginu-pro-wordpress/)
+* creation of member sections – [instructions](https://podpora.redbit.cz/navod/jak-na-clenske-sekce-ve-wordpressu/)
+* content restriction – [instructions](https://podpora.redbit.cz/navod/nastaveni-simpleshop-pluginu-pro-wordpress/)
     * gradual release of entire pages and individual parts of content
     * releasing content in specific dates or in a number of days after registration
-* automatic renewal of membership using repeated payments in the SimpleShop system - [instructions](https://podpora.redbit.cz/navod/opakovane-platby-a-omezeni-clenstvi/)
-* redirecting the user after logging in - [instructions](https://podpora.redbit.cz/navod/opakovane-platby-a-omezeni-clenstvi/)
+* automatic renewal of membership using repeated payments in the SimpleShop system – [instructions](https://podpora.redbit.cz/navod/opakovane-platby-a-omezeni-clenstvi/)
+* redirecting the user after logging in – [instructions](https://podpora.redbit.cz/navod/opakovane-platby-a-omezeni-clenstvi/)
 
 The SimpleShop WordPress plugin is compatible with the WordPress editor (Gutenberg).
 
@@ -71,12 +71,12 @@ Automatic renewal of membership is possible by using repeated payments in Simple
 
 == Installation ==
 
-An installation of the SimpleShop WP plugin is free, quick and easy. Please see further information in [these instructions](https://podpora.redbit.cz/navod/video-simpleshop-plugin-instalace-wordpress/) (Czech language only).
+An installation of the SimpleShop WP plugin is free, quick and easy. Please see further information at page [Instalace a propojení s webem](https://podpora.redbit.cz/navod/video-simpleshop-plugin-instalace-wordpress/) (Czech language only).
 
 == Screenshots ==
 1. Inserting a sales form
-2. Restricting access to the block content of a page - member sections
-3. Restricting access to the block content of a page - setting dates
+2. Restricting access to the block content of a page – member sections
+3. Restricting access to the block content of a page – setting dates
 4. Restricting access to the content of an entire page
 
 == Changelog ==
