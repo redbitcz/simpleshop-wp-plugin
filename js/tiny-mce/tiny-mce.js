@@ -78,9 +78,22 @@
                     body: [
                         {
                             type: 'listbox',
-                            name: 'sscContentGroupID',
-                            label: 'Členská sekce',
-                            values: sscContentGroups,
+                            name: 'sscContentIsLoggedIn',
+                            label: 'Je uživatel přihlášený?',
+                            values: [
+                                {
+                                    text: '',
+                                    value: ''
+                                },
+                                {
+                                    text: 'Ano',
+                                    value: 'yes'
+                                },
+                                {
+                                    text: 'Ne',
+                                    value: 'no'
+                                }
+                            ],
                             value: ''
                         },
                         {
@@ -101,22 +114,9 @@
                         },
                         {
                             type: 'listbox',
-                            name: 'sscContentIsLoggedIn',
-                            label: 'Je uživatel přihlášený?',
-                            values: [
-                                {
-                                    text: '',
-                                    value: ''
-                                },
-                                {
-                                    text: 'Ano',
-                                    value: 'yes'
-                                },
-                                {
-                                    text: 'Ne',
-                                    value: 'no'
-                                }
-                            ],
+                            name: 'sscContentGroupID',
+                            label: 'Členská sekce',
+                            values: sscContentGroups,
                             value: ''
                         },
                         {

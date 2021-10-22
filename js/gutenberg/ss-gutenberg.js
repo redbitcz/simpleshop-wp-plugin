@@ -107,7 +107,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                         </p>
 
                         <SelectControl
-                            label={__('The block will be visible only for:', 'simpleshop-cz')}
+                            label={__('The block will be visible to:', 'simpleshop-cz')}
                             value={simpleShopIsLoggedIn}
                             options={[
                                 {
@@ -148,11 +148,11 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                                             value: ''
                                         },
                                         {
-                                            label: __('Is member of one of the following groups', 'simpleshop-cz'),
+                                            label: __('Is a member of:', 'simpleshop-cz'),
                                             value: 'yes'
                                         },
                                         {
-                                            label: __('Is not of one of the following groups', 'simpleshop-cz'),
+                                            label: __('Is not a member of:', 'simpleshop-cz'),
                                             value: 'no'
                                         }
                                     ]}
