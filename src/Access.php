@@ -469,7 +469,7 @@ class Access {
 				],
 			],
 			'post_type'      => 'any',
-			'posts_per_page' => -1,
+			'posts_per_page' => - 1,
 		];
 
 		$posts = get_posts( $args );
@@ -516,6 +516,11 @@ class Access {
 			}
 		}
 
+		/** Do not send email with no links */
+		if ( empty( $links ) ) {
+			return;
+		}
+		
 		$email_enable = nl2br( $this->settings->ssc_get_option( 'ssc_email_enable' ) );
 
 		// It doesn't seem to make sense to send email without the links, so check first
