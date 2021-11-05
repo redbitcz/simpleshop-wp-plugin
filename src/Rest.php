@@ -129,17 +129,30 @@ class Rest extends WP_REST_Controller {
 
 			// Add the user to group
 			if ( $ssc_group->group_exists() ) {
+				$valid_to        = $request->get_param( 'valid_to' ) ?: '';
+				$valid_to_months = $request->get_param( 'valid_to_months' ) ?: '';
+
+				$membership = new Membership( $user_id );
+				// Check if the user is already member of the group, if so, adjust the valid to date
+				if ( ! empty( $membership->groups[ $group ]['valid_to'] ) ) {
+					$original_valid_to = $membership->groups[ $group ]['valid_to'];
+					$date              = max( $original_valid_to, date( 'Y-m-d' ) );
+					// Add number of months to either current date or original date in the case it's in the future
+					$valid_to = date( 'Y-m-d', strtotime( '+' . $valid_to_months . ' month', strtotime( $date ) ) );
+				}
+
+				// Add user to the group
 				$ssc_group->add_user_to_group( $user_id );
 
-				// Set the membership valid_to param
+				// Refresh the membership data
 				$membership = new Membership( $user_id );
+				// Set valid from, either from the request, or current date
 				$valid_from = $request->get_param( 'valid_from' ) ?: date( 'Y-m-d' );
 				$membership->set_subscription_date( $group, $valid_from );
-				$valid_to = $request->get_param( 'valid_to' ) ?: '';
 				$membership->set_valid_to( $group, $valid_to );
 				// Schedule the action to send out welcome email if the valid_from is in the future
 				if ( $valid_from > date( 'Y-m-d' ) ) {
-					wp_schedule_single_event( strtotime( sprintf('%s 06:00:00', $valid_from) ), 'simpleshop_send_welcome_email', [ $user_id, $_password ] );
+					wp_schedule_single_event( strtotime( sprintf( '%s 06:00:00', $valid_from ) ), 'simpleshop_send_welcome_email', [ $user_id, $_password ] );
 				}
 			}
 		}
