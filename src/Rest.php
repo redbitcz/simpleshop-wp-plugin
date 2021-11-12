@@ -66,7 +66,7 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Create one item from the collection
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
+	 * @param  WP_REST_Request  $request  Full data about the request.
 	 *
 	 * @return WP_REST_Response
 	 */
@@ -76,8 +76,8 @@ class Rest extends WP_REST_Controller {
 		foreach ( $params_to_validate as $param ) {
 			if ( ! $request->get_param( $param ) ) {
 				return new WP_Error( 'required-param-missing',
-					sprintf( __( 'Required parameter %s is missing', 'simpleshop-cz' ), $param ),
-					[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
+				                     sprintf( __( 'Required parameter %s is missing', 'simpleshop-cz' ), $param ),
+				                     [ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
 		}
 
@@ -85,7 +85,7 @@ class Rest extends WP_REST_Controller {
 		$email = sanitize_email( $request->get_param( 'email' ) );
 		if ( ! is_email( $email ) ) {
 			return new WP_Error( 'wrong-email-format', __( 'The email is in wrong format', 'simpleshop-cz' ),
-				[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
+			                     [ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 		}
 
 		// Check if user with this email exists, if not, create a new user
@@ -108,7 +108,7 @@ class Rest extends WP_REST_Controller {
 
 			if ( is_wp_error( $user_id ) ) {
 				return new WP_Error( 'could-not-create-user', __( "The user couldn't be created", 'simpleshop-cz' ),
-					[ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
+				                     [ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
 		} else {
 			$_password = '<i>' . sprintf(
@@ -129,14 +129,31 @@ class Rest extends WP_REST_Controller {
 
 			// Add the user to group
 			if ( $ssc_group->group_exists() ) {
+				$valid_to        = $request->get_param( 'valid_to' ) ?: '';
+				$valid_to_months = $request->get_param( 'valid_to_months' ) ?: '';
+
+				$membership = new Membership( $user_id );
+				// Check if the user is already member of the group, if so, adjust the valid to date
+				if ( ! empty( $membership->groups[ $group ]['valid_to'] ) ) {
+					$original_valid_to = $membership->groups[ $group ]['valid_to'];
+					$date              = max( $original_valid_to, date( 'Y-m-d' ) );
+					// Add number of months to either current date or original date in the case it's in the future
+					$valid_to = date( 'Y-m-d', strtotime( '+' . $valid_to_months . ' month', strtotime( $date ) ) );
+				}
+
+				// Add user to the group
 				$ssc_group->add_user_to_group( $user_id );
 
-				// Set the membership valid_to param
+				// Refresh the membership data
 				$membership = new Membership( $user_id );
+				// Set valid from, either from the request, or current date
 				$valid_from = $request->get_param( 'valid_from' ) ?: date( 'Y-m-d' );
 				$membership->set_subscription_date( $group, $valid_from );
-				$valid_to = $request->get_param( 'valid_to' ) ?: '';
 				$membership->set_valid_to( $group, $valid_to );
+				// Schedule the action to send out welcome email if the valid_from is in the future
+				if ( $valid_from > date( 'Y-m-d' ) ) {
+					wp_schedule_single_event( strtotime( sprintf( '%s 06:00:00', $valid_from ) ), 'simpleshop_send_welcome_email', [ $user_id, $_password ] );
+				}
 			}
 		}
 
@@ -153,7 +170,7 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Check if a given request has access to create items
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
+	 * @param  WP_REST_Request  $request  Full data about the request.
 	 *
 	 * @return WP_Error|bool
 	 */
@@ -164,8 +181,8 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Prepare the item for the REST response
 	 *
-	 * @param mixed $item WordPress representation of the item.
-	 * @param WP_REST_Request $request Request object.
+	 * @param  mixed  $item  WordPress representation of the item.
+	 * @param  WP_REST_Request  $request  Request object.
 	 *
 	 * @return mixed
 	 */
@@ -176,7 +193,7 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Prepare the item for create or update operation
 	 *
-	 * @param WP_REST_Request $request Request object
+	 * @param  WP_REST_Request  $request  Request object
 	 *
 	 * @return array $prepared_item
 	 */
