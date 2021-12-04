@@ -102,15 +102,15 @@
                             label: 'Je členem členské sekce?',
                             values: [
                                 {
-                                    text: 'Ano',
-                                    value: 'yes'
-                                },
-                                {
                                     text: 'Ne',
                                     value: 'no'
+                                },
+                                {
+                                    text: 'Ano',
+                                    value: 'yes'
                                 }
                             ],
-                            value: 'yes'
+                            value: 'no'
                         },
                         {
                             type: 'listbox',
