@@ -137,7 +137,9 @@ class Rest extends WP_REST_Controller {
 				if ( ! empty( $membership->groups[ $group ]['valid_to'] ) ) {
 					$valid_from          = $request->get_param( 'valid_from' ) ?: '';
 					$original_valid_to   = $membership->groups[ $group ]['valid_to'];
-					$original_valid_from = $membership->groups[ $group ]['valid_from'];
+					$original_valid_from = isset( $membership->groups[ $group ]['valid_from'] )
+						? $membership->groups[ $group ]['valid_from']
+						: '';
 					$date                = max( $original_valid_from,
 					                            $original_valid_to,
 					                            $valid_from,
