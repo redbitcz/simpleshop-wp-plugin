@@ -184,7 +184,7 @@ class Admin {
 
         <!-- SSC TinyMCE Shortcode Plugin -->
         <script type='text/javascript'>
-            var sscContentGroups = <?= wp_json_encode( $outputGroups ) ?>;
+            var sscContentGroups = <?php echo wp_json_encode( $outputGroups ) ?>;
         </script>
 		<?php
 	}
