@@ -124,6 +124,8 @@ class Rest extends WP_REST_Controller {
 			$user_id = $user->ID;
 		}
 
+		$send_email = false;
+
 		foreach ( $request->get_param( 'user_group' ) as $group ) {
 			$ssc_group = new Group( $group );
 
@@ -161,6 +163,8 @@ class Rest extends WP_REST_Controller {
 				// Schedule the action to send out welcome email if the valid_from is in the future
 				if ( $valid_from > date( 'Y-m-d' ) ) {
 					wp_schedule_single_event( strtotime( sprintf( '%s 02:00:00', $valid_from ) ), 'simpleshop_send_welcome_email', [ $user_id, $_password ] );
+				} else {
+					$send_email = true;
 				}
 			}
 		}
@@ -170,7 +174,9 @@ class Rest extends WP_REST_Controller {
 			add_user_to_blog( get_current_blog_id(), $user_id, 'subscriber' );
 		}
 
-		$this->loader->get_access()->send_welcome_email( $user_id, $_password );
+		if ( $send_email ) {
+			$this->loader->get_access()->send_welcome_email( $user_id, $_password );
+		}
 
 		return new WP_REST_Response( [ 'status' => 'success', 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ], 200 );
 	}
