@@ -63,9 +63,9 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name'    => __( 'Member section with allowed access to page', 'simpleshop-cz' ),
+					'name'    => __( 'Member sections with allowed access to the page', 'simpleshop-cz' ),
 					'desc'    => __(
-						'Access to this page is permit only for users of selected Member Sections. If no one section selected, all users is permit to access this page.',
+						'Access to this page is permitted only for users of the selected member sections. If no section is selected, all users are allowed to access this page.',
 						'simpleshop-cz'
 					),
 					'id'      => $this->prefix . 'groups',
@@ -79,9 +79,9 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name'            => __( 'Page ID to redirect', 'simpleshop-cz' ),
+					'name'            => __( 'Page ID for redirect', 'simpleshop-cz' ),
 					'desc'            => __(
-						'Select one Page to which user will be redirected when uses is logged in, but have no access to page. This is preffered way. Redirect will works even if target page URL will be changer in future.',
+						'Select one page to which the user will be redirected when logged in, but with no access to page. This is the preferred way. Redirect will work even if the target page URL is changed in the future.',
 						'simpleshop-cz'
 					),
 					'id'              => $this->prefix . 'no_access_redirect_post_id',
@@ -95,9 +95,9 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name' => __( 'Manual URL to redirect', 'simpleshop-cz' ),
+					'name' => __( 'Manual URL for redirect', 'simpleshop-cz' ),
 					'desc' => __(
-						'Put URL to which user will be redirected when uses is logged in, but have no access to page. If you want to use this method, keep previous field empty.',
+						'Enter URL to which the user will be redirected when logged in, but with no access to page. If you want to use this method, keep the previous field empty.',
 						'simpleshop-cz'
 					),
 					'id'   => $this->prefix . 'no_access_redirect',
@@ -108,9 +108,9 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name' => __( 'Delay access to content (days from group assign)', 'simpleshop-cz' ),
+					'name' => __( 'Delay access to page (days after registration to the member section)', 'simpleshop-cz' ),
 					'desc' => __(
-						'Put number of days to delay before access to content is allowed after registration. For example: If registration to group is at January 1st and you set delay to 5 days, user get access to content from January 6th.',
+						'Enter the number of days to delay access to this page after the registration. For example: If the registration to the member section is on January 1st and you set delay to 5 days, the user gets access to the content from January 6th.',
 						'simpleshop-cz'
 					),
 					'id'   => $this->prefix . 'days_to_access',
@@ -120,9 +120,9 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name'        => __( 'Allow access from date', 'simpleshop-cz' ),
+					'name'        => __( 'Allow access from this date', 'simpleshop-cz' ),
 					'desc'        => __(
-						'Put date which will be access to content allowed (applied to all groups)',
+						'Select the date when the access to this page will be allowed',
 						'simpleshop-cz'
 					),
 					'id'          => $this->prefix . 'date_to_access',
@@ -133,9 +133,9 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name'        => __( 'Allow access to date', 'simpleshop-cz' ),
+					'name'        => __( 'Allow access till this date.', 'simpleshop-cz' ),
 					'desc'        => __(
-						'Put date until will be access to content allowed (applied to all groups)',
+						'Select the date, until which the access to this page will be allowed',
 						'simpleshop-cz'
 					),
 					'id'          => $this->prefix . 'date_until_to_access',
@@ -146,9 +146,9 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name' => __( 'Subject of email when content access allowed', 'simpleshop-cz' ),
+					'name' => __( 'Subject of email - allowed access to page', 'simpleshop-cz' ),
 					'desc' => __(
-						'Enter the subject of the email that will automatically be sent to the user when gains access to this content based on the days set above.',
+						'Enter the subject of the email automatically sent to the user, when the access to this page is allowed based on the days set above.',
 						'simpleshop-cz'
 					),
 					'id'   => $this->prefix . 'email_subject_user_can_access',
@@ -158,9 +158,9 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name' => __( 'Email message when content access allowed', 'simpleshop-cz' ),
+					'name' => __( 'Email message - allowed access to page', 'simpleshop-cz' ),
 					'desc' => __(
-						'Enter an email that will automatically be sent to the user when gains access to this content based on the days set above.',
+						'Enter the text of the email automatically sent to the user, when the access to this page is allowed based on the days set above.',
 						'simpleshop-cz'
 					),
 					'id'   => $this->prefix . 'email_user_can_access',

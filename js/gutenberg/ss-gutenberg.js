@@ -199,7 +199,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                         />
                         <ToggleControl
                             label={__('Ignore date limits', 'simpleshop-cz')}
-                            help={__('Check to completely disable limiting post access by date', 'simpleshop-cz')}
+                            help={__('Check to completely disable limiting access to the content by date', 'simpleshop-cz')}
                             checked={simpleShopIgnoreDates}
                             onChange={() => props.setAttributes({simpleShopIgnoreDates: !simpleShopIgnoreDates})}
                         />
@@ -263,7 +263,7 @@ const EditSimpleShop = (props) => {
                 return response.json();
             })
             .then(function (json) {
-                let select = [{label: __('Choose the Product', 'simpleshop-cz'), value: ''}];
+                let select = [{label: __('Choose a product', 'simpleshop-cz'), value: ''}];
 
                 Object.keys(json).forEach(function (key) {
                     select.push(
