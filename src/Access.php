@@ -86,7 +86,7 @@ class Access {
 		}
 
 		// Check if current user has access to the post, if not, redirect him to defined URL or home if the URL is not set
-		if ( $post_groups && ! $this->user_can_view_post() && ! is_home() && ! is_front_page() ) {
+		if ( ! $this->user_can_view_post() && ! is_home() && ! is_front_page() ) {
 			$no_access_url = remove_query_arg( [ 'redirect_to' ], $this->get_no_access_redirect_url() );
 
 			$main_redirect_url = is_user_logged_in() ? site_url() : wp_login_url();
@@ -136,8 +136,23 @@ class Access {
 			return new WP_Error( '400', 'Wrong post ID or user ID' );
 		}
 
-		$post_groups = $this->get_post_groups( $post_id );
+		// Check, if the post has set date, after which it can be accessed
+		if ( $date_to_access = $this->get_post_date_to_access() ) {
+			if ( date( 'Y-m-d' ) < $date_to_access ) {
+				// The post should not be accessed yet, not depending on group, so just return false
+				return false;
+			}
+		}
 
+		// Check, if the post has set date, until which it can be accessed
+		if ( $date_to_access = $this->get_post_date_until_to_access() ) {
+			if ( date( 'Y-m-d' ) > $date_to_access ) {
+				// The post should not be accessed yet, not depending on group, so just return false
+				return false;
+			}
+		}
+
+		$post_groups = $this->get_post_groups( $post_id );
 
 		if ( ! $post_groups || $post_groups == '' ) {
 			return true;
@@ -148,22 +163,6 @@ class Access {
 			$group = new Group( $post_group );
 			if ( $group->user_is_member_of_group( $user_id ) ) {
 				// Ok, the user is member of at least one group that has access to this post
-
-				// Check, if the post has set date, after which it can be accessed
-				if ( $date_to_access = $this->get_post_date_to_access() ) {
-					if ( date( 'Y-m-d' ) < $date_to_access ) {
-						// The post should not be accessed yet, not depending on group, so just return false
-						return false;
-					}
-				}
-
-				// Check, if the post has set date, until which it can be accessed
-				if ( $date_to_access = $this->get_post_date_until_to_access() ) {
-					if ( date( 'Y-m-d' ) > $date_to_access ) {
-						// The post should not be accessed yet, not depending on group, so just return false
-						return false;
-					}
-				}
 
 				// The user is member of some group, check if the post has minimum days to access set
 				$membership = new Membership( $user_id );
