@@ -2,7 +2,7 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2020 Redbit s.r.o.
+ * @copyright 2016-2022 Redbit s.r.o.
  * @author Redbit s.r.o. <info@simpleshop.cz>
  */
 
@@ -214,5 +214,4 @@ class Rest extends WP_REST_Controller {
 	protected function prepare_item_for_database( $request ) {
 		return [];
 	}
-
 }

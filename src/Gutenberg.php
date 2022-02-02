@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package Redbit\SimpleShop\WpPlugin
+ * @license MIT
+ * @copyright 2016-2022 Redbit s.r.o.
+ * @author Redbit s.r.o. <info@simpleshop.cz>
+ */
 
 namespace Redbit\SimpleShop\WpPlugin;
 
@@ -136,5 +142,4 @@ class Gutenberg {
 	public function render_form( $attributes ) {
 		return $this->shortcodes->simple_shop_form( [ 'id' => $attributes['ssFormId'] ] );
 	}
-
 }
