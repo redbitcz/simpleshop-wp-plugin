@@ -2,7 +2,7 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2020 Redbit s.r.o.
+ * @copyright 2016-2022 Redbit s.r.o.
  * @author Redbit s.r.o. <info@simpleshop.cz>
  */
 
@@ -184,7 +184,7 @@ class Admin {
 
         <!-- SSC TinyMCE Shortcode Plugin -->
         <script type='text/javascript'>
-            var sscContentGroups = <?= wp_json_encode( $outputGroups ) ?>;
+            var sscContentGroups = <?php echo wp_json_encode( $outputGroups ) ?>;
         </script>
 		<?php
 	}

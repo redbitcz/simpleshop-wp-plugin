@@ -2,7 +2,7 @@
 /**
  * @package Redbit\SimpleShop\WpPlugin
  * @license MIT
- * @copyright 2016-2020 Redbit s.r.o.
+ * @copyright 2016-2022 Redbit s.r.o.
  * @author Redbit s.r.o. <info@simpleshop.cz>
  */
 
@@ -10,7 +10,6 @@ namespace Redbit\SimpleShop\WpPlugin;
 
 /**
  * Back-compatibility of deprecated plugin loader
- * @package Redbit\SimpleShop\WpPlugin
  */
 class Loader {
 	public function __construct() {

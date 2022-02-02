@@ -52,20 +52,6 @@ const addSimpleShopAttributes = (settings, name) => {
 };
 addFilter('blocks.registerBlockType', 'simpleshop/attributes/custom', addSimpleShopAttributes);
 
-const simpleShopYesNoSelect = [
-    {
-        label: __('Choose', 'simpleshop-cz'),
-        value: ''
-    },
-    {
-        label: __('Yes', 'simpleshop-cz'),
-        value: 'yes'
-    },
-    {
-        label: __('No', 'simpleshop-cz'),
-        value: 'no'
-    }
-];
 
 const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
     return (props) => {
@@ -120,50 +106,88 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                         </a>
                         </p>
 
-                        <h4>{__('Group', 'simpleshop-cz')}</h4>
+                        <SelectControl
+                            label={__('The block will be visible to:', 'simpleshop-cz')}
+                            value={simpleShopIsLoggedIn}
+                            options={[
+                                {
+                                    label: __('Choose', 'simpleshop-cz'),
+                                    value: ''
+                                },
+                                {
+                                    label: __('Logged in user', 'simpleshop-cz'),
+                                    value: 'yes'
+                                },
+                                {
+                                    label: __('Logged out user', 'simpleshop-cz'),
+                                    value: 'no'
+                                }
+                            ]}
+                            onChange={selected => {
+                                props.setAttributes({
+                                    simpleShopIsLoggedIn: selected
+                                });
+                                if (!selected || 'no' === selected) {
+                                    props.setAttributes({
+                                        simpleShopIsMember: '',
+                                        simpleShopGroups: []
+                                    });
+                                }
+
+                            }}
+                        />
                         {
-                            groups.map(item => (
-                                <ToggleControl
-                                    label={item.label}
-                                    checked={selectedGroups.includes(item.value)}
-                                    onChange={(checked) => {
-                                        const tempGroups = [...selectedGroups];
-                                        if (checked) {
-                                            tempGroups.push(item.value);
-                                        } else {
-                                            const index = tempGroups.indexOf(item.value);
-                                            if (index > -1) {
-                                                tempGroups.splice(index, 1);
-                                            }
+                            simpleShopIsLoggedIn === 'yes' &&
+                            <>
+                                <SelectControl
+                                    label={__('Membership', 'simpleshop-cz')}
+                                    value={simpleShopIsMember}
+                                    options={[
+                                        {
+                                            label: __('Choose', 'simpleshop-cz'),
+                                            value: ''
+                                        },
+                                        {
+                                            label: __('Is a member of:', 'simpleshop-cz'),
+                                            value: 'yes'
+                                        },
+                                        {
+                                            label: __('Is not a member of:', 'simpleshop-cz'),
+                                            value: 'no'
                                         }
+                                    ]}
+                                    onChange={(selectedSpacingOption) => {
                                         props.setAttributes({
-                                            simpleShopGroups: tempGroups
+                                            simpleShopIsMember: selectedSpacingOption
                                         });
                                     }}
                                 />
-                            ))
+
+                                {
+                                    groups.map(item => (
+                                        <ToggleControl
+                                            label={item.label}
+                                            checked={selectedGroups.includes(item.value)}
+                                            onChange={(checked) => {
+                                                const tempGroups = [...selectedGroups];
+                                                if (checked) {
+                                                    tempGroups.push(item.value);
+                                                } else {
+                                                    const index = tempGroups.indexOf(item.value);
+                                                    if (index > -1) {
+                                                        tempGroups.splice(index, 1);
+                                                    }
+                                                }
+                                                props.setAttributes({
+                                                    simpleShopGroups: tempGroups
+                                                });
+                                            }}
+                                        />
+                                    ))
+                                }
+                            </>
                         }
 
-                        <SelectControl
-                            label={__('Is member', 'simpleshop-cz')}
-                            value={simpleShopIsMember}
-                            options={simpleShopYesNoSelect}
-                            onChange={(selectedSpacingOption) => {
-                                props.setAttributes({
-                                    simpleShopIsMember: selectedSpacingOption
-                                });
-                            }}
-                        />
-                        <SelectControl
-                            label={__('Is logged in', 'simpleshop-cz')}
-                            value={simpleShopIsLoggedIn}
-                            options={simpleShopYesNoSelect}
-                            onChange={(selectedSpacingOption) => {
-                                props.setAttributes({
-                                    simpleShopIsLoggedIn: selectedSpacingOption
-                                });
-                            }}
-                        />
                         <TextControl
                             label={__('Days to view', 'simpleshop-cz')}
                             value={simpleShopDaysToView}
@@ -175,7 +199,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
                         />
                         <ToggleControl
                             label={__('Ignore date limits', 'simpleshop-cz')}
-                            help={__('Check to completely disable limiting post access by date', 'simpleshop-cz')}
+                            help={__('Check to completely disable limiting access to the content by date', 'simpleshop-cz')}
                             checked={simpleShopIgnoreDates}
                             onChange={() => props.setAttributes({simpleShopIgnoreDates: !simpleShopIgnoreDates})}
                         />
@@ -239,7 +263,7 @@ const EditSimpleShop = (props) => {
                 return response.json();
             })
             .then(function (json) {
-                let select = [{label: __('Choose the Product', 'simpleshop-cz'), value: ''}];
+                let select = [{label: __('Choose a product', 'simpleshop-cz'), value: ''}];
 
                 Object.keys(json).forEach(function (key) {
                     select.push(

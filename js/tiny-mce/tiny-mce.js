@@ -78,29 +78,6 @@
                     body: [
                         {
                             type: 'listbox',
-                            name: 'sscContentGroupID',
-                            label: 'Členská sekce',
-                            values: sscContentGroups,
-                            value: ''
-                        },
-                        {
-                            type: 'listbox',
-                            name: 'sscContentIsMember',
-                            label: 'Je členem členské sekce?',
-                            values: [
-                                {
-                                    text: 'Ano',
-                                    value: 'yes'
-                                },
-                                {
-                                    text: 'Ne',
-                                    value: 'no'
-                                }
-                            ],
-                            value: 'yes'
-                        },
-                        {
-                            type: 'listbox',
                             name: 'sscContentIsLoggedIn',
                             label: 'Je uživatel přihlášený?',
                             values: [
@@ -117,6 +94,29 @@
                                     value: 'no'
                                 }
                             ],
+                            value: ''
+                        },
+                        {
+                            type: 'listbox',
+                            name: 'sscContentIsMember',
+                            label: 'Je členem členské sekce?',
+                            values: [
+                                {
+                                    text: 'Ne',
+                                    value: 'no'
+                                },
+                                {
+                                    text: 'Ano',
+                                    value: 'yes'
+                                }
+                            ],
+                            value: 'no'
+                        },
+                        {
+                            type: 'listbox',
+                            name: 'sscContentGroupID',
+                            label: 'Členská sekce',
+                            values: sscContentGroups,
                             value: ''
                         },
                         {
