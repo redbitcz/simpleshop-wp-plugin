@@ -14,7 +14,7 @@
  * Author URI: https://www.redbit.cz
  * Version: dev-master
  * Text Domain: simpleshop-cz
- * Requires at least: 4.6
+ * Requires at least: 5.0.0
  * Update URI: https://wordpress.org/plugins/simpleshop-cz/
  */
 
