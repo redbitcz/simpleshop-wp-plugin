@@ -173,15 +173,15 @@ class Settings {
 		);
 		$cmb->add_field(
 			[
-				'name'             => __( 'Send email to new member?', 'simpleshop-cz' ),
+				'name'             => __( 'Send an email to a new member?', 'simpleshop-cz' ),
 				'id'               => 'ssc_email_enable',
 				'type'             => 'select',
 				'show_option_none' => false,
 				'classes_cb'       => [ $this, 'hide_when_invalid_keys' ],
 				'default'          => '1',
 				'options'          => [
-					'1' => __( 'Yes, send email to new member.', 'simpleshop-cz' ),
-					'2' => __( 'No, don\'t send email to new members.', 'simpleshop-cz' ),
+					'1' => __( 'Yes, send an email to the new member.', 'simpleshop-cz' ),
+					'2' => __( 'No, don\'t send an email to the new member.', 'simpleshop-cz' ),
 				],
 			]
 		);
@@ -233,7 +233,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		#
 		$cmb->add_field(
 			[
-				'name' => __( 'API settings – connection with SimpleShop application:', 'simpleshop-cz' ),
+				'name' => __( 'API settings – connection with the SimpleShop application:', 'simpleshop-cz' ),
 				'type' => 'title',
 				'id'   => 'ssc_api_title',
 			]
@@ -243,7 +243,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		$cmb->add_field(
 			[
 				'name' => __( 'Username (email)', 'simpleshop-cz' ),
-				'desc' => __( 'Put email used for login to SimpleShop', 'simpleshop-cz' ),
+				'desc' => __( 'Enter the email address used for login to SimpleShop', 'simpleshop-cz' ),
 				'id'   => 'ssc_api_email',
 				'type' => 'text',
 			]
@@ -252,7 +252,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		$cmb->add_field(
 			[
 				'name' => __( 'SimpleShop API Key', 'simpleshop-cz' ),
-				'desc' => __( 'You found it at SimpleShop in Settings -> WP Plugin', 'simpleshop-cz' ),
+				'desc' => __( 'The key can be found in SimpleShop -> Settings -> Connection -> WordPress/Mioweb', 'simpleshop-cz' ),
 				'id'   => 'ssc_api_key',
 				'type' => 'text',
 			]
