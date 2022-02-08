@@ -1,4 +1,4 @@
-=== SimpleShop.cz ===
+=== SimpleShop ===
 Contributors: redbitcz, simpleshopcz, jakubboucek, vasikgreif
 Tags: simpleshop, simpleshop.cz, membership, member, access control, selling form
 Requires at least: 5.0.0
