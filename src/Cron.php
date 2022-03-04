@@ -22,7 +22,7 @@ class Cron {
 		}
 
 		add_action( 'ssc_send_user_has_access_to_post_notification',
-			[ $this, 'send_user_has_access_to_post_notification' ] );
+		            [ $this, 'send_user_has_access_to_post_notification' ] );
 	}
 
 	public function send_user_has_access_to_post_notification() {
@@ -34,20 +34,19 @@ class Cron {
 				'relation'                           => 'OR',
 				SIMPLESHOP_PREFIX . 'days_to_access' => [
 					'key'     => SIMPLESHOP_PREFIX . 'days_to_access',
-					'compare' => 'EXISTS'
+					'compare' => 'EXISTS',
 				],
 				SIMPLESHOP_PREFIX . 'date_to_access' => [
 					'key'     => SIMPLESHOP_PREFIX . 'date_to_access',
-					'compare' => 'EXISTS'
-				]
-			]
+					'compare' => 'EXISTS',
+				],
+			],
 		];
 
 		$the_query = new WP_Query( $args );
 
 
 		if ( $the_query->have_posts() ) {
-
 			// Get all users
 			$users = get_users();
 
@@ -106,11 +105,10 @@ class Cron {
 						if ( $send_email ) {
 							// Woohoo, send the email
 							$userdata = get_userdata( $user_id );
-							$meta_key      = SIMPLESHOP_PREFIX . 'notification_email_sent_' . $post->ID;
-							if ( ! get_user_meta( $user_id, $meta_key,
-								true ) ) {
+							$meta_key = SIMPLESHOP_PREFIX . 'notification_email_sent_' . $post->ID;
+							if ( ! get_user_meta( $user_id, $meta_key, true ) ) {
 								$headers = [ 'Content-Type: text/html; charset=UTF-8' ];
-								wp_mail( $userdata->user_email, $email_subject, $email_text, $headers );
+								wp_mail( $userdata->user_email, $email_subject, nl2br( $email_text ), $headers );
 								update_user_meta( $user_id, $meta_key, 1 );
 							}
 						}
