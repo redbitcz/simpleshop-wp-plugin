@@ -184,6 +184,11 @@ class Access {
 					}
 				}
 
+				// Check if the user has a valid membership.
+				if ( ! $membership->is_valid_for_group( $post_group ) ) {
+					continue;
+				}
+
 				return true;
 			}
 		}
@@ -519,7 +524,7 @@ class Access {
 		if ( empty( $links ) ) {
 			return;
 		}
-		
+
 		$email_enable = nl2br( $this->settings->ssc_get_option( 'ssc_email_enable' ) );
 
 		// It doesn't seem to make sense to send email without the links, so check first
