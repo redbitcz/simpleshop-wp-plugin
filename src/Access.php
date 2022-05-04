@@ -323,6 +323,11 @@ class Access {
 		}
 
 		if ( ! empty( $specific_date_to ) ) {
+			// Fix shortcode.
+			if ( date( 'H:i:s', strtotime( $specific_date_to ) ) == '00:00:00' ) {
+				$specific_date_to = date( 'Y-m-d', strtotime( $specific_date_to ) ) . ' 23:59:59';
+			}
+
 			// Check against the to date, this has nothing to do with groups or other settings
 			if ( date( 'Y-m-d H:i:s' ) > $specific_date_to ) {
 				return false;
