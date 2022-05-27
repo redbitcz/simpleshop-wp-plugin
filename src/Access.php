@@ -222,7 +222,12 @@ class Access {
 			$post_id = $post->ID;
 		}
 
-		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
+		$date = get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
+		// Backwards compatibility.
+		if (strpos($date, '-') !== false) {
+			return $date;
+		}
+		return date('Y-m-d H:i:s', $date);
 	}
 
 	/**
@@ -239,7 +244,12 @@ class Access {
 			$post_id = $post->ID;
 		}
 
-		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
+        $date = get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
+        // Backwards compatibility.
+        if (strpos($date, '-') !== false) {
+            return $date;
+        }
+        return date('Y-m-d H:i:s', $date);
 	}
 
 	/**
