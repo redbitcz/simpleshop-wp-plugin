@@ -486,11 +486,11 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 
 	}
 
-	function custom_api_endpoint_notice() {
+	public function custom_api_endpoint_notice() {
 		$url = empty( $_POST['ssc_api_endpoint_url'] ) ? $this->ssc_get_option( 'ssc_api_endpoint_url' ) : esc_attr( $_POST['ssc_api_endpoint_url'] );
 		?>
 		<div class="notice notice-warning">
-			<p><?php printf( 'Pozor! Nastavený endpoint %s', $url ); ?></p>
+			<p><?php printf( __( "Warning: You have set custom SimpleShop API Endpoint URL: '%s'", 'simpleshop-cz' ), $url ); ?></p>
 		</div>
 		<?php
 	}
