@@ -129,7 +129,7 @@ class Access {
 
 		// Check, if the post has set date, after which it can be accessed
 		if ( $date_to_access = $this->get_post_date_to_access() ) {
-			if ( date( 'Y-m-d' ) < $date_to_access ) {
+			if ( date( 'Y-m-d H:i:s' ) < $date_to_access ) {
 				// The post should not be accessed yet, not depending on group, so just return false
 				return false;
 			}
@@ -137,7 +137,7 @@ class Access {
 
 		// Check, if the post has set date, until which it can be accessed
 		if ( $date_to_access = $this->get_post_date_until_to_access() ) {
-			if ( date( 'Y-m-d' ) > $date_to_access ) {
+			if ( date( 'Y-m-d H:i:s' ) > $date_to_access ) {
 				// The post should not be accessed yet, not depending on group, so just return false
 				return false;
 			}
@@ -223,9 +223,9 @@ class Access {
 		}
 
 		$date = get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
-		// Backwards compatibility.
+		// Backwards compatibility - originally the date in Y-m-d format has been saved, now we have timestamp.
 		if (strpos($date, '-') !== false) {
-			return $date;
+			return date('Y-m-d H:i:s', strtotime($date));
 		}
 		return date('Y-m-d H:i:s', $date);
 	}
@@ -245,11 +245,11 @@ class Access {
 		}
 
         $date = get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
-        // Backwards compatibility.
-        if (strpos($date, '-') !== false) {
-            return $date;
-        }
-        return date('Y-m-d H:i:s', $date);
+		// Backwards compatibility - originally the date in Y-m-d format has been saved, now we have timestamp.
+		if (strpos($date, '-') !== false) {
+			return date('Y-m-d H:i:s', strtotime($date));
+		}
+		return date('Y-m-d H:i:s', $date);
 	}
 
 	/**

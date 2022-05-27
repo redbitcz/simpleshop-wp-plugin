@@ -138,7 +138,7 @@ class Metaboxes {
 						'simpleshop-cz'
 					),
 					'id'          => $this->prefix . 'date_to_access',
-					'type'        => 'text_date',
+					'type'        => 'text_datetime_timestamp',
 					'date_format' => 'Y-m-d',
 				]
 			);
@@ -151,7 +151,7 @@ class Metaboxes {
 						'simpleshop-cz'
 					),
 					'id'          => $this->prefix . 'date_until_to_access',
-					'type'        => 'text_date',
+					'type'        => 'text_datetime_timestamp',
 					'date_format' => 'Y-m-d',
 				]
 			);
