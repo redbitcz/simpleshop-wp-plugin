@@ -73,6 +73,7 @@ class Settings {
 		add_action( 'cmb2_admin_init', [ $this, 'add_options_page_metabox' ] );
 		add_filter( 'cmb2_render_disconnect_button', [ $this, 'field_type_disconnect_button' ], 10, 5 );
 		add_action( 'admin_init', [ $this, 'maybe_disconnect_simpleshop' ] );
+		add_action('admin_print_styles',[$this, 'maybe_display_messages']);
 	}
 
 	public function field_type_disconnect_button(
@@ -262,7 +263,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 			[
 				'name'       => __( 'SimpleShop API Endpoint URL', 'simpleshop-cz' ),
 				'desc'       => __( '[SERVICE FLAG] You can here override URL to SimpleShop API. Leave blank to use default API.',
-					'simpleshop-cz' ),
+				                    'simpleshop-cz' ),
 				'id'         => 'ssc_api_endpoint_url',
 				'type'       => 'text',
 				'classes_cb' => [ $this, 'show_debug_fields' ],
@@ -273,7 +274,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 			[
 				'name'       => __( 'Simplehop Form base URL', 'simpleshop-cz' ),
 				'desc'       => __( '[SERVICE FLAG] Base URL to SimpleShop form URL. Leave blank to use default URL.',
-					'simpleshop-cz' ),
+				                    'simpleshop-cz' ),
 				'id'         => 'ssc_ss_form_url',
 				'type'       => 'text',
 				'classes_cb' => [ $this, 'show_debug_fields' ],
@@ -320,7 +321,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 			[
 				'name'       => __( 'Disconnect SimpleShop', 'simpleshop-cz' ),
 				'desc'       => __( 'You found it at SimpleShop in Settings (Nastavení) -> WP Plugin',
-					'simpleshop-cz' ),
+				                    'simpleshop-cz' ),
 				'id'         => 'ssc_api_disconnect',
 				'type'       => 'disconnect_button',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
@@ -470,5 +471,27 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 
 	public function is_settings_page() {
 		return is_admin() && ! empty( $_GET['page'] ) && 'ssc_options' === $_GET['page'];
+	}
+
+	public function maybe_display_messages(  ) {
+		if (!empty($_POST['object_id'])) {
+			if (!empty($_POST['ssc_api_endpoint_url'])) {
+				add_action('admin_notices',[$this,'custom_api_endpoint_notice']);
+			}
+		} else {
+			if ($this->ssc_get_option('ssc_api_endpoint_url')) {
+				add_action('admin_notices',[$this,'custom_api_endpoint_notice']);
+			}
+		}
+
+	}
+
+	function custom_api_endpoint_notice() {
+		$url = empty($_POST['ssc_api_endpoint_url']) ? $this->ssc_get_option('ssc_api_endpoint_url') : esc_attr($_POST['ssc_api_endpoint_url']);
+		?>
+        <div class="notice notice-warning">
+            <p><?php printf('Pozor! Nastavený endpoint %s', $url); ?></p>
+        </div>
+		<?php
 	}
 }
