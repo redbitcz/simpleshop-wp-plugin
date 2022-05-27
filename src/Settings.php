@@ -73,7 +73,7 @@ class Settings {
 		add_action( 'cmb2_admin_init', [ $this, 'add_options_page_metabox' ] );
 		add_filter( 'cmb2_render_disconnect_button', [ $this, 'field_type_disconnect_button' ], 10, 5 );
 		add_action( 'admin_init', [ $this, 'maybe_disconnect_simpleshop' ] );
-		add_action('admin_print_styles',[$this, 'maybe_display_messages']);
+		add_action( 'admin_print_styles', [ $this, 'maybe_display_messages' ] );
 	}
 
 	public function field_type_disconnect_button(
@@ -132,10 +132,10 @@ class Settings {
 	 */
 	public function admin_page_display() {
 		?>
-        <div class="wrap cmb2-options-page <?php echo $this->key; ?>">
-            <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
+		<div class="wrap cmb2-options-page <?php echo $this->key; ?>">
+			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 			<?php cmb2_metabox_form( $this->metabox_id, $this->key ); ?>
-        </div>
+		</div>
 		<?php
 	}
 
@@ -263,7 +263,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 			[
 				'name'       => __( 'SimpleShop API Endpoint URL', 'simpleshop-cz' ),
 				'desc'       => __( '[SERVICE FLAG] You can here override URL to SimpleShop API. Leave blank to use default API.',
-				                    'simpleshop-cz' ),
+					'simpleshop-cz' ),
 				'id'         => 'ssc_api_endpoint_url',
 				'type'       => 'text',
 				'classes_cb' => [ $this, 'show_debug_fields' ],
@@ -274,7 +274,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 			[
 				'name'       => __( 'Simplehop Form base URL', 'simpleshop-cz' ),
 				'desc'       => __( '[SERVICE FLAG] Base URL to SimpleShop form URL. Leave blank to use default URL.',
-				                    'simpleshop-cz' ),
+					'simpleshop-cz' ),
 				'id'         => 'ssc_ss_form_url',
 				'type'       => 'text',
 				'classes_cb' => [ $this, 'show_debug_fields' ],
@@ -321,7 +321,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 			[
 				'name'       => __( 'Disconnect SimpleShop', 'simpleshop-cz' ),
 				'desc'       => __( 'You found it at SimpleShop in Settings (Nastavení) -> WP Plugin',
-				                    'simpleshop-cz' ),
+					'simpleshop-cz' ),
 				'id'         => 'ssc_api_disconnect',
 				'type'       => 'disconnect_button',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
@@ -373,7 +373,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 
 		$vyfakturuj_api = $this->loader->get_api_client( $api_email, $api_key );
 		try {
-			$result = $this->loader->init_plugin_activation($vyfakturuj_api);
+			$result = $this->loader->init_plugin_activation( $vyfakturuj_api );
 			if ( isset( $result['status'] ) && $result['status'] === 'success' ) {
 				update_option( 'ssc_valid_api_keys', 1 );
 			} else {
@@ -473,25 +473,25 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		return is_admin() && ! empty( $_GET['page'] ) && 'ssc_options' === $_GET['page'];
 	}
 
-	public function maybe_display_messages(  ) {
-		if (!empty($_POST['object_id'])) {
-			if (!empty($_POST['ssc_api_endpoint_url'])) {
-				add_action('admin_notices',[$this,'custom_api_endpoint_notice']);
+	public function maybe_display_messages() {
+		if ( ! empty( $_POST['object_id'] ) ) {
+			if ( ! empty( $_POST['ssc_api_endpoint_url'] ) ) {
+				add_action( 'admin_notices', [ $this, 'custom_api_endpoint_notice' ] );
 			}
 		} else {
-			if ($this->ssc_get_option('ssc_api_endpoint_url')) {
-				add_action('admin_notices',[$this,'custom_api_endpoint_notice']);
+			if ( $this->ssc_get_option( 'ssc_api_endpoint_url' ) ) {
+				add_action( 'admin_notices', [ $this, 'custom_api_endpoint_notice' ] );
 			}
 		}
 
 	}
 
 	function custom_api_endpoint_notice() {
-		$url = empty($_POST['ssc_api_endpoint_url']) ? $this->ssc_get_option('ssc_api_endpoint_url') : esc_attr($_POST['ssc_api_endpoint_url']);
+		$url = empty( $_POST['ssc_api_endpoint_url'] ) ? $this->ssc_get_option( 'ssc_api_endpoint_url' ) : esc_attr( $_POST['ssc_api_endpoint_url'] );
 		?>
-        <div class="notice notice-warning">
-            <p><?php printf('Pozor! Nastavený endpoint %s', $url); ?></p>
-        </div>
+		<div class="notice notice-warning">
+			<p><?php printf( 'Pozor! Nastavený endpoint %s', $url ); ?></p>
+		</div>
 		<?php
 	}
 }
