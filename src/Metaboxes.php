@@ -120,6 +120,18 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
+					'name' => __( 'Allow access only for specific number of days (days after registration to the member section)', 'simpleshop-cz' ),
+					'desc' => __(
+						'Allow access only for specific number of days after registration. For example: If the registration to the member section is on January 1st and you set 14 days, the user will be able to access the page until January 14th included.',
+						'simpleshop-cz'
+					),
+					'id'   => $this->prefix . 'expire_days_after_registration',
+					'type' => 'text',
+				]
+			);
+
+			$cmb->add_field(
+				[
 					'name'        => __( 'Allow access from this date', 'simpleshop-cz' ),
 					'desc'        => __(
 						'Select the date when the access to this page will be allowed',
