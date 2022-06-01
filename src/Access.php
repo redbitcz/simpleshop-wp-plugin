@@ -76,15 +76,6 @@ class Access {
 			return;
 		}
 
-		$post_groups = $this->get_post_groups();
-
-		// If the post is protected and user is not logged in, redirect him to login
-		if ( $post_groups && ! is_user_logged_in() ) {
-			nocache_headers();
-			wp_safe_redirect( wp_login_url( site_url( $_SERVER['REQUEST_URI'] ) ) );
-			exit();
-		}
-
 		// Check if current user has access to the post, if not, redirect him to defined URL or home if the URL is not set
 		if ( ! $this->user_can_view_post() && ! is_home() && ! is_front_page() ) {
 			$no_access_url = remove_query_arg( [ 'redirect_to' ], $this->get_no_access_redirect_url() );
