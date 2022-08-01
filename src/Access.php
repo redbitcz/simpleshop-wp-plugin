@@ -128,7 +128,7 @@ class Access {
 
 		// Check, if the post has set date, after which it can be accessed
 		if ( $date_to_access = $this->get_post_date_to_access() ) {
-			if ( date( 'Y-m-d' ) < $date_to_access ) {
+			if ( wp_date( 'Y-m-d H:i:s' ) < $date_to_access ) {
 				// The post should not be accessed yet, not depending on group, so just return false
 				return false;
 			}
@@ -136,7 +136,7 @@ class Access {
 
 		// Check, if the post has set date, until which it can be accessed
 		if ( $date_to_access = $this->get_post_date_until_to_access() ) {
-			if ( date( 'Y-m-d' ) > $date_to_access ) {
+			if ( wp_date( 'Y-m-d H:i:s' ) > $date_to_access ) {
 				// The post should not be accessed yet, not depending on group, so just return false
 				return false;
 			}
@@ -207,7 +207,7 @@ class Access {
 	 *
 	 * @return mixed
 	 */
-	public function get_post_date_to_access( $post_id = '' ) {
+	public function get_post_date_to_access( $post_id = '', $format = 'Y-m-d H:i:s' ) {
 		global $post;
 
 		if ( ! $post_id && $post ) {
@@ -218,7 +218,7 @@ class Access {
 			return false;
 		}
 
-		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
+		return wp_date($format, strtotime(get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true )));
 	}
 
 	/**
@@ -228,7 +228,7 @@ class Access {
 	 *
 	 * @return mixed
 	 */
-	public function get_post_date_until_to_access( $post_id = '' ) {
+	public function get_post_date_until_to_access( $post_id = '', $format = 'Y-m-d H:i:s' ) {
 		global $post;
 
 		if ( ! $post_id && $post ) {
@@ -239,7 +239,7 @@ class Access {
 			return false;
 		}
 
-		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
+		return wp_date($format, strtotime(get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true )));
 	}
 
 	/**
