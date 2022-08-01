@@ -24,6 +24,9 @@ class Metaboxes {
 		add_action( 'personal_options_update', [ $this, 'save_user_profile_groups' ] );
 		add_action( 'edit_user_profile_update', [ $this, 'save_user_profile_groups' ] );
 		add_action( 'add_meta_boxes', [ $this, 'register_metaboxes' ] );
+        add_filter('cmb2_override_meta_value',[$this,'adjust_meta_values_get'], 10, 4);
+        add_filter('cmb2_override_meta_save',[$this,'adjust_meta_values_save'], 10, 4);
+
 	}
 
 	public function register_metaboxes() {
@@ -126,7 +129,7 @@ class Metaboxes {
 						'simpleshop-cz'
 					),
 					'id'          => $this->prefix . 'date_to_access',
-					'type'        => 'text_date',
+					'type'        => 'text_datetime_timestamp',
 					'date_format' => 'Y-m-d',
 				]
 			);
@@ -139,7 +142,7 @@ class Metaboxes {
 						'simpleshop-cz'
 					),
 					'id'          => $this->prefix . 'date_until_to_access',
-					'type'        => 'text_date',
+					'type'        => 'text_datetime_timestamp',
 					'date_format' => 'Y-m-d',
 				]
 			);
@@ -362,4 +365,23 @@ class Metaboxes {
 		</table>
 		<?php
 	}
+
+	public function adjust_meta_values_get( $override, $post_id, $args, $field ) {
+        if ($args['field_id'] === $this->prefix . 'date_to_access' ) {
+            return strtotime(get_post_meta($post_id, $this->prefix . 'date_to_access', true));
+        }
+		if ($args['field_id'] === $this->prefix . 'date_until_to_access' ) {
+			return strtotime(get_post_meta($post_id, $this->prefix . 'date_until_to_access', true));
+		}
+        return $override;
+    }
+
+	public function adjust_meta_values_save( $override, $data, $args, $field ) {
+		if ($data['field_id'] === $this->prefix . 'date_to_access' || $data['field_id'] === $this->prefix . 'date_until_to_access') {
+			return wp_date('Y-m-d H:i:s', $data['value']);
+		}
+
+        return $override;
+    }
+
 }

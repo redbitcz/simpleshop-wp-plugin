@@ -77,7 +77,7 @@ class Cron {
 				// Get days to access
 				$days_to_access = $access->get_post_days_to_access();
 				// Get date to access
-				$date_to_access = $access->get_post_date_to_access();
+				$date_to_access = $access->get_post_date_to_access($post->ID, 'Y-m-d');
 
 				// TODO: Rewrite this to first find the groups that have access to the post, than find users for these groups.
 				// That way we won't have to scrub through all the users all the time
@@ -96,7 +96,7 @@ class Cron {
 							}
 
 							// First check, if today is the date when the post can be accessed
-							if ( $date_to_access == date( 'Y-m-d' ) ) {
+							if ( $date_to_access == wp_date( 'Y-m-d' ) ) {
 								// Cool, send email
 								$send_email = true;
 							} elseif ( $days_to_access || $days_to_access === '0' ) {
