@@ -465,7 +465,7 @@ class Access {
 		return $query;
 	}
 
-	public function send_welcome_email( $user_id, $password = '' ) {
+	public function send_welcome_email( $user_id ) {
 		// Get the posts that have some group assigned
 		$args = [
 			'posts_status'   => [ 'published', 'draft' ],
@@ -536,6 +536,25 @@ class Access {
 			$email_subject = nl2br( $this->settings->ssc_get_option( 'ssc_email_subject' ) );
 			$pages         = '';
 			$user          = get_user_by( 'ID', $user_id );
+
+			// Apply the new password logic only for the new users to not reset password for existing users.
+			if ( get_user_meta( $user_id, 'user_registered', true ) > '2022-08-01 00:00:00' ) {
+				if ( get_user_meta( $user_id, '_ssc_password_sent', true ) ) {
+					$password = '<i>' . sprintf(
+							__(
+								'Your current password (which you set or we sent to you in a previous email). If you have lost your password, <a href="%s">you can reset it here</a>.',
+								'simpleshop-cz'
+							),
+							esc_attr( wp_lostpassword_url( get_bloginfo( 'url' ) ) )
+						) . '</i>';
+				} else {
+					$password = wp_generate_password( 8, false );
+					wp_set_password( $password, $user_id );
+					update_user_meta( $user_id, '_ssc_password_sent', 1 );
+				}
+			}
+
+
 			foreach ( $links as $group_id => $linksInGroup ) {
 				$post_details = get_post( $group_id );
 				$pages        .= '<div><b>' . $post_details->post_title . '</b></div>'

@@ -90,14 +90,11 @@ class Rest extends WP_REST_Controller {
 
 		// Check if user with this email exists, if not, create a new user
 		if ( ! email_exists( $email ) ) {
-			$_password = wp_generate_password( 8, false );
-
 			$userdata = [
 				'user_login' => $email,
 				'user_email' => $email,
 				'first_name' => sanitize_text_field( $request->get_param( 'firstname' ) ),
 				'last_name'  => sanitize_text_field( $request->get_param( 'lastname' ) ),
-				'user_pass'  => $_password,
 			];
 
 			$userdata = apply_filters( 'ssc_new_user_data', $userdata );
@@ -111,14 +108,6 @@ class Rest extends WP_REST_Controller {
 				                     [ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
 		} else {
-			$_password = '<i>' . sprintf(
-					__(
-						'Your current password (which you set or we sent to you in a previous email). If you have lost your password, <a href="%s">you can reset it here</a>.',
-						'simpleshop-cz'
-					),
-					esc_attr( wp_lostpassword_url( get_bloginfo( 'url' ) ) )
-				) . '</i>';
-
 			// Get user_by email
 			$user    = get_user_by( 'email', $email );
 			$user_id = $user->ID;
@@ -162,7 +151,7 @@ class Rest extends WP_REST_Controller {
 				$membership->set_valid_to( $group, $valid_to );
 				// Schedule the action to send out welcome email if the valid_from is in the future
 				if ( $valid_from > date( 'Y-m-d' ) ) {
-					wp_schedule_single_event( strtotime( sprintf( '%s 02:00:00', $valid_from ) ), 'simpleshop_send_welcome_email', [ $user_id, $_password ] );
+					wp_schedule_single_event( strtotime( sprintf( '%s 02:00:00', $valid_from ) ), 'simpleshop_send_welcome_email', [ $user_id ] );
 				} else {
 					$send_email = true;
 				}
@@ -175,7 +164,7 @@ class Rest extends WP_REST_Controller {
 		}
 
 		if ( $send_email ) {
-			$this->loader->get_access()->send_welcome_email( $user_id, $_password );
+			$this->loader->get_access()->send_welcome_email( $user_id );
 		}
 
 		return new WP_REST_Response( [ 'status' => 'success', 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ], 200 );
