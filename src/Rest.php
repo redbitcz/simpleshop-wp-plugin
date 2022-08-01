@@ -145,10 +145,10 @@ class Rest extends WP_REST_Controller {
 					$date                = max( $original_valid_from,
 					                            $original_valid_to,
 					                            $valid_from,
-					                            date( 'Y-m-d' )
+					                            wp_date( 'Y-m-d' )
 					);
 					// Add number of months to either current date or original date in the case it's in the future
-					$valid_to = date( 'Y-m-d', strtotime( '+' . $valid_to_months . ' month', strtotime( $date ) ) );
+					$valid_to = wp_date( 'Y-m-d', strtotime( '+' . $valid_to_months . ' month', strtotime( $date ) ) );
 				}
 
 				// Add user to the group

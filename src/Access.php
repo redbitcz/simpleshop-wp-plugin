@@ -168,7 +168,7 @@ class Access {
 				if ( $days_to_access = $this->get_post_days_to_access() ) {
 					$subscription_date = $membership->groups[ $post_group ]['subscription_date'];
 					// Get the date of subscription to the group
-					if ( $subscription_date > date( 'Y-m-d', strtotime( "now -$days_to_access days" ) ) ) {
+					if ( $subscription_date > wp_date( 'Y-m-d', strtotime( "now -$days_to_access days" ) ) ) {
 						// if the user does not have access YET, just break the loop here, as the user might have multiple subscriptions
 						continue;
 					}
@@ -315,19 +315,19 @@ class Access {
 
 		if ( ! empty( $specific_date_from ) ) {
 			// Check against the from date, this has nothing to do with groups or other settings
-			if ( date( 'Y-m-d H:i:s' ) < $specific_date_from ) {
+			if ( wp_date( 'Y-m-d H:i:s' ) < $specific_date_from ) {
 				return false;
 			}
 		}
 
 		if ( ! empty( $specific_date_to ) ) {
 			// Fix shortcode.
-			if ( date( 'H:i:s', strtotime( $specific_date_to ) ) == '00:00:00' ) {
+			if ( wp_date( 'H:i:s', strtotime( $specific_date_to ) ) == '00:00:00' ) {
 				$specific_date_to = date( 'Y-m-d', strtotime( $specific_date_to ) ) . ' 23:59:59';
 			}
 
 			// Check against the to date, this has nothing to do with groups or other settings
-			if ( date( 'Y-m-d H:i:s' ) > $specific_date_to ) {
+			if ( wp_date( 'Y-m-d H:i:s' ) > $specific_date_to ) {
 				return false;
 			}
 		}
@@ -396,7 +396,7 @@ class Access {
 				$membership        = new Membership( get_current_user_id() );
 				$subscription_date = $membership->groups[ $group_id ]['subscription_date'];
 				// Compare against today's date
-				if ( date( 'Y-m-d' ) < date( 'Y-m-d', strtotime( "$subscription_date + $days_to_view days" ) ) ) {
+				if ( wp_date( 'Y-m-d' ) < wp_date( 'Y-m-d', strtotime( "$subscription_date + $days_to_view days" ) ) ) {
 					continue;
 				}
 				$found = true;
@@ -512,7 +512,7 @@ class Access {
 					$specific_date  = $this->get_post_date_to_access( $post->ID );
 					$days_to_access = $this->get_post_days_to_access( $post->ID );
 
-					if ( $specific_date && date( 'Y-m-d' ) < $specific_date ) {
+					if ( $specific_date && wp_date( 'Y-m-d' ) < $specific_date ) {
 						continue;
 					}
 
