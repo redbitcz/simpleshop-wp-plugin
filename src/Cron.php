@@ -52,9 +52,11 @@ class Cron {
 
 			// Get all groups to array
 			$users_groups = [];
+			$memberships  = [];
 			foreach ( $users as $user ) {
 				$membership                = new Membership( $user->ID );
 				$users_groups[ $user->ID ] = $membership->groups;
+				$memberships[ $user->ID ]  = $membership;
 			}
 
 			while ( $the_query->have_posts() ) {
@@ -87,6 +89,11 @@ class Cron {
 						// Check, if the user is member of this group
 						if ( array_key_exists( $group, $user_groups ) ) {
 							// If so, finally check, if we should send the email
+
+							// Check if the subscription ended already, if so, bail
+							if ( $memberships[$user_id]->get_valid_to( $group ) && $memberships[$user_id]->get_valid_to( $group ) < date( 'Y-m-d' ) ) {
+								continue;
+							}
 
 							// First check, if today is the date when the post can be accessed
 							if ( $date_to_access == date( 'Y-m-d' ) ) {
