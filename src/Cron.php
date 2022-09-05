@@ -18,7 +18,7 @@ class Cron {
 		$this->loader = $loader;
 
 		if ( ! wp_next_scheduled( 'ssc_send_user_has_access_to_post_notification' ) ) {
-			wp_schedule_event( time(), 'daily', 'ssc_send_user_has_access_to_post_notification' );
+			wp_schedule_event( strtotime( 'tomorrow 02:00:00' ), 'daily', 'ssc_send_user_has_access_to_post_notification' );
 		}
 
 		add_action( 'ssc_send_user_has_access_to_post_notification',
@@ -91,7 +91,7 @@ class Cron {
 							// If so, finally check, if we should send the email
 
 							// Check if the subscription ended already, if so, bail
-							if ( $memberships[$user_id]->get_valid_to( $group ) && $memberships[$user_id]->get_valid_to( $group ) < date( 'Y-m-d' ) ) {
+							if ( $memberships[ $user_id ]->get_valid_to( $group ) && $memberships[ $user_id ]->get_valid_to( $group ) < date( 'Y-m-d' ) ) {
 								continue;
 							}
 
