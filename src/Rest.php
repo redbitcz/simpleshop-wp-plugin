@@ -107,6 +107,7 @@ class Rest extends WP_REST_Controller {
 				return new WP_Error( 'could-not-create-user', __( "The user couldn't be created", 'simpleshop-cz' ),
 				                     [ 'status' => 500, 'plugin_version' => SIMPLESHOP_PLUGIN_VERSION ] );
 			}
+			update_user_meta( $user_id, '_ssc_new_user', 1 );
 		} else {
 			// Get user_by email
 			$user    = get_user_by( 'email', $email );
