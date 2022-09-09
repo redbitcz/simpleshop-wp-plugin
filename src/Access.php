@@ -537,23 +537,20 @@ class Access {
 			$pages         = '';
 			$user          = get_user_by( 'ID', $user_id );
 
-			// Apply the new password logic only for the new users to not reset password for existing users.
-			if ( get_user_meta( $user_id, 'user_registered', true ) > '2022-08-01 00:00:00' ) {
-				if ( get_user_meta( $user_id, '_ssc_password_sent', true ) ) {
-					$password = '<i>' . sprintf(
-							__(
-								'Your current password (which you set or we sent to you in a previous email). If you have lost your password, <a href="%s">you can reset it here</a>.',
-								'simpleshop-cz'
-							),
-							esc_attr( wp_lostpassword_url( get_bloginfo( 'url' ) ) )
-						) . '</i>';
-				} else {
-					$password = wp_generate_password( 8, false );
-					wp_set_password( $password, $user_id );
-					update_user_meta( $user_id, '_ssc_password_sent', 1 );
-				}
+			// Check if we should generate new password
+			if ( ! get_user_meta( $user_id, '_ssc_new_user', true ) ) {
+				$password = '<i>' . sprintf(
+						__(
+							'Your current password (which you set or we sent to you in a previous email). If you have lost your password, <a href="%s">you can reset it here</a>.',
+							'simpleshop-cz'
+						),
+						esc_attr( wp_lostpassword_url( get_bloginfo( 'url' ) ) )
+					) . '</i>';
+			} else {
+				$password = wp_generate_password( 8, false );
+				wp_set_password( $password, $user_id );
+				delete_user_meta( $user_id, '_ssc_new_user' );
 			}
-
 
 			foreach ( $links as $group_id => $linksInGroup ) {
 				$post_details = get_post( $group_id );
