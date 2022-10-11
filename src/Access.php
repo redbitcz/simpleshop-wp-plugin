@@ -211,8 +211,12 @@ class Access {
 	public function get_post_date_to_access( $post_id = '' ) {
 		global $post;
 
-		if ( ! $post_id ) {
+		if ( ! $post_id && $post ) {
 			$post_id = $post->ID;
+		}
+
+		if ( ! $post_id ) {
+			return false;
 		}
 
 		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
@@ -228,8 +232,12 @@ class Access {
 	public function get_post_date_until_to_access( $post_id = '' ) {
 		global $post;
 
-		if ( ! $post_id ) {
+		if ( ! $post_id && $post ) {
 			$post_id = $post->ID;
+		}
+
+		if ( ! $post_id ) {
+			return false;
 		}
 
 		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
