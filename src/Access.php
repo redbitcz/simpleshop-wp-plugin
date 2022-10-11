@@ -164,12 +164,19 @@ class Access {
 						continue;
 					}
 				}
+				$subscription_date = $membership->groups[ $post_group ]['subscription_date'];
 
 				if ( $days_to_access = $this->get_post_days_to_access() ) {
-					$subscription_date = $membership->groups[ $post_group ]['subscription_date'];
 					// Get the date of subscription to the group
 					if ( $subscription_date > wp_date( 'Y-m-d', strtotime( "now -$days_to_access days" ) ) ) {
 						// if the user does not have access YET, just break the loop here, as the user might have multiple subscriptions
+						continue;
+					}
+				}
+
+				if ( $expire_days_after_registration = $this->get_expire_days_after_registration() ) {
+					if ( $subscription_date < date( 'Y-m-d', strtotime( "now - $expire_days_after_registration" ) ) ) {
+						// if the access already expired, just break the loop here, as the user might have multiple subscriptions
 						continue;
 					}
 				}
@@ -258,6 +265,24 @@ class Access {
 
 		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'days_to_access', true );
 	}
+
+	/**
+	 * Get the number of days the user has to be subscribed to have access to the post
+	 *
+	 * @param  string  $post_id
+	 *
+	 * @return mixed
+	 */
+	public function get_expire_days_after_registration( $post_id = '' ) {
+		global $post;
+
+		if ( ! $post_id ) {
+			$post_id = $post->ID;
+		}
+
+		return get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'expire_days_after_registration', true );
+	}
+
 
 	/**
 	 * Get the URL to redirect the user if he has no access
