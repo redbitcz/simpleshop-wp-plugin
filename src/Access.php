@@ -498,6 +498,11 @@ class Access {
 				continue;
 			}
 
+			// Check if the subscription ended already, if so, bail
+			if ( $membership->get_valid_to( $group ) && $membership->get_valid_to( $group ) < date( 'Y-m-d' ) ) {
+				continue;
+			}
+
 			// Scrub through posts and check, if some of the posts has that group assigned
 			foreach ( $posts as $post ) {
 				/** @var \WP_Post $post */
