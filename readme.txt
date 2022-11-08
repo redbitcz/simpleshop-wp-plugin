@@ -1,5 +1,5 @@
 === SimpleShop ===
-Contributors: redbitcz, simpleshopcz, jakubboucek, vasikgreif
+Contributors: redbitcz, simpleshopcz, jakubboucek, vasikgreif, vitvavra
 Tags: simpleshop, simpleshop.cz, membership, member, access control, selling form
 Requires at least: 5.0.0
 Tested up to: 5.9
