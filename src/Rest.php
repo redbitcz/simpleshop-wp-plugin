@@ -136,7 +136,7 @@ class Rest extends WP_REST_Controller {
 
 				$membership = new Membership( $user_id );
 				// Check if the user is already member of the group, if so, adjust the valid to date
-				if ( ! empty( $membership->groups[ $group ]['valid_to']  && $valid_to_months !== '' ) ) {
+				if ( ! empty( $membership->groups[ $group ]['valid_to']) && $valid_to_months !== '' ) {
 					$valid_from          = $request->get_param( 'valid_from' ) ?: '';
 					$original_valid_to   = $membership->groups[ $group ]['valid_to'];
 					$original_valid_from = isset( $membership->groups[ $group ]['valid_from'] )
