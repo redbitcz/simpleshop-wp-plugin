@@ -16,7 +16,7 @@ class Membership {
 	 * Membership constructor.
 	 * Get user data if requested
 	 *
-	 * @param string $user_id
+	 * @param  string  $user_id
 	 */
 	public function __construct( $user_id = '' ) {
 		if ( $user_id ) {
@@ -95,7 +95,12 @@ class Membership {
 	 * @return mixed
 	 */
 	public function get_valid_to( $group_id ) {
-		return get_user_meta( $this->user_id, '_ssc_group_subscription_valid_to_' . $group_id, true );
+		$valid_to = get_user_meta( $this->user_id, '_ssc_group_subscription_valid_to_' . $group_id, true );
+		if ( $valid_to === '1970-01-01' ) {
+			$valid_to = '';
+		}
+
+		return $valid_to;
 	}
 
 	/**
