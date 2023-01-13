@@ -78,9 +78,8 @@ class Access {
 
 		// Check if current user has access to the post, if not, redirect him to defined URL or home if the URL is not set
 		if ( ! $this->user_can_view_post() && ! is_home() && ! is_front_page() ) {
-			$no_access_url = remove_query_arg( [ 'redirect_to' ], $this->get_no_access_redirect_url() );
-
-			$main_redirect_url = is_user_logged_in() ? site_url() : wp_login_url();
+			$no_access_url     = remove_query_arg( [ 'redirect_to' ], $this->get_no_access_redirect_url() );
+			$main_redirect_url = is_user_logged_in() ? site_url() : wp_login_url( get_permalink() );
 			$url               = $no_access_url ?: $main_redirect_url;
 			nocache_headers();
 			wp_redirect( $url );
