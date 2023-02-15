@@ -26,6 +26,7 @@ class Metaboxes {
 		add_action( 'add_meta_boxes', [ $this, 'register_metaboxes' ] );
 		add_filter( 'cmb2_override_meta_value', [ $this, 'adjust_meta_values_get' ], 10, 4 );
 		add_filter( 'cmb2_override_meta_save', [ $this, 'adjust_meta_values_save' ], 10, 4 );
+		add_filter( 'cmb2_save_field', [ $this, 'save_field' ], 10, 4 );
 	}
 
 	public function register_metaboxes() {
@@ -428,6 +429,14 @@ class Metaboxes {
 		}
 
 		return $override;
+	}
+
+	public function save_field( $field_id, $data, $args, $field ) {
+		if ($field_id === $this->prefix . 'date_to_access' || $field_id === $this->prefix . 'date_until_to_access') {
+			if (empty($_POST[$field_id]['date'])) {
+				delete_post_meta($_POST['post_ID'],$field_id);
+			}
+		}
 	}
 
 }

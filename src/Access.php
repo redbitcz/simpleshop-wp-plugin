@@ -175,7 +175,7 @@ class Access {
 				}
 
 				if ( $expire_days_after_registration = $this->get_expire_days_after_registration() ) {
-					if ( $subscription_date < date( 'Y-m-d', strtotime( "now - $expire_days_after_registration" ) ) ) {
+					if ( $subscription_date < date( 'Y-m-d', strtotime( "now - $expire_days_after_registration days" ) ) ) {
 						// if the access already expired, just break the loop here, as the user might have multiple subscriptions
 						continue;
 					}
