@@ -126,8 +126,12 @@ class Rest extends WP_REST_Controller {
 
 		$send_email = false;
 
+		$log_data = [
+			'user_groups' => $request->get_param( 'user_group' ),
+		];
 		foreach ( $request->get_param( 'user_group' ) as $group ) {
 			$ssc_group = new Group( $group );
+
 
 			// Add the user to group
 			if ( $ssc_group->group_exists() ) {
@@ -136,7 +140,7 @@ class Rest extends WP_REST_Controller {
 
 				$membership = new Membership( $user_id );
 				// Check if the user is already member of the group, if so, adjust the valid to date
-				if ( ! empty( $membership->groups[ $group ]['valid_to']) && $valid_to_months !== '' ) {
+				if ( ! empty( $membership->groups[ $group ]['valid_to'] ) && $valid_to_months !== '' ) {
 					$valid_from          = $request->get_param( 'valid_from' ) ?: '';
 					$original_valid_to   = $membership->groups[ $group ]['valid_to'];
 					$original_valid_from = isset( $membership->groups[ $group ]['valid_from'] )
@@ -148,7 +152,9 @@ class Rest extends WP_REST_Controller {
 					                            date( 'Y-m-d' )
 					);
 					// Add number of months to either current date or original date in the case it's in the future
-					$valid_to = date( 'Y-m-d', strtotime( '+' . $valid_to_months . ' month', strtotime( $date ) ) );
+					$valid_to                                  = date( 'Y-m-d', strtotime( '+' . $valid_to_months . ' month', strtotime( $date ) ) );
+					$log_data[ 'group_' . $group ]['date']     = $date;
+					$log_data[ 'group_' . $group ]['valid_to'] = $valid_to;
 				}
 
 				// Add user to the group
@@ -159,9 +165,11 @@ class Rest extends WP_REST_Controller {
 				// Set valid from, either from the request, or current date
 				$valid_from = $request->get_param( 'valid_from' ) ?: date( 'Y-m-d' );
 				$membership->set_subscription_date( $group, $valid_from );
+				$log_data[ 'group_' . $group ]['valid_from'] = $valid_from;
 				$membership->set_valid_to( $group, $valid_to );
 				// Schedule the action to send out welcome email if the valid_from is in the future
 				if ( $valid_from > date( 'Y-m-d' ) ) {
+					$log_data[ 'group_' . $group ]['scheduled'] = 1;
 					wp_schedule_single_event( strtotime( sprintf( '%s 02:00:00', $valid_from ) ), 'simpleshop_send_welcome_email', [ $user_id, $_password ] );
 				} else {
 					$send_email = true;
@@ -169,6 +177,7 @@ class Rest extends WP_REST_Controller {
 			}
 		}
 
+		file_put_contents( __DIR__ . '/log.txt', wp_json_encode( $log_data ), FILE_APPEND );
 		// If we are on multisite, add the user the site
 		if ( is_multisite() ) {
 			add_user_to_blog( get_current_blog_id(), $user_id, 'subscriber' );
