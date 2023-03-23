@@ -347,7 +347,7 @@ class Access {
 
 		if ( ! empty( $specific_date_to ) ) {
 			// Fix shortcode.
-			if ( wp_date( 'H:i:s', strtotime( $specific_date_to ) ) == '00:00:00' ) {
+			if ( date( 'H:i:s', strtotime( $specific_date_to ) ) == '00:00:00' ) { //todo figure out how to use wp_date with timezone settings
 				$specific_date_to = date( 'Y-m-d', strtotime( $specific_date_to ) ) . ' 23:59:59';
 			}
 
