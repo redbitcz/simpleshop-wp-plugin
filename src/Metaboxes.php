@@ -150,7 +150,7 @@ class Metaboxes {
 				[
 					'name'            => __( 'Allow access till this date.', 'simpleshop-cz' ),
 					'desc'            => __(
-						'Select the date and time, until which the access to this page will be allowed"',
+						'Select the date and time, until which the access to this page will be allowed',
 						'simpleshop-cz'
 					),
 					'id'              => $this->prefix . 'date_until_to_access',
