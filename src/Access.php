@@ -225,7 +225,9 @@ class Access {
 			return false;
 		}
 
-		return wp_date($format, strtotime(get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true )));
+		$date = get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
+
+		return $date ? date( $format, $date ) : '';
 	}
 
 	/**
@@ -246,7 +248,9 @@ class Access {
 			return false;
 		}
 
-		return wp_date($format, strtotime(get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true )));
+		$date = get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
+
+		return $date ? date( $format, strtotime( $date ) ) : '';
 	}
 
 	/**

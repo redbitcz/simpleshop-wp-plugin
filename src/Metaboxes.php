@@ -424,7 +424,7 @@ class Metaboxes {
 
 	public function adjust_meta_values_save( $override, $data, $args, $field ) {
 		if ( $data['field_id'] === $this->prefix . 'date_to_access' || $data['field_id'] === $this->prefix . 'date_until_to_access' ) {
-            update_post_meta( $data['id'], $data['field_id'], wp_date( 'Y-m-d H:i:s', $data['value'] ) );
+            update_post_meta( $data['id'], $data['field_id'], date( 'Y-m-d H:i:s', $data['value'] ) );
             return true;
 		}
 
