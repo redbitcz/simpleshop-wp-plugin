@@ -120,7 +120,7 @@ class Membership {
 				return false;
 			}
 
-			if ( ! empty( $group['valid_to'] ) && $group['valid_to'] <= date( 'Y-m-d' ) ) {
+			if ( ! empty( $group['valid_to'] ) && $group['valid_to'] < date( 'Y-m-d' ) ) {
 				return false;
 			}
 
