@@ -227,7 +227,7 @@ class Access {
 
 		$date = get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
 
-		return $date ? date( $format, $date ) : '';
+		return $date ? (new \DateTime($date))->format($format) : '';
 	}
 
 	/**
@@ -250,7 +250,7 @@ class Access {
 
 		$date = get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
 
-		return $date ? date( $format, strtotime( $date ) ) : '';
+		return $date ? (new \DateTime($date))->format($format) : '';
 	}
 
 	/**
