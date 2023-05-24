@@ -168,7 +168,7 @@ class Access {
 
 				if ( $days_to_access = $this->get_post_days_to_access() ) {
 					// Get the date of subscription to the group
-					if ( $subscription_date >= wp_date( 'Y-m-d', strtotime( "now -$days_to_access days" ) ) ) {
+					if ( $subscription_date > wp_date( 'Y-m-d', strtotime( "now -$days_to_access days" ) ) ) {
 						// if the user does not have access YET, just break the loop here, as the user might have multiple subscriptions
 						continue;
 					}
