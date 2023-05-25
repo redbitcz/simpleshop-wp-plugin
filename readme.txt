@@ -2,8 +2,8 @@
 Contributors: redbitcz, simpleshopcz, jakubboucek, vasikgreif, vitvavra
 Tags: simpleshop, simpleshop.cz, membership, member, access control, selling form
 Requires at least: 5.0.0
-Tested up to: 6.1
-Requires PHP: 5.6.20
+Tested up to: 6.2
+Requires PHP: 7.4
 Stable tag: trunk
 License: MIT
 License URI: https://github.com/redbitcz/simpleshop-wp-plugin/blob/master/LICENSE
