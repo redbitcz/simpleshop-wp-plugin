@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/redbitcz/simpleshop-wp-plugin#readme",
   "devDependencies": {
-    "@wordpress/scripts": "^12.6.0",
+    "@wordpress/scripts": "^26.8.0",
     "lodash.assign": "^4.2.0",
     "webpack-merge": "^5.7.2"
   }
