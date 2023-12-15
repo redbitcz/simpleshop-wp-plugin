@@ -15,7 +15,7 @@
     "email": "info@simpleshop.cz"
   },
   "require": {
-    "php": ">=5.6.20",
+    "php": ">=7.0",
     "ext-json": "*",
     "cmb2/cmb2": "dev-master",
     "webdevstudios/cmb2-post-search-field": "dev-master",
