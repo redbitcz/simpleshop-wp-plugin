@@ -147,8 +147,11 @@ class Rest extends WP_REST_Controller {
 				// Refresh the membership data
 				$membership = new Membership( $user_id );
 				// Set valid from, either from the request, or current date
-				$valid_from = $request->get_param( 'valid_from' ) ?: date( 'Y-m-d' );
-				$membership->set_subscription_date( $group, $valid_from );
+                $valid_from = $membership->get_subscription_date($group);
+                if (!$valid_from) {
+                    $valid_from = $request->get_param( 'valid_from' ) ?: date( 'Y-m-d' );
+                    $membership->set_subscription_date( $group, $valid_from );
+                }
 				$membership->set_valid_to( $group, $valid_to );
 				// Schedule the action to send out welcome email if the valid_from is in the future
 				if ( $valid_from > date( 'Y-m-d' ) ) {
