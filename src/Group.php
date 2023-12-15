@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
@@ -70,7 +70,7 @@ class Group {
 	/**
 	 * Get groups ids the user belongs to
 	 *
-	 * @param  string  $user_id
+	 * @param string $user_id
 	 *
 	 * @return array
 	 */

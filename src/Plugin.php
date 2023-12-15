@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
@@ -45,34 +45,8 @@ class Plugin {
 		add_action( 'admin_init', [ $this, 'reactivate_updated_plugin' ] );
 	}
 
-	private function init() {
-		$this->settings = new Settings( $this );
-		$this->access   = new Access( $this->settings );
-
-		$this->admin = new Admin( $this );
-		$this->group = new Group();
-		new Rest( $this );
-		new Cron( $this );
-		new Metaboxes( $this );
-		$this->shortcodes = new Shortcodes( $this->access, $this->settings );
-		$this->init_gutenberg();
-	}
-
-	private function init_gutenberg() {
-		if ( function_exists( 'register_block_type' ) === false ) {
-			// Skip init Gutenberg features - Gurenberg not supported in WP
-			return;
-		}
-
-		new Gutenberg( $this->admin, $this->group, $this->access, $this->pluginMainFile, $this->shortcodes );
-	}
-
 	public function has_credentials() {
 		return $this->email && $this->secure_key;
-	}
-
-	protected function load_email() {
-		return $this->settings->ssc_get_option( 'ssc_api_email' );
 	}
 
 	/** @return string|null Cache key related to API identity, or null when unlogged */
@@ -82,10 +56,6 @@ class Plugin {
 
 	public function get_api_email() {
 		return $this->email;
-	}
-
-	protected function load_api_key() {
-		return $this->settings->ssc_get_option( 'ssc_api_key' );
 	}
 
 	public function get_api_key() {
@@ -106,7 +76,7 @@ class Plugin {
 
 	public function get_post_types() {
 		$args = [
-			'public' => true
+			'public' => true,
 		];
 
 		return get_post_types( $args );
@@ -133,9 +103,7 @@ class Plugin {
 			$endpointUrl = self::DEFAUT_API_ENDPOINT;
 		}
 
-		$client = new VyfakturujAPI( $email, $apiKey, $endpointUrl );
-
-		return $client;
+		return new VyfakturujAPI( $email, $apiKey, $endpointUrl );
 	}
 
 	/**
@@ -143,13 +111,13 @@ class Plugin {
 	 *
 	 * @link https://wordpress.stackexchange.com/a/144873
 	 */
-	public function reactivate_updated_plugin( ) {
-		$current_version = SIMPLESHOP_PLUGIN_VERSION;
-		$previous_version = get_option('ssc_plugin_version', null);
+	public function reactivate_updated_plugin() {
+		$current_version  = SIMPLESHOP_PLUGIN_VERSION;
+		$previous_version = get_option( 'ssc_plugin_version', null );
 
 		/** @noinspection TypeUnsafeComparisonInspection */
-		if( $current_version != $previous_version) {
-			update_option('ssc_plugin_version', $current_version);
+		if ( $current_version != $previous_version ) {
+			update_option( 'ssc_plugin_version', $current_version );
 			$this->init_plugin_activation();
 		}
 	}
@@ -162,14 +130,44 @@ class Plugin {
 	 * @return array|false|mixed
 	 */
 	public function init_plugin_activation( VyfakturujAPI $api_client = null ) {
-		if($api_client === null && $this->has_credentials()) {
+		if ( $api_client === null && $this->has_credentials() ) {
 			$api_client = $this->get_api_client();
 		}
 
-		if($api_client === null) {
+		if ( $api_client === null ) {
 			return false;
 		}
 
 		return $api_client->initWPPlugin( site_url() );
- 	}
+	}
+
+	protected function load_email() {
+		return $this->settings->ssc_get_option( 'ssc_api_email' );
+	}
+
+	protected function load_api_key() {
+		return $this->settings->ssc_get_option( 'ssc_api_key' );
+	}
+
+	private function init() {
+		$this->settings = new Settings( $this );
+		$this->access   = new Access( $this->settings );
+
+		$this->admin = new Admin( $this );
+		$this->group = new Group();
+		new Rest( $this );
+		new Cron( $this );
+		new Metaboxes( $this );
+		$this->shortcodes = new Shortcodes( $this->access, $this->settings );
+		$this->init_gutenberg();
+	}
+
+	private function init_gutenberg() {
+		if ( function_exists( 'register_block_type' ) === false ) {
+			// Skip init Gutenberg features - Gurenberg not supported in WP
+			return;
+		}
+
+		new Gutenberg( $this->admin, $this->group, $this->access, $this->pluginMainFile, $this->shortcodes );
+	}
 }

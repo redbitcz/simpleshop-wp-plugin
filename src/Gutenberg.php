@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
@@ -17,8 +17,6 @@ class Gutenberg {
 	private $access;
 	/** @var string */
 	private $pluginDirUrl;
-	/** @var string */
-	private $pluginDirPath;
 	/** @var Shortcodes */
 	private $shortcodes;
 
@@ -27,12 +25,11 @@ class Gutenberg {
 		add_action( 'admin_init', [ $this, 'load_products' ] );
 		add_filter( 'render_block', [ $this, 'maybe_hide_block' ], 10, 2 );
 
-		$this->admin         = $admin;
-		$this->group         = $group;
-		$this->access        = $access;
-		$this->pluginDirUrl  = plugin_dir_url( $pluginMainFile );
-		$this->pluginDirPath = plugin_dir_path( $pluginMainFile );
-		$this->shortcodes    = $shortcodes;
+		$this->admin        = $admin;
+		$this->group        = $group;
+		$this->access       = $access;
+		$this->pluginDirUrl = plugin_dir_url( $pluginMainFile );
+		$this->shortcodes   = $shortcodes;
 	}
 
 	public function load_products() {
@@ -71,7 +68,7 @@ class Gutenberg {
 		 * Register the block on server-side to ensure that the block
 		 * scripts and styles for both frontend and backend are
 		 * enqueued when the editor loads.
-		 * @link https://wordpress.org/gutenberg/handbook/blocks/writing-your-first-block-type#enqueuing-block-scripts
+		 * @link  https://wordpress.org/gutenberg/handbook/blocks/writing-your-first-block-type#enqueuing-block-scripts
 		 * @since 1.16.0
 		 */
 		register_block_type(
@@ -101,15 +98,13 @@ class Gutenberg {
 	 * @return string
 	 */
 	public function maybe_hide_block( $content, $block ) {
-		$ignore_dates = isset( $block['attrs']['simpleShopIgnoreDates'] )
-			? (bool) $block['attrs']['simpleShopIgnoreDates']
-			: false;
+		$ignore_dates = isset( $block['attrs']['simpleShopIgnoreDates'] ) && $block['attrs']['simpleShopIgnoreDates'];
 
 		$use_dates = $ignore_dates === false;
 
 		// Back compatibility to old method from sifgle-group
-		if (!empty($block['attrs']['simpleShopGroup']) && !isset($block['attrs']['simpleShopGroups'])) {
-			$block['attrs']['simpleShopGroups'] = [$block['attrs']['simpleShopGroup']];
+		if ( ! empty( $block['attrs']['simpleShopGroup'] ) && ! isset( $block['attrs']['simpleShopGroups'] ) ) {
+			$block['attrs']['simpleShopGroups'] = [ $block['attrs']['simpleShopGroup'] ];
 		}
 
 		$args = [

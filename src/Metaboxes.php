@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
@@ -111,7 +111,8 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name' => __( 'Delay access to page (days after registration to the member section)', 'simpleshop-cz' ),
+					'name' => __( 'Delay access to page (days after registration to the member section)',
+						'simpleshop-cz' ),
 					'desc' => __(
 						'Enter the number of days to delay access to this page after the registration. For example: If the registration to the member section is on January 1st and you set delay to 5 days, the user gets access to the content from January 6th.',
 						'simpleshop-cz'
@@ -123,7 +124,8 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name' => __( 'Allow access only for specific number of days (days after registration to the member section)', 'simpleshop-cz' ),
+					'name' => __( 'Allow access only for specific number of days (days after registration to the member section)',
+						'simpleshop-cz' ),
 					'desc' => __(
 						'Allow access only for specific number of days after registration. For example: If the registration to the member section is on January 1st and you set 14 days, the user will be able to access the page until January 14th included.',
 						'simpleshop-cz'
@@ -135,27 +137,27 @@ class Metaboxes {
 
 			$cmb->add_field(
 				[
-					'name'            => __( 'Allow access from this date', 'simpleshop-cz' ),
-					'desc'            => __(
+					'name'        => __( 'Allow access from this date', 'simpleshop-cz' ),
+					'desc'        => __(
 						'Select the date and time when the access to this page will be allowed',
 						'simpleshop-cz'
 					),
-					'id'              => $this->prefix . 'date_to_access',
-					'type'            => 'text_datetime_timestamp',
-					'date_format'     => 'Y-m-d',
+					'id'          => $this->prefix . 'date_to_access',
+					'type'        => 'text_datetime_timestamp',
+					'date_format' => 'Y-m-d',
 				]
 			);
 
 			$cmb->add_field(
 				[
-					'name'            => __( 'Allow access till this date.', 'simpleshop-cz' ),
-					'desc'            => __(
+					'name'        => __( 'Allow access till this date.', 'simpleshop-cz' ),
+					'desc'        => __(
 						'Select the date and time, until which the access to this page will be allowed',
 						'simpleshop-cz'
 					),
-					'id'              => $this->prefix . 'date_until_to_access',
-					'type'            => 'text_datetime_timestamp',
-					'date_format'     => 'Y-m-d',
+					'id'          => $this->prefix . 'date_until_to_access',
+					'type'        => 'text_datetime_timestamp',
+					'date_format' => 'Y-m-d',
 				]
 			);
 
@@ -188,7 +190,7 @@ class Metaboxes {
 	/**
 	 * Add groups table to user profile
 	 *
-	 * @param  WP_User  $user  WP User
+	 * @param WP_User $user WP User
 	 */
 	public function render_user_profile_groups( $user ) {
 		$ssc_group  = new Group();
@@ -196,7 +198,7 @@ class Metaboxes {
 		$membership = new Membership( $user->ID );
 		$access     = $this->loader->get_access(); ?>
 
-        <style type="text/css">
+        <style>
             #simpleshop__groups th {
                 padding: 15px 10px;
             }
@@ -243,10 +245,11 @@ class Metaboxes {
                                         <input type="checkbox" name="ssc_groups[<?php
 										echo esc_attr( $group_id ) ?>][is_member]"
                                                value="on" <?php
-										checked( array_key_exists( $group_id, $membership->groups ), true ) ?>>
+										checked( array_key_exists( $group_id, $membership->groups ) ) ?>>
 										<?php
 									} else {
-										echo array_key_exists( $group_id, $membership->groups ) ? __( 'Yes', 'simpleshop-cz' ) : __( 'No', 'simpleshop-cz' );
+										echo array_key_exists( $group_id, $membership->groups ) ? __( 'Yes',
+											'simpleshop-cz' ) : __( 'No', 'simpleshop-cz' );
 									} ?>
                                 </td>
                                 <td>
@@ -256,10 +259,14 @@ class Metaboxes {
                                                name="ssc_groups[<?php
 										       echo esc_attr( $group_id ) ?>][subscription_date]"
                                                value="<?php
-										       echo esc_attr( get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true ) ) ?>">
+										       echo esc_attr( get_user_meta( $user->ID,
+											       $this->prefix . 'group_subscription_date_' . $group_id,
+											       true ) ) ?>">
 										<?php
 									} else {
-										echo esc_html( get_user_meta( $user->ID, $this->prefix . 'group_subscription_date_' . $group_id, true ) );
+										echo esc_html( get_user_meta( $user->ID,
+											$this->prefix . 'group_subscription_date_' . $group_id,
+											true ) );
 									} ?>
                                 </td>
                                 <td>
@@ -269,10 +276,14 @@ class Metaboxes {
                                                name="ssc_groups[<?php
 										       echo esc_attr( $group_id ) ?>][subscription_valid_to]"
                                                value="<?php
-										       echo esc_attr( get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true ) ) ?>">
+										       echo esc_attr( get_user_meta( $user->ID,
+											       $this->prefix . 'group_subscription_valid_to_' . $group_id,
+											       true ) ) ?>">
 										<?php
 									} else {
-										echo esc_html( get_user_meta( $user->ID, $this->prefix . 'group_subscription_valid_to_' . $group_id, true ) );
+										echo esc_html( get_user_meta( $user->ID,
+											$this->prefix . 'group_subscription_valid_to_' . $group_id,
+											true ) );
 									} ?>
                                 </td>
                             </tr>
@@ -303,7 +314,8 @@ class Metaboxes {
 		$groups = [];
 		if ( ! empty( $_POST['ssc_groups'] ) ) {
 			foreach ( $_POST['ssc_groups'] as $group_id => $group ) {
-				if ( ! in_array( $group_id, $existing_groups ) && $group['subscription_date'] && $group['subscription_date'] < date( 'Y-m-d' ) ) {
+				if ( ! in_array( $group_id,
+						$existing_groups ) && $group['subscription_date'] && $group['subscription_date'] < date( 'Y-m-d' ) ) {
 					$this->loader->get_access()->send_welcome_email( $user_id );
 				}
 				if ( ! empty( $group['is_member'] ) && $group['is_member'] ) {
@@ -314,8 +326,14 @@ class Metaboxes {
 				}
 
 				update_user_meta( $user_id, $this->prefix . 'user_groups', $groups );
-				update_user_meta( $user_id, $this->prefix . 'group_subscription_date_' . $group_id, empty( $group['subscription_date'] ) ? '' : date( 'Y-m-d', strtotime( $group['subscription_date'] ) ) );
-				update_user_meta( $user_id, $this->prefix . 'group_subscription_valid_to_' . $group_id, empty( $group['subscription_valid_to'] ) ? '' : date( 'Y-m-d', strtotime( $group['subscription_valid_to'] ) ) );
+				update_user_meta( $user_id,
+					$this->prefix . 'group_subscription_date_' . $group_id,
+					empty( $group['subscription_date'] ) ? '' : date( 'Y-m-d',
+						strtotime( $group['subscription_date'] ) ) );
+				update_user_meta( $user_id,
+					$this->prefix . 'group_subscription_valid_to_' . $group_id,
+					empty( $group['subscription_valid_to'] ) ? '' : date( 'Y-m-d',
+						strtotime( $group['subscription_valid_to'] ) ) );
 			}
 		}
 	}
@@ -341,13 +359,13 @@ class Metaboxes {
         <script type="text/javascript">
             jQuery(document).ready(function ($) {
                 $("#ss-user-search").keyup(function () {
-                    var value = this.value.toLowerCase().trim();
+                    let value = this.value.toLowerCase().trim();
 
                     $("table tr").each(function (index) {
                         if (!index) return;
                         $(this).find("td").each(function () {
-                            var id = $(this).text().toLowerCase().trim();
-                            var not_found = (id.indexOf(value) === -1);
+                            let id = $(this).text().toLowerCase().trim();
+                            let not_found = (id.indexOf(value) === -1);
                             $(this).closest('tr').toggle(!not_found);
                             return not_found;
                         });
@@ -424,8 +442,9 @@ class Metaboxes {
 
 	public function adjust_meta_values_save( $override, $data, $args, $field ) {
 		if ( $data['field_id'] === $this->prefix . 'date_to_access' || $data['field_id'] === $this->prefix . 'date_until_to_access' ) {
-            update_post_meta( $data['id'], $data['field_id'], date( 'Y-m-d H:i:s', $data['value'] ) );
-            return true;
+			update_post_meta( $data['id'], $data['field_id'], date( 'Y-m-d H:i:s', $data['value'] ) );
+
+			return true;
 		}
 
 		return $override;
@@ -433,8 +452,8 @@ class Metaboxes {
 
 	public function save_field( $field_id, $data, $args, $field ) {
 		if ( $field_id === $this->prefix . 'date_to_access' || $field_id === $this->prefix . 'date_until_to_access' ) {
-			if ( empty( $_POST[$field_id]['date'] ) ) {
-				delete_post_meta( $_POST['post_ID'],$field_id );
+			if ( empty( $_POST[ $field_id ]['date'] ) ) {
+				delete_post_meta( $_POST['post_ID'], $field_id );
 			}
 		}
 	}

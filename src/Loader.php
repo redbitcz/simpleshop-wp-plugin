@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
@@ -22,7 +22,7 @@ class Loader {
 
 	/**
 	 * @param string $method
-	 * @param array $arguments
+	 * @param array  $arguments
 	 *
 	 * @return mixed
 	 */

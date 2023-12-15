@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
@@ -52,30 +52,26 @@ class Helpers {
 					? $ref->getStartLine()
 					: $ref->getMethod( substr( $item['function'],
 						strpos( $item['function'], '::' ) + 2 ) )->getStartLine();
-
 				// array( object, method ), array( string object, method ), array( string object, string 'parent::method' )
 			} elseif ( is_array( $item['function'] ) ) {
-
 				$ref = new ReflectionClass( $item['function'][0] );
 
 				// $item['function'][0] is a reference to existing object
 				$item['function'] = [
 					is_object( $item['function'][0] ) ? get_class( $item['function'][0] ) : $item['function'][0],
-					$item['function'][1]
+					$item['function'][1],
 				];
 				$item['file']     = $ref->getFileName();
 				$item['line']     = strpos( $item['function'][1], '::' )
 					? $ref->getParentClass()->getMethod( substr( $item['function'][1],
 						strpos( $item['function'][1], '::' ) + 2 ) )->getStartLine()
 					: $ref->getMethod( $item['function'][1] )->getStartLine();
-
 				// closures
 			} elseif ( is_callable( $item['function'] ) ) {
 				$ref              = new ReflectionFunction( $item['function'] );
 				$item['function'] = get_class( $item['function'] );
 				$item['file']     = $ref->getFileName();
 				$item['line']     = $ref->getStartLine();
-
 			}
 		}
 
@@ -103,7 +99,6 @@ class Helpers {
 				     && is_a( $function['function'][0], $class )
 				     && $method === $function['function'][1]
 				) {
-
 					remove_filter(
 						$tag,
 						[ $function['function'][0], $method ],

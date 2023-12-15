@@ -1,22 +1,22 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
 
 class Membership {
-	private $user_id;
 	public $groups = [];
+	private $user_id;
 
 	/**
 	 * Membership constructor.
 	 * Get user data if requested
 	 *
-	 * @param  string  $user_id
+	 * @param string $user_id
 	 */
 	public function __construct( $user_id = '' ) {
 		if ( $user_id ) {
@@ -60,7 +60,8 @@ class Membership {
 	/**
 	 * Set the date of user subscription to the group
 	 *
-	 * @param $group_id
+	 * @param int                   $group_id
+	 * @param null|non-empty-string $valid_from
 	 *
 	 * @return bool|int
 	 */
