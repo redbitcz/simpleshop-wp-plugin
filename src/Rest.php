@@ -123,35 +123,27 @@ class Rest extends WP_REST_Controller {
 			if ( $ssc_group->group_exists() ) {
 				$valid_to        = $request->get_param( 'valid_to' ) ?: '';
 				$valid_to_months = $request->get_param( 'valid_to_months' ) ?: '';
+				$valid_from      = $request->get_param( 'valid_from' ) ?: '';
 
 				$membership = new Membership( $user_id );
 				// Check if the user is already member of the group, if so, adjust the valid to date
 				if ( ! empty( $membership->groups[ $group ]['valid_to'] ) && $valid_to_months !== '' ) {
-					$valid_from          = $request->get_param( 'valid_from' ) ?: '';
 					$original_valid_to   = $membership->groups[ $group ]['valid_to'];
-					$original_valid_from = isset( $membership->groups[ $group ]['valid_from'] )
-						? $membership->groups[ $group ]['valid_from']
-						: '';
+					$original_valid_from = $membership->groups[ $group ]['valid_from'] ?? '';
 					$date                = max( $original_valid_from,
 						$original_valid_to,
 						$valid_from,
-						wp_date( 'Y-m-d' )
-					);
+						wp_date( 'Y-m-d' ) );
 					// Add number of months to either current date or original date in the case it's in the future
 					$valid_to = wp_date( 'Y-m-d', strtotime( '+' . $valid_to_months . ' month', strtotime( $date ) ) );
 				}
 
 				// Add user to the group
-				$ssc_group->add_user_to_group( $user_id );
+				$ssc_group->add_user_to_group( $user_id, $valid_from );
 
 				// Refresh the membership data
 				$membership = new Membership( $user_id );
 				// Set valid from, either from the request, or current date
-				$valid_from = $membership->get_subscription_date( $group );
-				if ( ! $valid_from ) {
-					$valid_from = $request->get_param( 'valid_from' ) ?: date( 'Y-m-d' );
-					$membership->set_subscription_date( $group, $valid_from );
-				}
 				$membership->set_valid_to( $group, $valid_to );
 				// Schedule the action to send out welcome email if the valid_from is in the future
 				if ( $valid_from > date( 'Y-m-d' ) ) {

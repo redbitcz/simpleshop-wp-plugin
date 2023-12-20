@@ -87,16 +87,21 @@ class Group {
 	 *
 	 * @param $user_id
 	 */
-	public function add_user_to_group( $user_id ) {
+	public function add_user_to_group( $user_id, string $valid_from ) {
 		$groups = $this->get_user_groups( $user_id );
 
-		if ( ! in_array( $this->id, $groups ) ) {
-			$groups[] = $this->id;
-			update_user_meta( $user_id, '_ssc_user_groups', $groups );
+		if (in_array($this->id, $groups)) {
+			return;
+		}
 
-			// Set the date of user registration to the group
-			$membership = new Membership( $user_id );
-			$membership->set_subscription_date( $this->id );
+		$groups[] = $this->id;
+		update_user_meta( $user_id, '_ssc_user_groups', $groups );
+
+		// Set the date of user registration to the group
+		$membership = new Membership( $user_id );
+
+		if (!$membership->get_subscription_date($this->id)) {
+			$membership->set_subscription_date( $this->id, $valid_from ?: null );
 		}
 	}
 
