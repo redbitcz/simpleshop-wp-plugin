@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
@@ -132,10 +132,13 @@ class Settings {
 	 */
 	public function admin_page_display() {
 		?>
-		<div class="wrap cmb2-options-page <?php echo $this->key; ?>">
-			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
-			<?php cmb2_metabox_form( $this->metabox_id, $this->key ); ?>
-		</div>
+        <div class="wrap cmb2-options-page <?php
+		echo $this->key; ?>">
+            <h2><?php
+				echo esc_html( get_admin_page_title() ); ?></h2>
+			<?php
+			cmb2_metabox_form( $this->metabox_id, $this->key ); ?>
+        </div>
 		<?php
 	}
 
@@ -144,7 +147,6 @@ class Settings {
 	 * @since  0.1.0
 	 */
 	public function add_options_page_metabox() {
-
 		// hook in our save notices
 		add_action( "cmb2_save_options-page_fields_{$this->metabox_id}", [ $this, 'settings_notices' ], 10, 2 );
 
@@ -207,7 +209,8 @@ class Settings {
 				                    . '<b>{pages}</b> = list of pages to which the user has purchased access<br/>'
 				                    . '<b>{mail}</b> = user email (usually the same as login)<br/>'
 				                    . '</div>'
-					, 'simpleshop-cz' ),
+					,
+					'simpleshop-cz' ),
 				'id'         => 'ssc_email_text',
 				'type'       => 'wysiwyg',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
@@ -224,7 +227,9 @@ Your purchased content:
 
 With regards,
 SimpleShop.cz - <i>Everyone can sell with us</i>'
-					, 'simpleshop-cz' ), wp_login_url() ),
+					,
+					'simpleshop-cz' ),
+					wp_login_url() ),
 			]
 		);
 
@@ -253,7 +258,8 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		$cmb->add_field(
 			[
 				'name' => __( 'SimpleShop API Key', 'simpleshop-cz' ),
-				'desc' => __( 'The key can be found in SimpleShop -> Settings -> Connection -> WordPress/Mioweb', 'simpleshop-cz' ),
+				'desc' => __( 'The key can be found in SimpleShop -> Settings -> Connection -> WordPress/Mioweb',
+					'simpleshop-cz' ),
 				'id'   => 'ssc_api_key',
 				'type' => 'text',
 			]
@@ -352,8 +358,8 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 	/**
 	 * Register settings notices for display
 	 *
-	 * @param int $object_id Option key
-	 * @param array $updated Array of updated fields
+	 * @param int   $object_id Option key
+	 * @param array $updated   Array of updated fields
 	 *
 	 * @return void
 	 * @since  0.1.0
@@ -382,7 +388,10 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		} catch ( VyfakturujAPIException $e ) {
 			update_option( 'ssc_valid_api_keys', 0 );
 
-			add_settings_error( $this->key . '-error', '', __( 'Error during communication with SimpleShop API, please try it later', 'simpleshop-cz' ), 'error' );
+			add_settings_error( $this->key . '-error',
+				'',
+				__( 'Error during communication with SimpleShop API, please try it later', 'simpleshop-cz' )
+			);
 			settings_errors( $this->key . '-error' );
 
 			return;
@@ -442,8 +451,8 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 	/**
 	 * Wrapper function around cmb2_get_option
 	 *
-	 * @param string $key Options array key
-	 * @param mixed $default Optional default value
+	 * @param string $key     Options array key
+	 * @param mixed  $default Optional default value
 	 *
 	 * @return mixed           Option value
 	 * @since  0.1.0
@@ -456,7 +465,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		}
 
 		// Fallback to get_option if CMB2 is not loaded yet.
-		$opts = get_option( $this->key, $key, $default );
+		$opts = get_option( $this->key, $key );
 
 		$val = $default;
 
@@ -483,15 +492,16 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 				add_action( 'admin_notices', [ $this, 'custom_api_endpoint_notice' ] );
 			}
 		}
-
 	}
 
 	public function custom_api_endpoint_notice() {
 		$url = empty( $_POST['ssc_api_endpoint_url'] ) ? $this->ssc_get_option( 'ssc_api_endpoint_url' ) : esc_attr( $_POST['ssc_api_endpoint_url'] );
 		?>
-		<div class="notice notice-warning">
-			<p><?php printf( __( "Warning: You have set custom SimpleShop API Endpoint URL: '%s'", 'simpleshop-cz' ), $url ); ?></p>
-		</div>
+        <div class="notice notice-warning">
+            <p><?php
+				printf( __( "Warning: You have set custom SimpleShop API Endpoint URL: '%s'", 'simpleshop-cz' ),
+					$url ); ?></p>
+        </div>
 		<?php
 	}
 }

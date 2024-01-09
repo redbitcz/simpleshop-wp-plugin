@@ -1,15 +1,16 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
 
 use Collator;
 use VyfakturujAPIException;
+use WP_Error;
 
 class Admin {
 	const PRODUCTS_CACHE_TTL = 3600 * 24;
@@ -66,28 +67,6 @@ class Admin {
 	}
 
 	/**
-	 * Returns current and valid products from cache or null if valid cache unavailable
-	 * @return array|null
-	 */
-	protected function get_simpleshop_products_cache() {
-		$cache    = get_option( 'ssc_cache_products', [] );
-		$cacheKey = $this->loader->get_cache_user_key();
-
-		// Check if cache is exists & is valid
-		$cachedTime = isset( $cache[ $cacheKey ][ self::PRODUCTS_CACHE_FIELD ] ) ? (int) $cache[ $cacheKey ][ self::PRODUCTS_CACHE_FIELD ] : 0;
-		$age        = time() - $cachedTime;
-
-		if ( $age < self::PRODUCTS_CACHE_TTL ) {
-			$products = $cache[ $cacheKey ];
-			unset( $products[ self::PRODUCTS_CACHE_FIELD ] );
-
-			return $products;
-		}
-
-		return null;
-	}
-
-	/**
 	 * Update Products cache from Vyfakturuj API
 	 */
 	public function update_simpleshop_products_cache() {
@@ -105,39 +84,8 @@ class Admin {
 
 			return update_option( 'ssc_cache_products', $cache );
 		} catch ( VyfakturujAPIException $e ) {
-			return new \WP_Error( 'api-error', $e->getMessage() );
+			return new WP_Error( 'api-error', $e->getMessage() );
 		}
-	}
-
-
-	/**
-	 * Load products from Vyfakturuj API. Don't call method directly, use `get_simpleshop_products()` to use cache
-	 * @return array
-	 * @throws VyfakturujAPIException
-	 */
-	protected function load_simpleshop_products() {
-		$values = [];
-		if ( $this->loader->has_credentials() ) {
-			$vyfakturuj_api = $this->loader->get_api_client();
-			$ret            = $vyfakturuj_api->getProducts();
-
-			if ( is_iterable( $ret ) ) {
-				foreach ( $ret as $product ) {
-					if ( isset( $product['code'], $product['name'], $product['archived'] ) && $product['archived'] === false ) {
-						$values[ $product['code'] ] = $product['name'];
-					}
-				}
-			}
-
-			// Sort by name - Collator support UTF-8, but requires `intl` extension
-			if ( class_exists( Collator::class ) ) {
-				( new Collator( 'cz_CZ' ) )->asort( $values );
-			} else {
-				asort( $values, SORT_FLAG_CASE | SORT_NATURAL );
-			}
-		}
-
-		return $values;
 	}
 
 	/**
@@ -173,18 +121,20 @@ class Admin {
 		}
 		?>
 
-		<?php if ( $post && $post->post_type === $mg_post_type ) : ?>
-            <style type="text/css">
+		<?php
+		if ( $post && $post->post_type === $mg_post_type ) : ?>
+            <style>
                 .misc-pub-section.misc-pub-visibility,
                 .misc-pub-section.curtime {
                     display: none;
                 }
             </style>
-		<?php endif; ?>
+		<?php
+		endif; ?>
 
         <!-- SSC TinyMCE Shortcode Plugin -->
         <script type='text/javascript'>
-            var sscContentGroups = <?php echo wp_json_encode( $outputGroups ) ?>;
+            let sscContentGroups = <?php echo wp_json_encode( $outputGroups ) ?>;
         </script>
 		<?php
 	}
@@ -226,9 +176,8 @@ class Admin {
 			'sscaddformbutton',
 			'ssccontentbutton',
 		];
-		$buttons = array_merge( $buttons, $newBtns );
 
-		return $buttons;
+		return array_merge( $buttons, $newBtns );
 	}
 
 	/**
@@ -306,10 +255,8 @@ class Admin {
 	public function ssc_group_column_content( $column, $post_id ) {
 		global $post;
 
-		switch ( $column ) {
-			case 'ssc_id' :
-				echo $post->ID;
-				break;
+		if ( $column == 'ssc_id' ) {
+			echo $post->ID;
 		}
 	}
 
@@ -326,5 +273,57 @@ class Admin {
 		if ( 'profile' === $current_screen->id || 'user-edit' === $current_screen->id ) {
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 		}
+	}
+
+	/**
+	 * Returns current and valid products from cache or null if valid cache unavailable
+	 * @return array|null
+	 */
+	protected function get_simpleshop_products_cache() {
+		$cache    = get_option( 'ssc_cache_products', [] );
+		$cacheKey = $this->loader->get_cache_user_key();
+
+		// Check if cache is exists & is valid
+		$cachedTime = isset( $cache[ $cacheKey ][ self::PRODUCTS_CACHE_FIELD ] ) ? (int) $cache[ $cacheKey ][ self::PRODUCTS_CACHE_FIELD ] : 0;
+		$age        = time() - $cachedTime;
+
+		if ( $age < self::PRODUCTS_CACHE_TTL ) {
+			$products = $cache[ $cacheKey ];
+			unset( $products[ self::PRODUCTS_CACHE_FIELD ] );
+
+			return $products;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Load products from Vyfakturuj API. Don't call method directly, use `get_simpleshop_products()` to use cache
+	 * @return array
+	 * @throws VyfakturujAPIException
+	 */
+	protected function load_simpleshop_products() {
+		$values = [];
+		if ( $this->loader->has_credentials() ) {
+			$vyfakturuj_api = $this->loader->get_api_client();
+			$ret            = $vyfakturuj_api->getProducts();
+
+			if ( is_iterable( $ret ) ) {
+				foreach ( $ret as $product ) {
+					if ( isset( $product['code'], $product['name'], $product['archived'] ) && $product['archived'] === false ) {
+						$values[ $product['code'] ] = $product['name'];
+					}
+				}
+			}
+
+			// Sort by name - Collator support UTF-8, but requires `intl` extension
+			if ( class_exists( Collator::class ) ) {
+				( new Collator( 'cz_CZ' ) )->asort( $values );
+			} else {
+				asort( $values, SORT_FLAG_CASE | SORT_NATURAL );
+			}
+		}
+
+		return $values;
 	}
 }

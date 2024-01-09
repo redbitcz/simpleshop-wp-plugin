@@ -1,14 +1,16 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
 
+use DateTime;
 use WP_Error;
+use WP_Post;
 
 /** Handles the access for the posts / pages */
 class Access {
@@ -16,13 +18,12 @@ class Access {
 	private $settings;
 
 	/**
-	 * @param  Settings  $settings
+	 * @param Settings $settings
 	 */
 	public function __construct( Settings $settings ) {
 		$this->settings = $settings;
 
-		$redirect = true;
-		if ( apply_filters( 'ssc_redirect_on_locked_content', $redirect ) === true ) {
+		if ( apply_filters( 'ssc_redirect_on_locked_content', true ) === true ) {
 			add_action( 'template_redirect', [ $this, 'check_access' ] );
 		}
 
@@ -100,8 +101,8 @@ class Access {
 	/**
 	 * Check if user has permission to view the post
 	 *
-	 * @param  string  $post_id
-	 * @param  string  $user_id
+	 * @param string $post_id
+	 * @param string $user_id
 	 *
 	 * @return bool|WP_Error
 	 */
@@ -175,7 +176,8 @@ class Access {
 				}
 
 				if ( $expire_days_after_registration = $this->get_expire_days_after_registration() ) {
-					if ( $subscription_date <= date( 'Y-m-d', strtotime( "now - $expire_days_after_registration days" ) ) ) {
+					if ( $subscription_date <= date( 'Y-m-d',
+							strtotime( "now - $expire_days_after_registration days" ) ) ) {
 						// if the access already expired, just break the loop here, as the user might have multiple subscriptions
 						continue;
 					}
@@ -210,9 +212,9 @@ class Access {
 	/**
 	 * Get the date to access the post
 	 *
-	 * @param  string  $post_id
+	 * @param string $post_id
 	 *
-	 * @return mixed
+	 * @return false|string
 	 */
 	public function get_post_date_to_access( $post_id = '', $format = 'Y-m-d H:i:s' ) {
 		global $post;
@@ -227,15 +229,15 @@ class Access {
 
 		$date = get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_to_access', true );
 
-		return $date ? (new \DateTime($date))->format($format) : '';
+		return $date ? ( new DateTime( $date ) )->format( $format ) : '';
 	}
 
 	/**
 	 * Get the date until the access to the post is allowed
 	 *
-	 * @param  string  $post_id
+	 * @param string $post_id
 	 *
-	 * @return mixed
+	 * @return false|string
 	 */
 	public function get_post_date_until_to_access( $post_id = '', $format = 'Y-m-d H:i:s' ) {
 		global $post;
@@ -250,13 +252,13 @@ class Access {
 
 		$date = get_post_meta( $post_id, SIMPLESHOP_PREFIX . 'date_until_to_access', true );
 
-		return $date ? (new \DateTime($date))->format($format) : '';
+		return $date ? ( new DateTime( $date ) )->format( $format ) : '';
 	}
 
 	/**
 	 * Get the number of days the user has to be subscribed to have access to the post
 	 *
-	 * @param  string  $post_id
+	 * @param string $post_id
 	 *
 	 * @return mixed
 	 */
@@ -273,7 +275,7 @@ class Access {
 	/**
 	 * Get the number of days the user has to be subscribed to have access to the post
 	 *
-	 * @param  string  $post_id
+	 * @param string $post_id
 	 *
 	 * @return mixed
 	 */
@@ -291,7 +293,7 @@ class Access {
 	/**
 	 * Get the URL to redirect the user if he has no access
 	 *
-	 * @param  string  $post_id
+	 * @param string $post_id
 	 *
 	 * @return mixed
 	 */
@@ -351,7 +353,8 @@ class Access {
 
 		if ( ! empty( $specific_date_to ) ) {
 			// Fix shortcode.
-			if ( date( 'H:i:s', strtotime( $specific_date_to ) ) == '00:00:00' ) { //todo figure out how to use wp_date with timezone settings
+			if ( date( 'H:i:s',
+					strtotime( $specific_date_to ) ) == '00:00:00' ) { //todo figure out how to use wp_date with timezone settings
 				$specific_date_to = date( 'Y-m-d', strtotime( $specific_date_to ) ) . ' 23:59:59';
 			}
 
@@ -463,7 +466,7 @@ class Access {
 	 */
 	public function hide_menu_items() {
 		?>
-        <style type="text/css">
+        <style>
             .ssc-hide {
                 display: none !important;
             }
@@ -533,7 +536,7 @@ class Access {
 
 			// Scrub through posts and check, if some of the posts has that group assigned
 			foreach ( $posts as $post ) {
-				/** @var \WP_Post $post */
+				/** @var WP_Post $post */
 				$groups = $this->get_post_groups( $post->ID );
 
 				if ( in_array( $group, $groups ) ) {

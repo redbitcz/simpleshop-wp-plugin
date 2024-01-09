@@ -1,9 +1,9 @@
 <?php
 /**
- * @package Redbit\SimpleShop\WpPlugin
- * @license MIT
- * @copyright 2016-2022 Redbit s.r.o.
- * @author Redbit s.r.o. <info@simpleshop.cz>
+ * @package   Redbit\SimpleShop\WpPlugin
+ * @license   MIT
+ * @copyright 2016-2023 Redbit s.r.o.
+ * @author    Redbit s.r.o. <info@simpleshop.cz>
  */
 
 namespace Redbit\SimpleShop\WpPlugin;
@@ -18,11 +18,13 @@ class Cron {
 		$this->loader = $loader;
 
 		if ( ! wp_next_scheduled( 'ssc_send_user_has_access_to_post_notification' ) ) {
-			wp_schedule_event( strtotime( 'tomorrow 02:00:00' ), 'daily', 'ssc_send_user_has_access_to_post_notification' );
+			wp_schedule_event( strtotime( 'tomorrow 02:00:00' ),
+				'daily',
+				'ssc_send_user_has_access_to_post_notification' );
 		}
 
 		add_action( 'ssc_send_user_has_access_to_post_notification',
-		            [ $this, 'send_user_has_access_to_post_notification' ] );
+			[ $this, 'send_user_has_access_to_post_notification' ] );
 	}
 
 	public function send_user_has_access_to_post_notification() {
@@ -77,7 +79,7 @@ class Cron {
 				// Get days to access
 				$days_to_access = $access->get_post_days_to_access();
 				// Get date to access
-				$date_to_access = $access->get_post_date_to_access($post->ID, 'Y-m-d');
+				$date_to_access = $access->get_post_date_to_access( $post->ID, 'Y-m-d' );
 
 				// TODO: Rewrite this to first find the groups that have access to the post, than find users for these groups.
 				// That way we won't have to scrub through all the users all the time
