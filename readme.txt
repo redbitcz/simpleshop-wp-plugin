@@ -2,7 +2,7 @@
 Contributors: redbitcz, simpleshopcz, jakubboucek, vasikgreif, vitvavra
 Tags: simpleshop, simpleshop.cz, membership, member, access control, selling form
 Requires at least: 5.0.0
-Tested up to: 6.3.2
+Tested up to: 6.4.2
 Requires PHP: 7.4
 Stable tag: trunk
 License: MIT
