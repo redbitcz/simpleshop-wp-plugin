@@ -345,7 +345,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 	 * Maybe delete the API keys
 	 */
 	public function maybe_disconnect_simpleshop() {
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'] ) ) {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'] ) ) {
 			return;
 		}
 
@@ -363,6 +363,8 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 
 		// Update the SS options
 		update_option( $this->key, $options );
+		$url = add_query_arg( [ 'page' => 'ssc_options' ], admin_url( 'admin.php' ) );
+		wp_redirect( $url );
 	}
 
 	/**
