@@ -83,9 +83,15 @@ class Settings {
 		$object_type,
 		$field_type_object
 	) {
+		$url = add_query_arg( [
+			'_wpnonce'              => wp_create_nonce(),
+			'page'                  => 'ssc_options',
+			'disconnect_simpleshop' => 1,
+		], admin_url( 'admin.php' ) );
+
 		printf(
 			'<a href="%s">%s</a>',
-			htmlspecialchars( admin_url( 'admin.php?page=ssc_options&disconnect_simpleshop=1' ), ENT_QUOTES ),
+			htmlspecialchars( $url, ENT_QUOTES ),
 			__( 'Disconnect SimpleShop', 'simpleshop-cz' )
 		);
 	}
@@ -339,6 +345,10 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 	 * Maybe delete the API keys
 	 */
 	public function maybe_disconnect_simpleshop() {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'] ) ) {
+			return;
+		}
+
 		if ( ! isset( $_GET['disconnect_simpleshop'] ) || $_GET['disconnect_simpleshop'] !== '1' ) {
 			return;
 		}
@@ -353,6 +363,8 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 
 		// Update the SS options
 		update_option( $this->key, $options );
+		$url = add_query_arg( [ 'page' => 'ssc_options' ], admin_url( 'admin.php' ) );
+		wp_redirect( $url );
 	}
 
 	/**
