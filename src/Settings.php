@@ -345,11 +345,13 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 	 * Maybe delete the API keys
 	 */
 	public function maybe_disconnect_simpleshop() {
+		if ( ! isset( $_GET['disconnect_simpleshop'] ) || $_GET['disconnect_simpleshop'] !== '1' ) {
+			return;
+		}
 		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'] ) ) {
 			return;
 		}
-
-		if ( ! isset( $_GET['disconnect_simpleshop'] ) || $_GET['disconnect_simpleshop'] !== '1' ) {
+		if ( ! current_user_can( 'administrator' )) {
 			return;
 		}
 
