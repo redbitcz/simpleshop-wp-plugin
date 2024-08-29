@@ -15,11 +15,12 @@
     "email": "info@simpleshop.cz"
   },
   "require": {
-    "php": ">=7.0",
+    "php": ">=7.4",
     "ext-json": "*",
-    "cmb2/cmb2": "dev-master",
+    "cmb2/cmb2": "^2.11",
     "webdevstudios/cmb2-post-search-field": "dev-master",
-    "vyfakturuj/vyfakturuj-api-php": "^2.5"
+    "vyfakturuj/vyfakturuj-api-php": "^2.5",
+    "symfony/stopwatch": "^5.4"
   },
   "config": {
     "optimize-autoloader": true,
