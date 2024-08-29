@@ -9,6 +9,7 @@
 namespace Redbit\SimpleShop\WpPlugin;
 
 class SimpleShop {
+
 	/** @var string */
 	public static $pluginMainFile = __DIR__ . '/../simpleshop-cz.php';
 
@@ -18,18 +19,7 @@ class SimpleShop {
 	/**
 	 * @return Plugin
 	 */
-	public static function getInstance() {
-		if ( self::$instance === null ) {
-			self::$instance = self::factory();
-		}
-
-		return self::$instance;
-	}
-
-	/**
-	 * @return Plugin
-	 */
-	protected static function factory() {
-		return new Plugin( self::$pluginMainFile );
+	public static function getInstance(): Plugin {
+		return self::$instance ?? self::$instance = new Plugin( self::$pluginMainFile );
 	}
 }

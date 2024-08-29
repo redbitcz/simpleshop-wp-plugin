@@ -21,6 +21,9 @@ use VyfakturujAPIException;
  */
 class Settings {
 
+	private const GET_PROFILE_FLAG = 'ssc_get_profile';
+	private const PAGE_KEY = 'ssc_options';
+
 	/**
 	 * Options Page title
 	 * @var string
@@ -32,12 +35,6 @@ class Settings {
 	 * @var string
 	 */
 	protected $options_page = '';
-
-	/**
-	 * Option key, and option page slug
-	 * @var string
-	 */
-	private $key = 'ssc_options';
 
 	/**
 	 * Options page metabox id
@@ -71,18 +68,14 @@ class Settings {
 		add_action( 'admin_init', [ $this, 'init' ] );
 		add_action( 'admin_menu', [ $this, 'add_options_page' ] );
 		add_action( 'cmb2_admin_init', [ $this, 'add_options_page_metabox' ] );
-		add_filter( 'cmb2_render_disconnect_button', [ $this, 'field_type_disconnect_button' ], 10, 5 );
+		add_filter( 'cmb2_render_ssc_disconnect_button', [ $this, 'field_type_disconnect_button' ], 10, 0 );
+		add_filter( 'cmb2_render_ssc_profile_button', [ $this, 'field_type_profiling_button' ], 10, 0 );
 		add_action( 'admin_init', [ $this, 'maybe_disconnect_simpleshop' ] );
+		add_action( 'admin_init', [ $this, 'get_profiling_data' ] );
 		add_action( 'admin_print_styles', [ $this, 'maybe_display_messages' ] );
 	}
 
-	public function field_type_disconnect_button(
-		$field,
-		$escaped_value,
-		$object_id,
-		$object_type,
-		$field_type_object
-	) {
+	public function field_type_disconnect_button() {
 		$url = add_query_arg( [
 			'_wpnonce'              => wp_create_nonce(),
 			'page'                  => 'ssc_options',
@@ -96,12 +89,25 @@ class Settings {
 		);
 	}
 
+	public function field_type_profiling_button() {
+		$url = add_query_arg( [
+			'_wpnonce'             => wp_create_nonce(),
+			'page'                 => 'ssc_options',
+			self::GET_PROFILE_FLAG => 1
+		], admin_url( 'index.php' ) );
+
+		printf( '<a href="%s" target="_blank">%s</a>',
+			htmlspecialchars( $url, ENT_QUOTES ),
+			__( 'Dump profiling data', 'simpleshop-cz' )
+		);
+	}
+
 	/**
 	 * Register our setting to WP
 	 * @since  0.1.0
 	 */
 	public function init() {
-		register_setting( $this->key, $this->key );
+		register_setting( self::PAGE_KEY, self::PAGE_KEY );
 	}
 
 	/**
@@ -116,7 +122,7 @@ class Settings {
 			$translatedTitle,
 			$translatedTitle,
 			'manage_options',
-			'admin.php?page=' . urlencode( $this->key ),
+			'admin.php?page=' . urlencode( self::PAGE_KEY ),
 			[ $this, 'admin_page_display' ]
 		);
 
@@ -124,10 +130,10 @@ class Settings {
 			$translatedTitle,
 			$translatedTitle,
 			'manage_options',
-			$this->key,
+			self::PAGE_KEY,
 			[ $this, 'admin_page_display' ]
 		);
-		remove_menu_page( $this->key );
+		remove_menu_page( self::PAGE_KEY );
 		// Include CMB CSS in the head to avoid FOUC
 		add_action( "admin_print_styles-{$this->options_page}", [ 'CMB2_hookup', 'enqueue_cmb_css' ] );
 	}
@@ -139,11 +145,11 @@ class Settings {
 	public function admin_page_display() {
 		?>
         <div class="wrap cmb2-options-page <?php
-		echo $this->key; ?>">
+        echo self::PAGE_KEY; ?>">
             <h2><?php
 				echo esc_html( get_admin_page_title() ); ?></h2>
 			<?php
-			cmb2_metabox_form( $this->metabox_id, $this->key ); ?>
+			cmb2_metabox_form( $this->metabox_id, self::PAGE_KEY ); ?>
         </div>
 		<?php
 	}
@@ -164,7 +170,7 @@ class Settings {
 				'show_on'    => [
 					// These are important, don't remove
 					'key'   => 'options-page',
-					'value' => [ $this->key, ],
+					'value' => [ self::PAGE_KEY ],
 				],
 			]
 		);
@@ -335,8 +341,18 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 				'desc'       => __( 'You found it at SimpleShop in Settings (Nastavení) -> WP Plugin',
 					'simpleshop-cz' ),
 				'id'         => 'ssc_api_disconnect',
-				'type'       => 'disconnect_button',
+				'type' => 'ssc_disconnect_button',
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
+			]
+		);
+
+		$cmb->add_field(
+			[
+				'name'       => __( 'Profiling information', 'simpleshop-cz' ),
+				'desc'       => __( '[SERVICE FLAG] Download profiling information', 'simpleshop-cz' ),
+				'id'         => 'ssc_dump_profiling',
+				'type'       => 'ssc_profile_button',
+				'classes_cb' => [ $this, 'show_debug_fields' ],
 			]
 		);
 	}
@@ -356,7 +372,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		}
 
 		// Unset only API keys, leave the other settings saved
-		$options = get_option( $this->key );
+		$options = get_option( self::PAGE_KEY );
 		unset( $options['ssc_api_email'] );
 		unset( $options['ssc_api_key'] );
 
@@ -364,9 +380,29 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		update_option( 'ssc_valid_api_keys', 0 );
 
 		// Update the SS options
-		update_option( $this->key, $options );
+		update_option( self::PAGE_KEY, $options );
 		$url = add_query_arg( [ 'page' => 'ssc_options' ], admin_url( 'admin.php' ) );
 		wp_redirect( $url );
+	}
+
+	public function get_profiling_data(): void {
+		if ( ! isset( $_GET[ self::GET_PROFILE_FLAG ] ) || $_GET[ self::GET_PROFILE_FLAG ] !== '1' ) {
+			return;
+		}
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'] ) ) {
+			return;
+		}
+		if ( ! current_user_can( 'administrator' ) ) {
+			return;
+		}
+
+		$data = $this->loader->getStopwatch()->getStopwatchLog();
+		header( 'Content-Type: application/jsonl' );
+		header( 'Content-Disposition: attachment; filename="ssc_profiling.jsonl' );
+		header( 'Content-Length: ' . strlen( $data ) );
+
+		echo $data;
+        exit();
 	}
 
 	/**
@@ -402,22 +438,22 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		} catch ( VyfakturujAPIException $e ) {
 			update_option( 'ssc_valid_api_keys', 0 );
 
-			add_settings_error( $this->key . '-error',
+			add_settings_error( self::PAGE_KEY . '-error',
 				'',
 				__( 'Error during communication with SimpleShop API, please try it later', 'simpleshop-cz' )
 			);
-			settings_errors( $this->key . '-error' );
+			settings_errors( self::PAGE_KEY . '-error' );
 
 			return;
 		}
 
 
-		if ( $object_id !== $this->key || empty( $updated ) ) {
+		if ( $object_id !== self::PAGE_KEY || empty( $updated ) ) {
 			return;
 		}
 
-		add_settings_error( $this->key . '-notices', '', __( 'Settings updated.', 'simpleshop-cz' ), 'updated' );
-		settings_errors( $this->key . '-notices' );
+		add_settings_error( self::PAGE_KEY . '-notices', '', __( 'Settings updated.', 'simpleshop-cz' ), 'updated' );
+		settings_errors( self::PAGE_KEY . '-notices' );
 	}
 
 	/**
@@ -475,11 +511,11 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 	public function ssc_get_option( $key = '', $default = null ) {
 		if ( function_exists( 'cmb2_get_option' ) ) {
 			// Use cmb2_get_option as it passes through some key filters.
-			return cmb2_get_option( $this->key, $key, $default );
+			return cmb2_get_option( self::PAGE_KEY, $key, $default );
 		}
 
 		// Fallback to get_option if CMB2 is not loaded yet.
-		$opts = get_option( $this->key, $key );
+		$opts = get_option( self::PAGE_KEY, $key );
 
 		$val = $default;
 

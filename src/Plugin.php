@@ -31,6 +31,9 @@ class Plugin {
 	/** @var string */
 	private $pluginMainFile;
 
+	/** @var Stopwatch */
+	private $stopwatch;
+
 	/**
 	 * @param string $mainFile Filename of main plugin path. Used for native WP functions
 	 */
@@ -169,5 +172,21 @@ class Plugin {
 		}
 
 		new Gutenberg( $this->admin, $this->group, $this->access, $this->pluginMainFile, $this->shortcodes );
+	}
+
+	public static function lock(): void {
+		global $wpdb;
+
+		$wpdb->get_results( "select get_lock('_ssc_lock', 100);" );
+	}
+
+	public static function releaseLock(): void {
+		global $wpdb;
+
+		$wpdb->get_results( "select release_lock('_ssc_lock');" );
+	}
+
+	public function getStopwatch(): Stopwatch {
+		return $this->stopwatch ?? $this->stopwatch = new Stopwatch();
 	}
 }
