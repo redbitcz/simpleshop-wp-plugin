@@ -6,6 +6,7 @@
 *node_modules*
 *tools*
 *wordpress*
+*tests*
 *.DS_Store
 composer.json
 composer.lock
