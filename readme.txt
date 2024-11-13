@@ -1,7 +1,7 @@
 === SimpleShop ===
 Contributors: redbitcz, simpleshopcz, vasikgreif, vitvavra
 Tags: simpleshop, simpleshop.cz, membership, member, access control, selling form
-Requires at least: 5.0.0
+Requires at least: 5.3
 Tested up to: 6.4.2
 Requires PHP: 7.4
 Stable tag: trunk
@@ -12,7 +12,7 @@ The SimpleShop WP plugin connects your WordPress website with a SimpleShop accou
 
 == Description ==
 
-The SimpleShop WP plugin can be installed on a WordPress website with WP version 5.0 and higher or on a Mioweb website,
+The SimpleShop WP plugin can be installed on a WordPress website with WP version 5.3 and higher or on a Mioweb website,
 which does not contain its own member sections. The compatible version of PHP is 7.4 and higher.
 
 To ensure correct functionality of the plugin, we always recommend to update to the newest version of the plugin.
@@ -56,7 +56,7 @@ Yes, the plugin is completely free, but it is firmly connected to the account in
 
 = What version of WordPress and PHP does the plugin require? =
 
-You can install the plugin on WordPress 4.6 or higher. Furthermore, your site needs to run on a server with PHP 5.6.20 or higher.
+You can install the plugin on WordPress 5.3 or higher. Furthermore, your site needs to run on a server with PHP 7.4 or higher.
 
 = What parts of content can the plugin secure? =
 
