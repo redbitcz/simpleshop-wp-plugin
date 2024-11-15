@@ -1,8 +1,8 @@
 === SimpleShop ===
 Contributors: redbitcz, simpleshopcz, vasikgreif, vitvavra
-Tags: simpleshop, simpleshop.cz, membership, member, access control, selling form
+Tags: simpleshop, membership, member, access control, selling form
 Requires at least: 5.3
-Tested up to: 6.4.2
+Tested up to: 6.7
 Requires PHP: 7.4
 Stable tag: trunk
 License: MIT
