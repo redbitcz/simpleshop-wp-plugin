@@ -208,14 +208,19 @@ class Admin {
 			'show_ui'            => true,
 			'show_in_menu'       => 'simple_shop_settings',
 			'query_var'          => true,
-			'capability_type'    => 'post',
+			'capability_type' => [ 'ssc_group', 'ssc_groups' ],
+			'capabilities'    => [],
 			'has_archive'        => false,
 			'hierarchical'       => true,
 			'menu_position'      => null,
 			'supports'           => [ 'title' ],
 		];
-
 		register_post_type( 'ssc_group', $args );
+		$data = get_post_type_object( 'ssc_group' );
+		$role = get_role( 'administrator' );
+		foreach ( $data->cap as $item ) {
+			$role->add_cap( $item );
+		}
 	}
 
 	/**
