@@ -569,8 +569,14 @@ class Access {
 			$pages         = '';
 			$user          = get_user_by( 'ID', $user_id );
 
+			$meta_deleted = delete_user_meta( $user_id, '_ssc_new_user' );
 			// Check if we should generate new password
-			if ( ! get_user_meta( $user_id, '_ssc_new_user', true ) ) {
+			if ( $meta_deleted ) {
+				// we successfully deleted the meta, it means the user is new, so we generate a new password
+				$password = wp_generate_password( 8, false );
+				wp_set_password( $password, $user_id );
+				delete_user_meta( $user_id, '_ssc_new_user' );
+			} else {
 				$password = '<i>' . sprintf(
 						__(
 							'Your current password (which you set or we sent to you in a previous email). If you have lost your password, <a href="%s">you can reset it here</a>.',
@@ -578,10 +584,6 @@ class Access {
 						),
 						esc_attr( wp_lostpassword_url( get_bloginfo( 'url' ) ) )
 					) . '</i>';
-			} else {
-				$password = wp_generate_password( 8, false );
-				wp_set_password( $password, $user_id );
-				delete_user_meta( $user_id, '_ssc_new_user' );
 			}
 
 			foreach ( $links as $group_id => $linksInGroup ) {
