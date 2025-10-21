@@ -20,6 +20,6 @@
   "devDependencies": {
     "@wordpress/scripts": "^30.4.0",
     "lodash.assign": "^4.2.0",
-    "webpack-merge": "^5.7.2"
+    "webpack-merge": "^6.0.1"
   }
 }
