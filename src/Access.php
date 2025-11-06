@@ -573,7 +573,7 @@ class Access {
 			// Check if we should generate new password
 			if ( $meta_deleted ) {
 				// we successfully deleted the meta, it means the user is new, so we generate a new password
-				$password = wp_generate_password( 8, false );
+				$password = wp_generate_password();
 				wp_set_password( $password, $user_id );
 				delete_user_meta( $user_id, '_ssc_new_user' );
 			} else {
