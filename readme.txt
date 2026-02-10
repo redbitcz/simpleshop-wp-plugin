@@ -68,7 +68,7 @@ You can set a date for revealing the content by picking the date from the calend
 
 = Can the plugin automatically renew the membership? =
 
-Automatic renewal of membership is possible by using repeated payments in SimpleShop. For more information see the <a href="https://podpora.redbit.cz/navod/opakovane-platby-a-omezeni-clenstvi/">instructions for repeated payments</a> (Czech language only).
+Automatic renewal of membership is possible by using repeated payments in SimpleShop. For more information see the [instructions for repeated payments](https://podpora.redbit.cz/navod/opakovane-platby-a-omezeni-clenstvi/) (Czech language only).
 
 == Installation ==
 
