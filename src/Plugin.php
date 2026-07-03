@@ -66,7 +66,15 @@ class Plugin {
 	}
 
 	public function validate_secure_key( $key_to_validate ) {
-		return $key_to_validate == sha1( $this->secure_key );
+		if ( ! is_string( $this->secure_key ) || $this->secure_key === '' ) {
+			return false;
+		}
+
+		if ( ! is_string( $key_to_validate ) || $key_to_validate === '' ) {
+			return false;
+		}
+
+		return hash_equals( sha1( $this->secure_key ), $key_to_validate );
 	}
 
 	public function get_settings() {
