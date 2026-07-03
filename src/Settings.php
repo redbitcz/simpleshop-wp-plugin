@@ -269,8 +269,8 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 
 		$cmb->add_field(
 			[
-				'name' => __( 'SimpleShop API Key', 'simpleshop-cz' ),
-				'desc' => __( 'The key can be found in SimpleShop -> Settings -> Connection -> WordPress/Mioweb',
+				'name' => __( 'SimpleShop API key', 'simpleshop-cz' ),
+				'desc' => __( 'The key can be found in SimpleShop → Settings → Other systems → WordPress/Mioweb',
 					'simpleshop-cz' ),
 				'id'   => 'ssc_api_key',
 				'type' => 'text',
@@ -338,7 +338,7 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		$cmb->add_field(
 			[
 				'name'       => __( 'Disconnect SimpleShop', 'simpleshop-cz' ),
-				'desc'       => __( 'You found it at SimpleShop in Settings (Nastavení) -> WP Plugin',
+				'desc'       => __( 'You can find it in SimpleShop → Settings → Other systems → WordPress/Mioweb',
 					'simpleshop-cz' ),
 				'id'         => 'ssc_api_disconnect',
 				'type' => 'ssc_disconnect_button',
