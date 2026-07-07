@@ -23,7 +23,7 @@ To ensure correct functionality of the plugin, we always recommend to update to 
 
 The SimpleShop WordPress plugin is primarily used to create and manage member sections on your website. Creating users and granting access to the right content is ensured by communication with the SimpleShop sales system, where it is necessary to have your own account.
 
-You can register for a SimpleShop account at: [https://app.simpleshop.cz/account/create/](https://app.simpleshop.cz/account/create/)
+You can register for a SimpleShop account at: [https://app.simpleshop.cz/account/new/](https://app.simpleshop.cz/account/new/)
 
 Plugin functions relating to member sections (the instructions are in Czech):
 
@@ -40,7 +40,7 @@ The SimpleShop WordPress plugin is compatible with the WordPress editor (Gutenbe
 
 The second area of use of the plugin is to insert a sales form created in the SimpleShop into your website. Again, you must have your own account in the SimpleShop system.
 
-You can register for a SimpleShop account at: [https://app.simpleshop.cz/account/create/](https://app.simpleshop.cz/account/create/)
+You can register for a SimpleShop account at: [https://app.simpleshop.cz/account/new/](https://app.simpleshop.cz/account/new/)
 
 The procedure of inserting a sales form into the website is explained in the [following instructions (in Czech)](https://podpora.redbit.cz/navod/simpleshop-wp-plugin-vkladani-prodejniho-formulare/).
 
