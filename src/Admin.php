@@ -275,10 +275,11 @@ class Admin {
 
 		wp_enqueue_style( 'ssc', $this->pluginDirUrl . 'css/ssc.css' );
 
-		$is_user_screen = 'profile' === $current_screen->id || 'user-edit' === $current_screen->id;
+		// V síťové administraci mají obrazovky příponu -network/-user (user-edit-network, profile-user).
+		$screen_base = $current_screen ? preg_replace( '/-(network|user)$/', '', $current_screen->base ) : '';
 
 		// Datepicker je na profilu uživatele i v TinyMCE dialogu na editaci příspěvku.
-		if ( $is_user_screen || 'post' === $current_screen->base ) {
+		if ( in_array( $screen_base, [ 'profile', 'user-edit', 'post' ], true ) ) {
 			// Vlastní kopie stylů jQuery UI ve verzi, kterou dodává WP core (od WP 7.1 je to 1.14.2).
 			wp_enqueue_style(
 				'ssc-jquery-ui',
