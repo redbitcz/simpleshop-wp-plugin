@@ -6,7 +6,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 import {Button, DateTimePicker, PanelBody, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import v1 from './v1';
 
-const {__experimentalGetSettings} = wp.date;
+const {getSettings} = wp.date;
 const {addFilter} = wp.hooks;
 const {createHigherOrderComponent} = wp.compose;
 
@@ -66,7 +66,7 @@ const withInspectorControls = createHigherOrderComponent((BlockEdit) => {
             simpleShopSpecificDateTo
         } = props.attributes;
 
-        let settings = __experimentalGetSettings();
+        let settings = getSettings();
 
         // To know if the current timezone is a 12 hour time with look for an "a" in the time format.
         // We also make sure this a is not escaped by a "/".

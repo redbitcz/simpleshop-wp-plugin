@@ -15,6 +15,8 @@ use WP_Error;
 class Admin {
 	const PRODUCTS_CACHE_TTL = 3600 * 24;
 	const PRODUCTS_CACHE_FIELD = '__cache_timestamp';
+	/** Verze přibalených stylů jQuery UI, musí odpovídat souboru v css/jquery-ui/ */
+	const JQUERY_UI_VERSION = '1.14.2';
 
 	/** @var Plugin */
 	private $loader;
@@ -272,10 +274,19 @@ class Admin {
 		global $current_screen;
 
 		wp_enqueue_style( 'ssc', $this->pluginDirUrl . 'css/ssc.css' );
-		wp_register_style( 'jquery-ui', 'https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css' );
-		wp_enqueue_style( 'jquery-ui' );
 
-		if ( 'profile' === $current_screen->id || 'user-edit' === $current_screen->id ) {
+		// V síťové administraci mají obrazovky příponu -network/-user (user-edit-network, profile-user).
+		$screen_base = $current_screen ? preg_replace( '/-(network|user)$/', '', $current_screen->base ) : '';
+
+		// Datepicker je na profilu uživatele i v TinyMCE dialogu na editaci příspěvku.
+		if ( in_array( $screen_base, [ 'profile', 'user-edit', 'post' ], true ) ) {
+			// Vlastní kopie stylů jQuery UI ve verzi, kterou dodává WP core (od WP 7.1 je to 1.14.2).
+			wp_enqueue_style(
+				'ssc-jquery-ui',
+				$this->pluginDirUrl . 'css/jquery-ui/jquery-ui.css',
+				[],
+				self::JQUERY_UI_VERSION
+			);
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 		}
 	}
