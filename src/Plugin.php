@@ -31,9 +31,6 @@ class Plugin {
 	/** @var string */
 	private $pluginMainFile;
 
-	/** @var Stopwatch */
-	private $stopwatch;
-
 	/**
 	 * @param string $mainFile Filename of main plugin path. Used for native WP functions
 	 */
@@ -192,9 +189,5 @@ class Plugin {
 		global $wpdb;
 
 		$wpdb->get_results( "select release_lock('_ssc_lock');" );
-	}
-
-	public function getStopwatch(): Stopwatch {
-		return $this->stopwatch ?? $this->stopwatch = new Stopwatch();
 	}
 }

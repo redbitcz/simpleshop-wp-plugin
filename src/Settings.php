@@ -21,7 +21,6 @@ use VyfakturujAPIException;
  */
 class Settings {
 
-	private const GET_PROFILE_FLAG = 'ssc_get_profile';
 	private const PAGE_KEY = 'ssc_options';
 
 	/**
@@ -69,9 +68,7 @@ class Settings {
 		add_action( 'admin_menu', [ $this, 'add_options_page' ] );
 		add_action( 'cmb2_admin_init', [ $this, 'add_options_page_metabox' ] );
 		add_filter( 'cmb2_render_ssc_disconnect_button', [ $this, 'field_type_disconnect_button' ], 10, 0 );
-		add_filter( 'cmb2_render_ssc_profile_button', [ $this, 'field_type_profiling_button' ], 10, 0 );
 		add_action( 'admin_init', [ $this, 'maybe_disconnect_simpleshop' ] );
-		add_action( 'admin_init', [ $this, 'get_profiling_data' ] );
 		add_action( 'admin_print_styles', [ $this, 'maybe_display_messages' ] );
 	}
 
@@ -86,19 +83,6 @@ class Settings {
 			'<a href="%s">%s</a>',
 			htmlspecialchars( $url, ENT_QUOTES ),
 			__( 'Disconnect SimpleShop', 'simpleshop-cz' )
-		);
-	}
-
-	public function field_type_profiling_button() {
-		$url = add_query_arg( [
-			'_wpnonce'             => wp_create_nonce(),
-			'page'                 => 'ssc_options',
-			self::GET_PROFILE_FLAG => 1
-		], admin_url( 'index.php' ) );
-
-		printf( '<a href="%s" target="_blank">%s</a>',
-			htmlspecialchars( $url, ENT_QUOTES ),
-			__( 'Dump profiling data', 'simpleshop-cz' )
 		);
 	}
 
@@ -345,16 +329,6 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 				'classes_cb' => [ $this, 'hide_when_invalid_keys' ],
 			]
 		);
-
-		$cmb->add_field(
-			[
-				'name'       => __( 'Profiling information', 'simpleshop-cz' ),
-				'desc'       => __( '[SERVICE FLAG] Download profiling information', 'simpleshop-cz' ),
-				'id'         => 'ssc_dump_profiling',
-				'type'       => 'ssc_profile_button',
-				'classes_cb' => [ $this, 'show_debug_fields' ],
-			]
-		);
 	}
 
 	/**
@@ -383,26 +357,6 @@ SimpleShop.cz - <i>Everyone can sell with us</i>'
 		update_option( self::PAGE_KEY, $options );
 		$url = add_query_arg( [ 'page' => 'ssc_options' ], admin_url( 'admin.php' ) );
 		wp_redirect( $url );
-	}
-
-	public function get_profiling_data(): void {
-		if ( ! isset( $_GET[ self::GET_PROFILE_FLAG ] ) || $_GET[ self::GET_PROFILE_FLAG ] !== '1' ) {
-			return;
-		}
-		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( $_GET['_wpnonce'] ) ) {
-			return;
-		}
-		if ( ! current_user_can( 'administrator' ) ) {
-			return;
-		}
-
-		$data = $this->loader->getStopwatch()->getStopwatchLog();
-		header( 'Content-Type: application/jsonl' );
-		header( 'Content-Disposition: attachment; filename="ssc_profiling.jsonl' );
-		header( 'Content-Length: ' . strlen( $data ) );
-
-		echo $data;
-        exit();
 	}
 
 	/**
